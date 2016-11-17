@@ -1,3 +1,5 @@
+import { easeInQuint } from './easing'
+
 export const compose = (...fns) => (val) => fns.reduceRight((currVal, fn) => fn(currVal), val)
 
 export const minMap = (...vals) => (val) => Math.min(...vals, val)
@@ -40,3 +42,34 @@ export const trackTouchesForElement = (el) => {
 
   return () => touchIds.length
 }
+
+export const animate = (el, {
+  delta = 0,
+  immediate = false,
+  duration = immediate ? 0 : 500,
+  easing = easeInQuint,
+  prop = 'scrollTop'
+} = {}) => new Promise((res, rej) => {
+  const initialVal = el[prop]
+  const overFlowStyle = el.style.overflow
+  let startTime = null
+  const step = (timestamp) => {
+    if (!startTime) startTime = timestamp
+    const progressTime = timestamp - startTime
+    const progressRatio = easing(progressTime / duration)
+    el[prop] = initialVal + (delta * progressRatio)
+    if (progressTime < duration) {
+      window.requestAnimationFrame(step)
+    } else {
+      el[prop] = initialVal + delta // paranoia check. jump to the end when animation time is complete.
+
+      // Give scroll control back to the user once animation is done.
+      el.style.overflow = overFlowStyle
+      res()
+    }
+  }
+  // We are going to temporarily prevent the user from being able to scroll during the animation.
+  // This will prevent a janky fight between user scroll and animation which is just bad user experience.
+  el.style.overflow = 'hidden'
+  window.requestAnimationFrame(step)
+})

@@ -3,8 +3,16 @@ import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
 import Slide from '../slide'
 import { track, preventScrolling } from './styles.css'
-import { easeInQuint } from '../easing'
-import { compose, maxMap as max, minMap as min, on, onScrollEnd, onScrollStart, trackTouchesForElement } from '../utils'
+import {
+  animate,
+  compose,
+  maxMap as max,
+  minMap as min,
+  on,
+  onScrollEnd,
+  onScrollStart,
+  trackTouchesForElement
+} from '../utils'
 const { bool, number, string, func, array, oneOfType, object } = PropTypes
 
 export default class Track extends Component {
@@ -70,7 +78,7 @@ export default class Track extends Component {
       }
     })(this.track)
 
-    this.slideTo(this.props.startAt)
+    this.slideTo(this.props.startAt, { immediate: true })
   }
 
   handleKeyUp = ((nextKeys, prevKeys) => ({ key }) => {
@@ -96,41 +104,16 @@ export default class Track extends Component {
     this.slideTo(this.state.activeIndex - this.props.visibleSlides)
   }
 
-  slideTo (index) {
+  slideTo (index, { immediate = false } = {}) {
     const { afterSlide } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = compose(max(0), min(index))(children.length - 1)
     const delta = children[slideIndex].offsetLeft - scrollLeft
-    this.animate(this.track, 'scrollLeft', delta).then(() => {
+    animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       this.setState({ activeIndex: slideIndex })
       afterSlide(slideIndex)
     })
   }
-
-  animate = (el, prop, delta, duration = 500, easing = easeInQuint) => new Promise((res, rej) => {
-    const initialVal = el[prop]
-    const overFlowStyle = el.style.overflow
-    let startTime = null
-    const step = (timestamp) => {
-      if (!startTime) startTime = timestamp
-      const progressTime = timestamp - startTime
-      const progressRatio = easing(progressTime / duration)
-      el[prop] = initialVal + (delta * progressRatio)
-      if (progressTime < duration) {
-        window.requestAnimationFrame(step)
-      } else {
-        el[prop] = initialVal + delta // paranoia check. jump to the end when animation time is complete.
-
-        // Give scroll control back to the user once animation is done.
-        el.style.overflow = overFlowStyle
-        res()
-      }
-    }
-    // We are going to temporarily prevent the user from being able to scroll during the animation.
-    // This will prevent a janky fight between user scroll and animation which is just bad user experience.
-    el.style.overflow = 'hidden'
-    window.requestAnimationFrame(step)
-  });
 
   getNearestSlideIndex = () => {
     const { children, scrollLeft } = this.track
