@@ -66,7 +66,7 @@ export default {
     // new ExtractTextPlugin({ filename: 'dist/[name].css', disable: false, allChunks: true })
   ],
 
-  devtool: 'cheap-eval-source-map',
+  devtool: 'eval-source-map',
   devServer: {
     contentBase: join(__dirname, 'dist'),
     compress: true,

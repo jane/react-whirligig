@@ -5,26 +5,55 @@ import Slide from '../slide'
 import { track, nextButton, prevButton, preventScrolling } from './styles.css'
 import { easeInQuint } from '../easing'
 
-const { bool, number, string, func, array, oneOf, object } = PropTypes
+const { bool, number, string, func, array, oneOfType, oneOf, object } = PropTypes
 
 const compose = (...fns) => (val) => fns.reduceRight((currVal, fn) => fn(currVal), val)
 const min = (...vals) => (val) => Math.min(...vals, val)
 const max = (...vals) => (val) => Math.max(...vals, val)
 const on = (evt, opts = false) => (cb) => (el) => el.addEventListener(evt, cb, opts)
-const onScroll = (cb) => on('scroll', true)(cb)(window)
+const onWindowScroll = (cb) => on('scroll', true)(cb)(window)
+const onScroll = (cb, { target = window } = {}) =>
+  onWindowScroll((e) => (target === window || target === e.target) && cb(e))
+
 const onScrollEnd = (cb, { wait = 200, target = window } = {}) => ((timeoutID) => onScroll((evt) => {
   clearTimeout(timeoutID)
   timeoutID = setTimeout(() => evt.target === target ? cb() : undefined, wait)
 }))(0)
 
+const onScrollStart = (cb, { target = window } = {}) => {
+  let started = false
+  onScrollEnd(() => (started = false), { target })
+  onScroll((e) => {
+    if (!started) {
+      started = true
+      cb(e)
+    }
+  }, { target })
+}
+
+const trackTouchesForElement = (el) => {
+  let touchIds = []
+  on('touchstart')(({ changedTouches }) => {
+    const changedIds = [].slice.call(changedTouches).map(({ identifier }) => identifier)
+    touchIds = [...touchIds, ...changedIds]
+  })(el)
+
+  on('touchend')(({ changedTouches }) => {
+    const changedIds = [].slice.call(changedTouches).map(({ identifier }) => identifier)
+    touchIds = touchIds.filter((touchId) => !changedIds.includes(touchId))
+  })(el)
+
+  return () => touchIds.length
+}
+
 export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
     children: func,
-    className: oneOf([array, string, object]),
+    className: oneOfType([array, string, object]),
     gutter: string,
     preventScroll: bool,
-    slideClass: oneOf([array, string, object]),
+    slideClass: oneOfType([array, string, object]),
     preventSnapping: bool,
     startAt: number,
     visibleSlides: number
@@ -59,14 +88,26 @@ export default class Track extends Component {
     // the onScrollEnd callback cares about and is not important
     // to the rendering of the component.
     let isAnimating = false
+    let isScrolling = false
+    const getOngoingTouchCount = trackTouchesForElement(this.DOMNode)
+    const shouldSelfCorrect = () =>
+      !this.props.preventSnapping && !isAnimating && !isScrolling && !getOngoingTouchCount()
+    onScrollStart(() => { isScrolling = true })
     onScrollEnd(() => {
-      if (!isAnimating && !this.props.preventSnapping) {
+      isScrolling = false
+      isAnimating = false
+      if (shouldSelfCorrect()) {
         isAnimating = true
         this.slideTo(this.getNearestSlideIndex())
-      } else {
-        isAnimating = false
       }
     }, { target: this.DOMNode })
+
+    on('touchend')(() => {
+      if (shouldSelfCorrect()) {
+        isAnimating = true
+        this.slideTo(this.getNearestSlideIndex())
+      }
+    })(this.track)
 
     this.slideTo(this.props.startAt)
   }
