@@ -9,3 +9,14 @@
 .track {
   border: 1em solid rebeccapurple
 }
+
+.slider {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: stretch;
+  justify-content: space-between;
+
+  & button {
+    padding: 1em;
+  }
+}
