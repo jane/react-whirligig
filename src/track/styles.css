@@ -1,0 +1,25 @@
+.track {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  overflow-x: auto;
+  position: relative; /* makes .track an offset parent */
+  transition: all .25s ease-in-quint;
+  outline: none;
+
+  &:focus {
+    box-shadow: 0 0 1em hsla(0, 0%, 0%, .1);
+  }
+}
+
+.preventScrolling {
+  overflow: none;
+}
+
+.nextButton,
+.prevButton {
+  border: none;
+  background: var(--gray-lighter, #e5e5e5);
+  cursor: pointer;
+  outline: none;
+}

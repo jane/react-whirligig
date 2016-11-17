@@ -1,0 +1,49 @@
+{
+  "name": "react-track",
+  "version": "1.0.0",
+  "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config ./webpack.config.babel.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jane/react-track.git"
+  },
+  "author": "Cory Brown <cory@jane.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jane/react-track/issues"
+  },
+  "homepage": "https://github.com/jane/react-track#readme",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.0",
+    "babel-loader": "^6.2.7",
+    "babel-plugin-react-require": "^3.0.0",
+    "babel-plugin-transform-class-properties": "^6.19.0",
+    "babel-plugin-transform-export-extensions": "^6.8.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-3": "^6.17.0",
+    "babel-register": "^6.18.0",
+    "classnames": "^2.2.5",
+    "css-loader": "^0.26.0",
+    "eslint": "^3.10.2",
+    "eslint-plugin-jsx-a11y": "^3.0.1",
+    "eslint-plugin-react": "^6.7.1",
+    "find-cache-dir": "^0.1.1",
+    "postcss-cssnext": "^2.8.0",
+    "postcss-import": "8.1.0",
+    "postcss-loader": "^1.1.1",
+    "postcss-mixins": "^5.4.0",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^2.1.0-beta.27",
+    "webpack-dev-server": "^2.1.0-beta.11"
+  }
+}
