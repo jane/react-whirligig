@@ -15,11 +15,3 @@
 .preventScrolling {
   overflow: none;
 }
-
-.nextButton,
-.prevButton {
-  border: none;
-  background: var(--gray-lighter, #e5e5e5);
-  cursor: pointer;
-  outline: none;
-}

@@ -2,49 +2,10 @@ import React, { Component, Children, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import cn from 'classnames'
 import Slide from '../slide'
-import { track, nextButton, prevButton, preventScrolling } from './styles.css'
+import { track, preventScrolling } from './styles.css'
 import { easeInQuint } from '../easing'
-
-const { bool, number, string, func, array, oneOfType, oneOf, object } = PropTypes
-
-const compose = (...fns) => (val) => fns.reduceRight((currVal, fn) => fn(currVal), val)
-const min = (...vals) => (val) => Math.min(...vals, val)
-const max = (...vals) => (val) => Math.max(...vals, val)
-const on = (evt, opts = false) => (cb) => (el) => el.addEventListener(evt, cb, opts)
-const onWindowScroll = (cb) => on('scroll', true)(cb)(window)
-const onScroll = (cb, { target = window } = {}) =>
-  onWindowScroll((e) => (target === window || target === e.target) && cb(e))
-
-const onScrollEnd = (cb, { wait = 200, target = window } = {}) => ((timeoutID) => onScroll((evt) => {
-  clearTimeout(timeoutID)
-  timeoutID = setTimeout(() => evt.target === target ? cb() : undefined, wait)
-}))(0)
-
-const onScrollStart = (cb, { target = window } = {}) => {
-  let started = false
-  onScrollEnd(() => (started = false), { target })
-  onScroll((e) => {
-    if (!started) {
-      started = true
-      cb(e)
-    }
-  }, { target })
-}
-
-const trackTouchesForElement = (el) => {
-  let touchIds = []
-  on('touchstart')(({ changedTouches }) => {
-    const changedIds = [].slice.call(changedTouches).map(({ identifier }) => identifier)
-    touchIds = [...touchIds, ...changedIds]
-  })(el)
-
-  on('touchend')(({ changedTouches }) => {
-    const changedIds = [].slice.call(changedTouches).map(({ identifier }) => identifier)
-    touchIds = touchIds.filter((touchId) => !changedIds.includes(touchId))
-  })(el)
-
-  return () => touchIds.length
-}
+import { compose, maxMap as max, minMap as min, on, onScrollEnd, onScrollStart, trackTouchesForElement } from '../utils'
+const { bool, number, string, func, array, oneOfType, object } = PropTypes
 
 export default class Track extends Component {
   static propTypes = {
@@ -141,8 +102,8 @@ export default class Track extends Component {
     const slideIndex = compose(max(0), min(index))(children.length - 1)
     const delta = children[slideIndex].offsetLeft - scrollLeft
     this.animate(this.track, 'scrollLeft', delta).then(() => {
-      this.setState({ activeIndex: index })
-      afterSlide(index)
+      this.setState({ activeIndex: slideIndex })
+      afterSlide(slideIndex)
     })
   }
 
@@ -216,18 +177,4 @@ export default class Track extends Component {
       </div>
     )
   }
-}
-
-export const TrackControl = ({ direction, onClick, className }) => (
-  <button
-    className={cn(direction === 'next' ? nextButton : prevButton, className)}
-    onClick={onClick}
-  >
-    <Icon type={`chevron-${direction === 'next' ? 'right' : 'left'}`} />
-  </button>
-)
-TrackControl.propTypes = {
-  direction: oneOf(['next', 'previous']).isRequired,
-  onClick: func,
-  className: oneOf([array, string, object])
 }
