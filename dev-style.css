@@ -6,6 +6,10 @@ html, body {
   box-sizing: inherit;
 }
 
+figure {
+  margin: 0;
+}
+
 .mySlide {
   width: 100%;
   margin: 0;
@@ -15,7 +19,8 @@ html, body {
 }
 
 .track {
-  border: 1em solid rebeccapurple
+  border: 1em solid rebeccapurple;
+  flex: 1 1 100%;
 }
 
 .slider {
