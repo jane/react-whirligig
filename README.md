@@ -1,9 +1,9 @@
 # react-track
-A react carousel/slider like component for sequentially displaying slides or sets of slides
+A react carousel/slider like component for sequentially displaying slides or sets of slides.
 
 ## Usage
-```jsx
 
+```jsx
 const Slider = (props) => {
 
   let onNext, onPrev
@@ -13,7 +13,7 @@ const Slider = (props) => {
   return (
     <div>
       <button onClick={prev}>Prev</button>
-      
+
       // Track accepts on child which is a function.
       // This function will be passed a `next` function
       // and a `previous` function for controlling the track.
@@ -39,42 +39,42 @@ const Slider = (props) => {
 }
 ```
 
-##Track
+## Track
 The Track component is a horizontally oriented container of Slides.
 
-##Props
+## Props
 
 ### afterSlide:_func_
-_deafult: noop_
+_default: noop_
 A function to be called after the track transitions to a new "active" slide. The function is passed the new "active" slide index.
 
 ### children:_func_
-_deafult: none_
+_default: none_
 A function expected to return the React elements that will be the content of the Track component (Each "child" will be wrapped in a Slide component). The `children` function is passed two arguments; a `next` function and a `previous` function. These functions will respectively advance and recede the Track. These functions typically will be used as `onClick` values on buttons that control the Track.
 
 ### className:_classnames_
-A `classnames` compliant value the will be applied as the class attribute
+A `classnames` compliant value the will be applied as the class attribute.
 
 ### gutter:_string_
-_deafult: 1em_
+_default: 1em_
 A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string that represents the space between each Slide in the Track.
 
 ### preventScroll:_bool_
-_deafult: false_
-A boolean flag that turns off the ability to natively scroll through the Track
+_default: false_
+A boolean flag that turns off the ability to natively scroll through the Track.
 
 ### slideClass:_classnames_
-_deafult: ''_
-A class to apply to the Slide container
+_default: ''_
+A class to apply to the Slide container.
 
 ### preventSnapping:_bool_
-_deafult: false_
-A boolean flag that turns off the snap-to-slide feature. If set, the Track will not animate scrolling to stop at a slide
+_default: false_
+A boolean flag that turns off the snap-to-slide feature. If set, the Track will not animate scrolling to stop at a slide.
 
 ### startAt:_number_
-_deafult: 0_
-The Slide index that will be the "active" slide when the Track mounts. The value will be normalized to be within the range of the length of the Track's children
+_default: 0_
+The Slide index that will be the "active" slide when the Track mounts. The value will be normalized to be within the range of the length of the Track's children.
 
 ### visibleSlides:_number_
-_deafult: 1_
+_default: 1_
 The number of slides that should be visible at a time for the Track.
