@@ -37,7 +37,7 @@ export default class Track extends Component {
     visibleSlides: 1
   }
 
-  state = { activeIndex: 0, slideCount: 0 };
+  state = { activeIndex: 0 };
 
   constructor (props) {
     super(props)
