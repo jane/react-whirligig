@@ -61,6 +61,7 @@ export default class Track extends Component {
     const getOngoingTouchCount = trackTouchesForElement(this.DOMNode)
     const shouldSelfCorrect = () =>
       !this.props.preventSnapping && !isAnimating && !isScrolling && !getOngoingTouchCount()
+
     onScrollStart(() => { isScrolling = true })
     onScrollEnd(() => {
       isScrolling = false
@@ -109,6 +110,7 @@ export default class Track extends Component {
     const { children, scrollLeft } = this.track
     const slideIndex = compose(max(0), min(index))(children.length - 1)
     const delta = children[slideIndex].offsetLeft - scrollLeft
+    console.log(`sliding to ${slideIndex}`)
     animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       this.setState({ activeIndex: slideIndex })
       afterSlide(slideIndex)
