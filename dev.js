@@ -14,7 +14,7 @@ const Slider = ({ children }) => {
   return (
     <div className={slider}>
       <button onClick={prev}>{'<'}</button>
-      <Track visibleSlides={3} className={track}>{
+      <Track visibleSlides={3} className={track} startAt={4}>{
         (_next, _prev) => {
           onNext = _next
           onPrev = _prev
