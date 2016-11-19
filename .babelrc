@@ -5,7 +5,9 @@
     // stage-2 ECMAScript features
     'stage-3',
     // JSX
-    'react'
+    'react',
+    //minification
+    'babili'
   ],
   plugins: [
     // export Thing from './thing'

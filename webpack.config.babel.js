@@ -4,6 +4,9 @@ import postCSSMixins from 'postcss-mixins'
 import postCSSImport from 'postcss-import'
 import postCSSCSSNext from 'postcss-cssnext'
 // import ExtractTextPlugin from 'extract-text-webpack-plugin'
+
+const { NODE_ENV } = process.env
+
 export default {
 
   entry: './dev.js',
@@ -14,6 +17,7 @@ export default {
   module: {
     loaders: [{
       test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
       loader: 'babel-loader'
     }, {
       // "postcss" loader applies autoprefixer to our CSS.
@@ -24,24 +28,6 @@ export default {
       test: /\.css$/,
       loader: 'style-loader!css-loader?modules&importLoaders=1&localIdentName=[local]__[hash:base64:9]!postcss-loader'
     }]
-
-    // rules: [{
-    //   test: /\.css$/,
-    //   // We use PostCSS for autoprefixing only.
-    //   loader: 'postcss',
-    //   options: [
-    //     require('postcss-mixins')(),
-    //     require('postcss-import')({ path: join(__dirname, 'src') }),
-    //     require('postcss-cssnext')({
-    //       browsers: [
-    //         '>1%',
-    //         'last 4 versions',
-    //         'Firefox ESR',
-    //         'not ie < 11'
-    //       ]
-    //     })
-    //   ]
-    // }]
   },
   plugins: [ // https://github.com/webpack/webpack/issues/3018#issuecomment-248633498
     new webpack.LoaderOptionsPlugin({
@@ -66,7 +52,7 @@ export default {
     // new ExtractTextPlugin({ filename: 'dist/[name].css', disable: false, allChunks: true })
   ],
 
-  devtool: 'eval-source-map',
+  devtool: NODE_ENV !== 'production' ? 'cheap-module-eval-source-map' : '',
   devServer: {
     contentBase: join(__dirname, 'dist'),
     compress: true,
