@@ -11,7 +11,7 @@ export default {
 
   entry: './dev.js',
   output: {
-    filename: './dist/react-track.js'
+    filename: 'bundle.js'
   },
 
   module: {
@@ -54,7 +54,7 @@ export default {
 
   devtool: NODE_ENV !== 'production' ? 'cheap-module-eval-source-map' : '',
   devServer: {
-    contentBase: join(__dirname, 'dist'),
+    contentBase: __dirname,
     compress: true,
     port: 9090
   }
