@@ -9,9 +9,12 @@ const { NODE_ENV } = process.env
 
 export default {
 
-  entry: './dev.js',
+  entry: {
+    demo: './dev.js',
+    index: './src/track/index.js'
+  },
   output: {
-    filename: 'bundle.js'
+    filename: '[name].js'
   },
 
   module: {

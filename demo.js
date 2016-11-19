@@ -61,7 +61,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 85);
+/******/ 	return __webpack_require__(__webpack_require__.s = 190);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -22093,6 +22093,57 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ },
+/* 188 */
+/***/ function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(189);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(83)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!./node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[local]__[hash:base64:9]!./node_modules/postcss-loader/index.js!./dev-style.css", function() {
+			var newContent = require("!!./node_modules/css-loader/index.js?modules&importLoaders=1&localIdentName=[local]__[hash:base64:9]!./node_modules/postcss-loader/index.js!./dev-style.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ },
+/* 189 */
+/***/ function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(82)();
+// imports
+
+
+// module
+exports.push([module.i, "html, body {\n  box-sizing: border-box;\n}\n\n*, *::before, *::after {\n  box-sizing: inherit;\n}\n\nfigure {\n  margin: 0;\n}\n\n.mySlide__14hTlZjOf {\n  width: 100%;\n  margin: 0\n}\n\n.mySlide__14hTlZjOf img {\n  width: 100%;\n}\n\n.track__CQYZZwQPQ {\n  border: 1em solid rgb(102, 51, 153);\n  -webkit-box-flex: 1;\n  -webkit-flex: 1 1 100%;\n      -ms-flex: 1 1 100%;\n          flex: 1 1 100%;\n}\n\n.slider__24qqj2z3_ {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-flex-flow: row nowrap;\n      -ms-flex-flow: row nowrap;\n          flex-flow: row nowrap;\n  -webkit-box-align: stretch;\n  -webkit-align-items: stretch;\n      -ms-flex-align: stretch;\n          align-items: stretch;\n  -webkit-box-pack: justify;\n  -webkit-justify-content: space-between;\n      -ms-flex-pack: justify;\n          justify-content: space-between;\n  width: 100vw\n}\n\n.slider__24qqj2z3_ button {\n  padding: 1em;\n}\n", ""]);
+
+// exports
+exports.locals = {
+	"mySlide": "mySlide__14hTlZjOf",
+	"track": "track__CQYZZwQPQ",
+	"slider": "slider__24qqj2z3_"
+};
+
+/***/ },
+/* 190 */
+/***/ function(module, exports, __webpack_require__) {
+
+"use strict";
+'use strict';var _react=__webpack_require__(52),_react2=_interopRequireDefault(_react),_reactDom=__webpack_require__(81),_index=__webpack_require__(85),_index2=_interopRequireDefault(_index),_devStyle=__webpack_require__(188);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj}}var array=_react.PropTypes.array,Slider=function Slider(_ref){var a=_ref.children,b=void 0,c=void 0;return _react2.default.createElement('div',{className:_devStyle.slider},_react2.default.createElement('button',{onClick:function onClick(){return c()}},'<'),_react2.default.createElement(_index2.default,{visibleSlides:3,className:_devStyle.track,startAt:4,infinite:!0},function(d,e){return b=d,c=e,a}),_react2.default.createElement('button',{onClick:function onClick(){return b()}},'>'))};Slider.propTypes={children:array},(0,_reactDom.render)(_react2.default.createElement(Slider,null,_react2.default.createElement('figure',{className:_devStyle.mySlide},_react2.default.createElement('img',{alt:'Fill Murry',src:'http://www.fillmurray.com/400/300'}),_react2.default.createElement('figcaption',null,'Slide Index 0')),_react2.default.createElement('figure',{className:_devStyle.mySlide},_react2.default.createElement('img',{alt:'Fill Murry',src:'http://www.fillmurray.com/400/400'}),_react2.default.createElement('figcaption',null,'Slide Index 1')),_react2.default.createElement('div',{className:_devStyle.mySlide},_react2.default.createElement('figure',null,_react2.default.createElement('img',{alt:'Fill Murry',src:'http://www.fillmurray.com/300/200'})),_react2.default.createElement('figure',null,_react2.default.createElement('img',{alt:'Fill Murry',src:'http://www.fillmurray.com/300/200'}),_react2.default.createElement('figcaption',null,'Slide Index 2'))),_react2.default.createElement('figure',{className:_devStyle.mySlide},_react2.default.createElement('img',{alt:'Fill Murry',src:'http://www.fillmurray.com/400/200'}),_react2.default.createElement('figcaption',null,'Slide Index 3')),_react2.default.createElement('figure',{className:_devStyle.mySlide},_react2.default.createElement('img',{alt:'Fill Murry',src:'http://www.fillmurray.com/200/400'}),_react2.default.createElement('figcaption',null,'Slide Index 4')),_react2.default.createElement('figure',{className:_devStyle.mySlide},_react2.default.createElement('img',{alt:'Fill Murry',src:'http://www.fillmurray.com/400/400'}),_react2.default.createElement('figcaption',null,'Slide Index 5'))),document.querySelector('main'));
 
 /***/ }
 /******/ ]);
