@@ -1,1 +1,1 @@
-export { default, TrackControl } from './track'
+export { default } from './track'
