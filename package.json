@@ -2,7 +2,7 @@
   "name": "react-track",
   "version": "1.0.0",
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
-  "main": "src/track/index.js",
+  "main": "dist/react-track.js",
   "scripts": {
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config ./webpack.config.babel.js",
     "build": "NODE_ENV=production webpack --config webpack.config.babel.js",
