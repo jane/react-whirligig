@@ -14,7 +14,9 @@ export default {
     index: './src/track/index.js'
   },
   output: {
-    filename: '[name].js'
+    filename: '[name].js',
+    library: 'react-track',
+    libraryTarget: 'umd'
   },
 
   module: {
