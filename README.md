@@ -59,6 +59,10 @@ A `classnames` compliant value the will be applied as the class attribute.
 _default: 1em_
 A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string that represents the space between each Slide in the Track.
 
+### infinite:_bool_
+_default: false_
+A boolean flag that turns on infinite next and previous. Infinite does not work for scrolling, only when calling the `next` and `previous` functions the Track calls the child function with.
+
 ### preventScroll:_bool_
 _default: false_
 A boolean flag that turns off the ability to natively scroll through the Track.
