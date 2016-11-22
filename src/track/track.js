@@ -8,7 +8,8 @@ import {
   on,
   onScrollEnd,
   onScrollStart,
-  trackTouchesForElement
+  trackTouchesForElement,
+  values
 } from '../utils'
 const { bool, number, string, func, array, oneOfType, object } = PropTypes
 
@@ -101,8 +102,8 @@ export default class Track extends Component {
   // We don't want to update if only state changed.
   // Sate is not important to the rendering of this component
   shouldComponentUpdate (nextProps) {
-    const propValues = Object.values(this.props)
-    const nextPropValues = Object.values(nextProps)
+    const propValues = values(this.props)
+    const nextPropValues = values(nextProps)
     return !nextPropValues.every((val, i) => val === propValues[i])
   }
 
