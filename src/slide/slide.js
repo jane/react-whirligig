@@ -3,7 +3,7 @@ import cn from 'classnames'
 
 const { string, node, array, oneOf, object } = PropTypes
 
-const Slide = ({ basis = '100%', gutter = '1em', className = '', children }) => (
+const Slide = ({ basis = '100%', gutter = '1em', className = '', children, ...props }) => (
   <div
     className={cn(className)}
     style={{
@@ -11,6 +11,7 @@ const Slide = ({ basis = '100%', gutter = '1em', className = '', children }) => 
       width: basis,
       marginLeft: gutter
     }}
+    {...props}
   >
     {children}
   </div>

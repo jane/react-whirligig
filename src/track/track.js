@@ -205,6 +205,7 @@ export default class Track extends Component {
             key={`slide-${i}`}
             basis={`calc((100% - (${gutter} * ${visibleSlides - 1})) / ${visibleSlides})`}
             gutter={gutter}
+            onClick={child.props.onClick}
           >
             {child}
           </Slide>
