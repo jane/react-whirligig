@@ -1,5 +1,7 @@
 import { easeInQuint } from './easing'
 
+export const values = Object.values || ((obj) => Object.keys(obj).map((key) => obj[key]))
+
 export const compose = (...fns) => (val) => fns.reduceRight((currVal, fn) => fn(currVal), val)
 
 export const minMap = (...vals) => (val) => Math.min(...vals, val)
