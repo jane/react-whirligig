@@ -3,6 +3,7 @@
   flex-flow: row nowrap;
   justify-content: space-between;
   overflow-x: auto;
+  -ms-overflow-style: -ms-autohiding-scrollbar; /* chrome like scrollbar experience for IE/Edge */
   position: relative; /* makes .track an offset parent */
   transition: all .25s ease-in-quint;
   outline: none;
