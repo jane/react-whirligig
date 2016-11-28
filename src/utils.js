@@ -68,7 +68,7 @@ export const animate = (el, {
       // Give scroll control back to the user once animation is done.
       // el.style.overflow = overFlowStyle
       // MS Edge doesn't like the above apparently.
-      el.setAttribute('style', el.getAttribute('style').replace(/overflow:\s?\w*/))
+      el.setAttribute('style', el.getAttribute('style').replace(/overflow:\s?\w*/, ''))
       res()
     }
   }
