@@ -66,7 +66,9 @@ export const animate = (el, {
       el[prop] = initialVal + delta // paranoia check. jump to the end when animation time is complete.
 
       // Give scroll control back to the user once animation is done.
-      el.style.overflow = overFlowStyle
+      // el.style.overflow = overFlowStyle
+      // MS Edge doesn't like the above apparently.
+      el.setAttribute('stye', el.getAttribute('style').replace(/overflow:\s?\w*/))
       res()
     }
   }
