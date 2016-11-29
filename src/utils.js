@@ -1,4 +1,4 @@
-import { easeInQuint } from './easing'
+import { easeInOutQuint } from './easing'
 
 export const values = Object.values || ((obj) => Object.keys(obj).map((key) => obj[key]))
 
@@ -48,8 +48,8 @@ export const trackTouchesForElement = (el) => {
 export const animate = (el, {
   delta = 0,
   immediate = false,
-  duration = immediate ? 0 : 500,
-  easing = easeInQuint,
+  duration = immediate ? 0 : 1000,
+  easing = easeInOutQuint,
   prop = 'scrollTop'
 } = {}) => new Promise((res, rej) => {
   const initialVal = el[prop]

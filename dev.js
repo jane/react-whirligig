@@ -14,7 +14,7 @@ const Slider = ({ children }) => {
   return (
     <div className={slider}>
       <button onClick={prev}>{'<'}</button>
-      <Track visibleSlides={3} className={track} startAt={4} infinite>{
+      <Track visibleSlides={3} className={track} startAt={4} >{
         (_next, _prev) => {
           onNext = _next
           onPrev = _prev
@@ -58,9 +58,11 @@ render((
       <img alt="Fill Murry" src="http://www.fillmurray.com/200/400" />
       <figcaption>Slide Index 4</figcaption>
     </figure>
+    {/*
     <figure className={mySlide}>
       <img alt="Fill Murry" src="http://www.fillmurray.com/400/400" />
       <figcaption>Slide Index 5</figcaption>
     </figure>
+    */}
   </Slider>
 ), document.querySelector('main'))

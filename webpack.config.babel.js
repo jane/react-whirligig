@@ -57,7 +57,7 @@ export default {
     // new ExtractTextPlugin({ filename: 'dist/[name].css', disable: false, allChunks: true })
   ],
 
-  devtool: NODE_ENV !== 'production' ? 'cheap-module-eval-source-map' : '',
+  devtool: NODE_ENV !== 'production' ? 'eval-source-map' : '',
   devServer: {
     contentBase: __dirname,
     compress: true,

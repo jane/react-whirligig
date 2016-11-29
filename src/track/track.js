@@ -21,7 +21,6 @@ export default class Track extends Component {
     children: func,
     className: oneOfType([array, string, object]),
     gutter: string,
-    infinite: bool,
     preventScroll: bool,
     slideClass: oneOfType([array, string, object]),
     preventSnapping: bool,
@@ -32,24 +31,21 @@ export default class Track extends Component {
   static defaultProps = {
     afterSlide: () => {},
     gutter: '1em',
-    infinite: false,
     preventScroll: false,
     startAt: 0,
     visibleSlides: 1
   }
 
-  state = { activeIndex: 0 };
-
   constructor (props) {
     super(props)
+
+    this.state = { activeIndex: 0 }
 
     // We can't do arrow function properties for these since
     // we are passing them to the consuming component and we
     // require the proper context
     this.next = this.next.bind(this)
     this.prev = this.prev.bind(this)
-    this.infiniteNext = this.infiniteNext.bind(this)
-    this.infinitePrev = this.infinitePrev.bind(this)
     this.slideTo = this.slideTo.bind(this)
   }
 
@@ -108,39 +104,24 @@ export default class Track extends Component {
   }
 
   next () {
-    return this.slideTo(this.state.activeIndex + this.props.visibleSlides)
-  }
-
-  infiniteNext () {
-    if (this.state.activeIndex >= this.childCount - this.props.visibleSlides) {
-      this.reorderLastVisibleSet({ next: true })
-      this.track.scrollLeft = 0
-      return this.next()
-        .then(() => {
-          this.reorderLastVisibleSet({ reset: true })
-          this.track.scrollLeft = 0
-        })
-    } else {
-      return this.next()
-    }
+    const { childCount, props, state } = this
+    const { activeIndex } = state
+    const { visibleSlides } = props
+    return this.slideTo(
+      ((activeIndex !== childCount - visibleSlides) && activeIndex + (visibleSlides * 2) - 1 >= childCount)
+      ? childCount - visibleSlides
+      : activeIndex + visibleSlides)
   }
 
   prev () {
-    return this.slideTo(this.state.activeIndex - this.props.visibleSlides)
-  }
+    const { activeIndex } = this.state
+    const { visibleSlides } = this.props
 
-  infinitePrev () {
-    if (this.state.activeIndex < this.props.visibleSlides) {
-      this.reorderLastVisibleSet({ prev: true })
-      this.track.scrollLeft = this.track.scrollWidth
-      return this.prev()
-        .then(() => {
-          this.reorderLastVisibleSet({ reset: true })
-          this.track.scrollLeft = this.track.scrollWidth
-        })
-    } else {
-      return this.prev()
-    }
+    return this.slideTo(
+      ((activeIndex !== 0) && activeIndex - (visibleSlides * 2) + 1 < 0)
+      ? 0
+      : activeIndex - visibleSlides
+    )
   }
 
   slideTo (index, { immediate = false } = {}) {
@@ -160,18 +141,6 @@ export default class Track extends Component {
     const { children, scrollLeft } = this.track
     const offsets = [].slice.call(children).map(({ offsetLeft }) => Math.abs(offsetLeft - scrollLeft))
     return offsets.indexOf(Math.min(...offsets))
-  };
-
-  reorderLastVisibleSet = ({ reset = true, prev = false, next = false }) => {
-    const { visibleSlides } = this.props
-    const resetOrder = (el) => { el.style.order = 'initial' }
-    const orderForPrev = (el) => { el.style.order = 1 }
-    const orderForNext = (el) => { el.style.order = -1 }
-
-    [].slice.call(
-      this.track.children,
-      ...prev ? [0, visibleSlides] : next ? [-visibleSlides] : []
-    ).forEach(prev ? orderForPrev : next ? orderForNext : resetOrder)
   };
 
   setRef = (name) => (ref) => { this[name] = ref }
@@ -198,9 +167,7 @@ export default class Track extends Component {
           // this will return the `children` that will be the content of the individaul slides.
           // Then we wrap the slide content in a slide component to add the fucntionality we need
         }
-        {Children.map(children(
-          ...this.props.infinite ? [this.infiniteNext, this.infinitePrev] : [this.next, this.prev]
-        ), (child, i) => (
+        {Children.map(children(this.next, this.prev), (child, i) => (
           <Slide
             className={slideClass}
             key={`slide-${i}`}
