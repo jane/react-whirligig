@@ -1,8 +1,6 @@
 import React, { Component, Children, PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
-import cn from 'classnames'
 import Slide from '../slide'
-import { track, preventScrolling } from './styles.css'
 import {
   animate,
   on,
@@ -155,9 +153,23 @@ export default class Track extends Component {
       visibleSlides
     } = this.props
 
+    const preventScrolling = preventScroll ? 'hidden' : 'auto'
+
+    const styles = {
+      display: 'flex',
+      flexFlow: 'row nowrap',
+      justifyContent: 'space-between',
+      overflowX: preventScrolling,
+      msOverflowStyle: '-ms-autohiding-scrollbar', /* chrome like scrollbar experience for IE/Edge */
+      position: 'relative', /* makes .track an offset parent */
+      transition: 'all .25s ease-in-quint',
+      outline: 'none'
+    }
+
     return (
       <div
-        className={cn(className, track, { [preventScrolling]: preventScroll })}
+        className={className}
+        style={styles}
         ref={this.setRef('track')}
         tabIndex="0"
         onKeyUp={this.handleKeyUp}
@@ -173,7 +185,6 @@ export default class Track extends Component {
             key={`slide-${i}`}
             basis={`calc((100% - (${gutter} * ${visibleSlides - 1})) / ${visibleSlides})`}
             gutter={gutter}
-            onClick={child.props.onClick}
           >
             {child}
           </Slide>
