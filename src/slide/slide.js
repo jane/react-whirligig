@@ -1,11 +1,10 @@
 import React, { PropTypes } from 'react'
-import cn from 'classnames'
 
 const { string, node, array, oneOf, object } = PropTypes
 
 const Slide = ({ basis = '100%', gutter = '1em', className = '', children, ...props }) => (
   <div
-    className={cn(className)}
+    className={className}
     style={{
       flex: '0 0 auto',
       width: basis,

@@ -1,7 +1,6 @@
 import { PropTypes } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
-import { mySlide, track, slider } from './dev-style.css'
 
 const { array } = PropTypes
 
@@ -12,9 +11,9 @@ const Slider = ({ children }) => {
   const prev = () => onPrev()
 
   return (
-    <div className={slider}>
+    <div className="slider">
       <button onClick={prev}>{'<'}</button>
-      <Track visibleSlides={3} className={track} startAt={4} infinite>{
+      <Track visibleSlides={3} className="track" startAt={4} infinite>{
         (_next, _prev) => {
           onNext = _next
           onPrev = _prev
@@ -33,15 +32,15 @@ Slider.propTypes = {
 
 render((
   <Slider>
-    <figure className={mySlide}>
+    <figure className="mySlide">
       <img alt="Fill Murry" src="http://www.fillmurray.com/400/300" />
       <figcaption>Slide Index 0</figcaption>
     </figure>
-    <figure className={mySlide}>
+    <figure className="mySlide">
       <img alt="Fill Murry" src="http://www.fillmurray.com/400/400" />
       <figcaption>Slide Index 1</figcaption>
     </figure>
-    <div className={mySlide}>
+    <div className="mySlide">
       <figure>
         <img alt="Fill Murry" src="http://www.fillmurray.com/300/200" />
       </figure>
@@ -50,15 +49,15 @@ render((
         <figcaption>Slide Index 2</figcaption>
       </figure>
     </div>
-    <figure className={mySlide}>
+    <figure className="mySlide">
       <img alt="Fill Murry" src="http://www.fillmurray.com/400/200" />
       <figcaption>Slide Index 3</figcaption>
     </figure>
-    <figure className={mySlide}>
+    <figure className="mySlide">
       <img alt="Fill Murry" src="http://www.fillmurray.com/200/400" />
       <figcaption>Slide Index 4</figcaption>
     </figure>
-    <figure className={mySlide}>
+    <figure className="mySlide">
       <img alt="Fill Murry" src="http://www.fillmurray.com/400/400" />
       <figcaption>Slide Index 5</figcaption>
     </figure>

@@ -3,9 +3,46 @@
   <head>
     <meta charset="utf-8">
     <title>React Track Demo</title>
+    <style>
+      html, body {
+        box-sizing: border-box;
+      }
+
+      *, *::before, *::after {
+        box-sizing: inherit;
+      }
+
+      figure {
+        margin: 0;
+      }
+
+      .mySlide {
+        width: 100%;
+        margin: 0;
+      }
+      .mySlide img {
+        width: 100%;
+      }
+
+      .track {
+        border: 1em solid rebeccapurple;
+        flex: 1 1 100%;
+      }
+
+      .slider {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: stretch;
+        justify-content: space-between;
+        width: 100vw;
+      }
+      .slider button {
+        padding: 1em;
+      }
+    </style>
   </head>
   <body>
-      <main></main>
+      <main>&nbsp;</main>
       <script src="./demo.js"></script>
   </body>
 </html>
