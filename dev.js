@@ -13,7 +13,7 @@ const Slider = ({ children }) => {
   return (
     <div className="slider">
       <button onClick={prev}>{'<'}</button>
-      <Track visibleSlides={3} className="track" startAt={4} >{
+      <Track visibleSlides={3} className="track" >{
         (_next, _prev) => {
           onNext = _next
           onPrev = _prev
@@ -30,38 +30,43 @@ Slider.propTypes = {
   children: array
 }
 
+const slides = [{
+  src: 'https://placezombie.com',
+  height: 300,
+  width: 300
+}, {
+  src: 'https://placezombie.com',
+  height: 300,
+  width: 300
+}, {
+  src: 'https://placezombie.com',
+  height: 300,
+  width: 300
+}, {
+  src: 'https://placezombie.com',
+  height: 300,
+  width: 300
+}, {
+  src: 'https://placezombie.com',
+  height: 300,
+  width: 300
+}, {
+  src: 'https://placezombie.com',
+  height: 300,
+  width: 300
+}, {
+  src: 'https://placezombie.com',
+  height: 300,
+  width: 300
+}]
+
 render((
   <Slider>
-    <figure className="mySlide">
-      <img alt="Fill Murry" src="http://www.fillmurray.com/400/300" />
-      <figcaption>Slide Index 0</figcaption>
-    </figure>
-    <figure className="mySlide">
-      <img alt="Fill Murry" src="http://www.fillmurray.com/400/400" />
-      <figcaption>Slide Index 1</figcaption>
-    </figure>
-    <div className="mySlide">
-      <figure>
-        <img alt="Fill Murry" src="http://www.fillmurray.com/300/200" />
+    {slides.map(({ src, height, width }, i) => (
+      <figure className="mySlide" key={`${src}-${i}`}>
+        <img alt="Place Zombie" src={`${src}/${width}x${height}?${i}`} />
+        <figcaption>Slide Index {i}</figcaption>
       </figure>
-      <figure>
-        <img alt="Fill Murry" src="http://www.fillmurray.com/300/200" />
-        <figcaption>Slide Index 2</figcaption>
-      </figure>
-    </div>
-    <figure className="mySlide">
-      <img alt="Fill Murry" src="http://www.fillmurray.com/400/200" />
-      <figcaption>Slide Index 3</figcaption>
-    </figure>
-    <figure className="mySlide">
-      <img alt="Fill Murry" src="http://www.fillmurray.com/200/400" />
-      <figcaption>Slide Index 4</figcaption>
-    </figure>
-    {/*
-    <figure className="mySlide">
-      <img alt="Fill Murry" src="http://www.fillmurray.com/400/400" />
-      <figcaption>Slide Index 5</figcaption>
-    </figure>
-    */}
+    ))}
   </Slider>
 ), document.querySelector('main'))

@@ -105,20 +105,26 @@ export default class Track extends Component {
     const { childCount, props, state } = this
     const { activeIndex } = state
     const { visibleSlides } = props
+
+    const firstIndex = 0
+    const lastIndex = childCount - visibleSlides
+    const nextActive = activeIndex + visibleSlides
     return this.slideTo(
-      ((activeIndex !== childCount - visibleSlides) && activeIndex + (visibleSlides * 2) - 1 >= childCount)
-      ? childCount - visibleSlides
-      : activeIndex + visibleSlides)
+      (activeIndex === lastIndex)
+      ? firstIndex
+      : (nextActive < lastIndex) ? nextActive : lastIndex
+    )
   }
 
   prev () {
     const { activeIndex } = this.state
     const { visibleSlides } = this.props
-
+    const firstIndex = 0
+    const nextActive = activeIndex - visibleSlides
     return this.slideTo(
-      ((activeIndex !== 0) && activeIndex - (visibleSlides * 2) + 1 < 0)
-      ? 0
-      : activeIndex - visibleSlides
+      (activeIndex === firstIndex) || (nextActive > firstIndex)
+      ? nextActive
+      : firstIndex
     )
   }
 
