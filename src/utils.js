@@ -1,4 +1,4 @@
-import { easeInQuint } from './easing'
+import { easeInOutQuint } from './easing'
 
 export const values = Object.values || ((obj) => Object.keys(obj).map((key) => obj[key]))
 
@@ -48,12 +48,11 @@ export const trackTouchesForElement = (el) => {
 export const animate = (el, {
   delta = 0,
   immediate = false,
-  duration = immediate ? 0 : 500,
-  easing = easeInQuint,
+  duration = immediate ? 0 : 1000,
+  easing = easeInOutQuint,
   prop = 'scrollTop'
 } = {}) => new Promise((res, rej) => {
   const initialVal = el[prop]
-  const overFlowStyle = el.style.overflow || 'auto'
   let startTime = null
   const step = (timestamp) => {
     if (!startTime) startTime = timestamp
@@ -68,7 +67,7 @@ export const animate = (el, {
       // Give scroll control back to the user once animation is done.
       // el.style.overflow = overFlowStyle
       // MS Edge doesn't like the above apparently.
-      el.setAttribute('style', el.getAttribute('style').replace(/(overflow:\s?)\w*/, `$1${overFlowStyle}`))
+      el.setAttribute('style', el.getAttribute('style').replace(/(overflow:\s?)\w*/, '$1auto'))
       res()
     }
   }
