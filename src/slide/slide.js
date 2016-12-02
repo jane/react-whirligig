@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react'
-
-const { string, node, array, oneOf, object } = PropTypes
+const { string, node, array, oneOfType, object } = PropTypes
 
 const Slide = ({ basis = '100%', gutter = '1em', className = '', children, ...props }) => (
   <div
@@ -20,7 +19,7 @@ Slide.propTypes = {
   basis: string,
   gutter: string,
   children: node,
-  className: oneOf([string, array, object])
+  className: oneOfType([string, array, object])
 }
 
 export default Slide

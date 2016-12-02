@@ -21,6 +21,7 @@ export default class Track extends Component {
     gutter: string,
     preventScroll: bool,
     slideClass: oneOfType([array, string, object]),
+    onSlideClick: func,
     preventSnapping: bool,
     startAt: number,
     visibleSlides: number
@@ -156,7 +157,11 @@ export default class Track extends Component {
       gutter,
       preventScroll,
       slideClass,
-      visibleSlides
+      onSlideClick,
+      visibleSlides,
+      startAt,
+      afterSlide,
+      ...props
     } = this.props
 
     const preventScrolling = preventScroll ? 'hidden' : 'auto'
@@ -179,6 +184,7 @@ export default class Track extends Component {
         ref={this.setRef('track')}
         tabIndex="0"
         onKeyUp={this.handleKeyUp}
+        {...props}
       >
         {
           // We first pass the slide control functions to the function child.
@@ -191,6 +197,7 @@ export default class Track extends Component {
             key={`slide-${i}`}
             basis={`calc((100% - (${gutter} * ${visibleSlides - 1})) / ${visibleSlides})`}
             gutter={gutter}
+            onClick={onSlideClick}
           >
             {child}
           </Slide>
