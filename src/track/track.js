@@ -134,9 +134,9 @@ export default class Track extends Component {
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount)
     const delta = children[slideIndex].offsetLeft - scrollLeft
+    this.state.activeIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
     return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       if (this.state.activeIndex !== slideIndex) {
-        this.setState({ activeIndex: slideIndex })
         afterSlide(slideIndex)
       }
     })
