@@ -62,7 +62,9 @@ export default class Track extends Component {
     const shouldSelfCorrect = () =>
       !this.props.preventSnapping && !isAnimating && !isScrolling && !getOngoingTouchCount()
 
-    onScrollStart(() => { isScrolling = true })
+    onScrollStart(() => {
+      isScrolling = true
+    })
     onScrollEnd(() => {
       isScrolling = false
       isAnimating = false
@@ -133,10 +135,11 @@ export default class Track extends Component {
     const { afterSlide } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount)
+    const startingIndex = this.state.activeIndex
     const delta = children[slideIndex].offsetLeft - scrollLeft
-    this.state.activeIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
+    startingIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
     return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
-      if (this.state.activeIndex !== slideIndex) {
+      if (startingIndex !== slideIndex) {
         afterSlide(slideIndex)
       }
     })

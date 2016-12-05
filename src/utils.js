@@ -14,14 +14,14 @@ export const onWindowScroll = (cb) => on('scroll', true)(cb)(window)
 export const onScroll = (cb, { target = window } = {}) =>
   onWindowScroll((e) => (target === window || target === e.target) && cb(e))
 
-export const onScrollEnd = (cb, { wait = 200, target = window } = {}) => ((timeoutID) => onScroll((evt) => {
+export const onScrollEnd = (cb, { wait = 100, target = window } = {}) => ((timeoutID) => onScroll((evt) => {
   clearTimeout(timeoutID)
   timeoutID = setTimeout(() => evt.target === target ? cb() : undefined, wait)
 }))(0)
 
 export const onScrollStart = (cb, { target = window } = {}) => {
   let started = false
-  onScrollEnd(() => (started = false), { target })
+  onScrollEnd(() => { started = false }, { target })
   onScroll((e) => {
     if (!started) {
       started = true
@@ -48,10 +48,11 @@ export const trackTouchesForElement = (el) => {
 export const animate = (el, {
   delta = 0,
   immediate = false,
-  duration = immediate ? 0 : 1000,
+  duration = immediate ? 0 : 800,
   easing = easeInOutQuint,
   prop = 'scrollTop'
 } = {}) => new Promise((res, rej) => {
+  if (!delta) res()
   const initialVal = el[prop]
   let startTime = null
   const step = (timestamp) => {
@@ -62,12 +63,12 @@ export const animate = (el, {
     if (progressTime < duration) {
       window.requestAnimationFrame(step)
     } else {
-      el[prop] = initialVal + delta // paranoia check. jump to the end when animation time is complete.
-
       // Give scroll control back to the user once animation is done.
       // el.style.overflow = overFlowStyle
       // MS Edge doesn't like the above apparently.
       el.setAttribute('style', el.getAttribute('style').replace(/(overflow:\s?)\w*/, '$1auto'))
+      // el[prop] = initialVal + delta // paranoia check. jump to the end when animation time is complete.
+
       res()
     }
   }
