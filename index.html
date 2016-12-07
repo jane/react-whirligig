@@ -6,26 +6,63 @@
     <style>
       html, body {
         box-sizing: border-box;
+        margin: 0;
+        background: rebeccapurple;
+        height: 100vh;
       }
 
       *, *::before, *::after {
         box-sizing: inherit;
       }
 
+      main {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+
       figure {
         margin: 0;
       }
 
+      .header {
+        color: hsla(0, 100%, 100%, .8);
+        font-size: 2em;
+        text-align: center;
+        border-top: .25em solid hsla(0, 100%, 100%, .4);
+        border-bottom: .125em solid hsla(0, 100%, 100%, .4);
+        margin-bottom: 1em;
+      }
+
+      .line {
+        display: block;
+
+      }
+      .align-left {text-align: left;}
+      .align-right {text-align: right;}
+
       .mySlide {
         width: 100%;
         margin: 0;
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        height: 100%;
       }
       .mySlide img {
         width: 100%;
       }
 
+      .text {
+        color: hsla(0, 100%, 100%, .8);
+        text-align: left;
+        font-family: sans-serif;
+        padding: 2em;
+      }
+
       .track {
-        border: 1em solid rebeccapurple;
         flex: 1 1 100%;
       }
 
@@ -35,9 +72,75 @@
         align-items: stretch;
         justify-content: space-between;
         width: 100vw;
+        padding-bottom: 4em;
+        position: relative;
       }
-      .slider button {
+      button {
+        background: none;
+        border: none;
+        color: hsla(0, 100%, 100%, .4);
+        font-size: 1.1em;
         padding: 1em;
+        position: absolute;
+        bottom: 0;
+        width: 50%;
+      }
+
+      button:hover {
+        background: hsla(0, 0%, 0%, .2);
+        cursor: pointer;
+      }
+
+      .prevButton {
+        left: 0;
+        text-align: left;
+        padding-left: 3em;
+      }
+
+      .prevButton::before {
+        content: '';
+        border: 1em solid hsla(0, 100%, 100%, .2);
+        transform: translateY(.5em) rotate(45deg);
+        transform-origin: center;
+        display: inline-block;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        position: absolute;
+        left: 1em;
+      }
+      .prevButton::after {
+        content: '';
+        width: 25%;
+        height: calc(50% + .125em);
+        border-bottom: .5em solid hsla(0, 100%, 100%, .2);
+        position: absolute;
+        left: 2em;
+      }
+
+      .nextButton {
+        right: 0;
+        text-align: right;
+        padding-right: 3em;
+      }
+
+      .nextButton::after {
+        content: '';
+        border: 1em solid hsla(0, 100%, 100%, .2);
+        transform: translateY(.5em) rotate(45deg);
+        transform-origin: center;
+        display: inline-block;
+        border-bottom-color: transparent;
+        border-left-color: transparent;
+        position: absolute;
+        right: 1em;
+      }
+      .nextButton::before {
+        content: '';
+        width: 25%;
+        height: calc(50% + .125em);
+        border-bottom: .5em solid hsla(0, 100%, 100%, .2);
+        position: absolute;
+        right: 2em;
       }
     </style>
   </head>
