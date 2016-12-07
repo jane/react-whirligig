@@ -50,18 +50,14 @@ A function to be called after the track transitions to a new "active" slide. The
 
 ### children:_func_
 _default: none_
-A function expected to return the React elements that will be the content of the Track component (Each "child" will be wrapped in a Slide component). The `children` function is passed two arguments; a `next` function and a `previous` function. These functions will respectively advance and recede the Track. These functions typically will be used as `onClick` values on buttons that control the Track.
+A function expected to return the React elements that will be the content of the Track component (Each "child" will be wrapped in a Slide component). The `children` function is passed two arguments; a `next` function and a `previous` function. These functions will respectively advance and recede the Track. These functions typically will be used as `onClick` values on buttons the consumer creates to control the Track.
 
 ### className:_classnames_
-A `classnames` compliant value the will be applied as the class attribute.
+A `classnames` compliant value (string or array of string|array|object) that will be applied as the class attribute.
 
 ### gutter:_string_
 _default: 1em_
 A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string that represents the space between each Slide in the Track.
-
-### infinite:_bool_
-_default: false_
-A boolean flag that turns on infinite next and previous. Infinite does not work for scrolling, only when calling the `next` and `previous` functions the Track calls the child function with.
 
 ### preventScroll:_bool_
 _default: false_

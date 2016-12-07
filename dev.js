@@ -13,7 +13,12 @@ const Slider = ({ children }) => {
   return (
     <div className="slider">
       <button onClick={prev}>{'<'}</button>
-      <Track visibleSlides={3} className="track" slideClass="slideClassName" onSlideClick={() => { console.log('You clicked on a slide!') }} >{
+      <Track
+        visibleSlides={3}
+        className="track"
+        slideClass="slideClassName"
+        onSlideClick={() => { console.log('You clicked on a slide!') }}
+      >{
         (_next, _prev) => {
           onNext = _next
           onPrev = _prev

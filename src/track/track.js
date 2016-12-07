@@ -16,9 +16,18 @@ const normalizeIndex = (idx, len) => ((idx % len) + len) % len
 export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
-    children: func,
+    children: func.isRequired,
     className: oneOfType([array, string, object]),
-    gutter: string,
+    gutter: (props, propName, componentName) => {
+      const prop = props[propName]
+      if (
+        typeof Number.parseInt(prop, 10) === 'number' &&
+        !Number.isNaN(Number(prop))
+      ) {
+        return new Error(`Invalid value (${prop}) of prop '${propName}' supplied to ${componentName}.
+The value of ${propName} should be a valid css length unit (https://developer.mozilla.org/en-US/docs/Web/CSS/length).`)
+      }
+    },
     preventScroll: bool,
     slideClass: oneOfType([array, string, object]),
     onSlideClick: func,
@@ -31,6 +40,7 @@ export default class Track extends Component {
     afterSlide: () => {},
     gutter: '1em',
     preventScroll: false,
+    preventSnapping: false,
     startAt: 0,
     visibleSlides: 1
   }
@@ -132,6 +142,7 @@ export default class Track extends Component {
   }
 
   slideTo (index, { immediate = false } = {}) {
+    if (this.childCount === 0) return Promise.reject()
     const { afterSlide } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount)
@@ -140,7 +151,7 @@ export default class Track extends Component {
     startingIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
     return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       if (startingIndex !== slideIndex) {
-        afterSlide(slideIndex)
+        return afterSlide(slideIndex)
       }
     })
   };
@@ -159,11 +170,12 @@ export default class Track extends Component {
       className,
       gutter,
       preventScroll,
+      preventSnapping, // eslint-disable-line no-unused-vars
       slideClass,
       onSlideClick,
       visibleSlides,
-      startAt,
-      afterSlide,
+      startAt, // eslint-disable-line no-unused-vars
+      afterSlide, // eslint-disable-line no-unused-vars
       ...props
     } = this.props
 
