@@ -32,6 +32,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     slideClass: oneOfType([array, string, object]),
     onSlideClick: func,
     preventSnapping: bool,
+    slideTo: number,
     startAt: number,
     visibleSlides: number
   }
@@ -94,8 +95,12 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     this.slideTo(this.props.startAt, { immediate: true })
   }
 
-  componentDidUpdate () {
+  componentDidUpdate (prevProps) {
     this.childCount = this.track.children.length
+
+    if (prevProps.slideTo !== this.props.slideTo) {
+      this.slideTo(this.props.slideTo)
+    }
   }
 
   handleKeyUp = ((nextKeys, prevKeys) => ({ key }) => {
@@ -174,6 +179,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       slideClass,
       onSlideClick,
       visibleSlides,
+      slideTo, // eslint-disable-line no-unused-vars
       startAt, // eslint-disable-line no-unused-vars
       afterSlide, // eslint-disable-line no-unused-vars
       ...props

@@ -1,34 +1,62 @@
-import { PropTypes } from 'react'
+import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
 const { array } = PropTypes
 
-const Slider = ({ children }) => {
-  let onNext
-  let onPrev
-  const next = () => onNext()
-  const prev = () => onPrev()
+class Slider  extends Component {
 
-  return (
-    <div className="slider">
-      <Track
-        visibleSlides={3}
-        className="track"
-        slideClass="slideClassName"
-        onSlideClick={() => { console.log('You clicked on a slide!') }}
-      >{
-        (_next, _prev) => {
-          onNext = _next
-          onPrev = _prev
+  state = { slideIndex: 0, autoSlideIntervalID: 0 }
 
-          return children
-        }
-      }</Track>
-      <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
-      <button className="nextButton" onClick={next}>Let's see more beards!</button>
-    </div>
-  )
+  autoSlide = () => {
+    const id = setInterval(() => {
+      console.log('sliding to index: ', this.state.slideIndex + 1)
+      this.setState({ slideIndex: this.state.slideIndex + 1 })
+    }, 2000)
+    this.setState({ autoSlideIntervalID: id })
+  }
+
+  endAutoSlide = () => {
+    clearInterval(this.state.autoSlideIntervalID)
+    this.setState({ autoSlideIntervalID: 0 })
+  }
+
+  handelAutoSlideToggle = ({ target }) => {
+    target.checked ? this.autoSlide() : this.endAutoSlide()
+  }
+
+  render () {
+    const { children } = this.props
+    let onNext
+    let onPrev
+    const next = () => onNext()
+    const prev = () => onPrev()
+
+    return (
+      <div className="slider">
+        <label className="autoslideToggler">
+          <input type="checkbox" onChange={this.handelAutoSlideToggle} />
+          <span>Autoslide</span>
+        </label>
+        <Track
+          visibleSlides={3}
+          className="track"
+          slideClass="slideClassName"
+          slideTo={this.state.slideIndex}
+          onSlideClick={() => { console.log('You clicked on a slide!') }}
+          >{
+            (_next, _prev) => {
+              onNext = _next
+              onPrev = _prev
+
+              return children
+            }
+          }</Track>
+        <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
+        <button className="nextButton" onClick={next}>Let's see more beards!</button>
+      </div>
+    )
+  }
 }
 
 Slider.propTypes = {
