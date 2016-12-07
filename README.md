@@ -14,7 +14,7 @@ const Slider = (props) => {
     <div>
       <button onClick={prev}>Prev</button>
 
-      // Track accepts on child which is a function.
+      // Track accepts one child which is a function.
       // This function will be passed a `next` function
       // and a `previous` function for controlling the track.
       // the function should return the items that will be
