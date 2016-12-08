@@ -74,6 +74,10 @@ A class to apply to the Slide container.
 _default: false_
 A boolean flag that turns off the snap-to-slide feature. If set, the Track will not animate scrolling to stop at a slide.
 
+### slideTo:_number_
+_default: 0_
+The index to which the track should transition if it is not already there. This is distinct from `startAt` in that `startAt` is only effective when the component mounts and does not transition, but moves immediately to the given slide. The `slideTo` prop is meant to be used as a mechanism for the consuming component to directly control when and where the track transitions to.
+
 ### startAt:_number_
 _default: 0_
 The Slide index that will be the "active" slide when the Track mounts. The value will be normalized to be within the range of the length of the Track's children.
@@ -81,3 +85,13 @@ The Slide index that will be the "active" slide when the Track mounts. The value
 ### visibleSlides:_number_
 _default: 1_
 The number of slides that should be visible at a time for the Track.
+
+## Instance methods
+
+### next:_func_
+
+Advances the track to the next set of visible slides. If there are not enough remaining slides to transition the full number of visible slides, it will transition to the end of the track. If already at the end of the track, calling `next` will transition the track to index 0
+
+### prev:_func_
+
+Recedes the track to the previous set of visible slides. If there are not enough remaining slides to transition the full number of visible slides, it will transition to the beginning of the track. If already at the beginning of the track, calling `prev` will transition the track to last full set of visible slides in the track.
