@@ -49,7 +49,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
   constructor (props) {
     super(props)
 
-    this.state = { activeIndex: 0 }
+    this.state = { activeIndex: 0, isAnimating: false }
 
     // We can't do arrow function properties for these since
     // we are passing them to the consuming component and we
@@ -67,27 +67,28 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     // values or state only the onScrollEnd callback cares about and
     // are not important to the rendering of the component.
     this.childCount = this.track.children.length
-    let isAnimating = false
+    // let isAnimating = false
     let isScrolling = false
     const getOngoingTouchCount = trackTouchesForElement(this.DOMNode)
     const shouldSelfCorrect = () =>
-      !this.props.preventSnapping && !isAnimating && !isScrolling && !getOngoingTouchCount()
+      !this.props.preventSnapping && !this.state.isAnimating && !isScrolling && !getOngoingTouchCount()
 
     onScrollStart(() => {
+      console.log('scrolling started')
       isScrolling = true
     })
     onScrollEnd(() => {
       isScrolling = false
-      isAnimating = false
       if (shouldSelfCorrect()) {
-        isAnimating = true
+        this.setState({ isAnimating: true })
         this.slideTo(this.getNearestSlideIndex())
       }
+      this.setState({ isAnimating: false })
     }, { target: this.DOMNode })
 
     on('touchend')(() => {
       if (shouldSelfCorrect()) {
-        isAnimating = true
+        this.setState({ isAnimating: true })
         this.slideTo(this.getNearestSlideIndex())
       }
     })(this.track)
@@ -106,9 +107,10 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
   handleKeyUp = ((nextKeys, prevKeys) => ({ key }) => {
     const isNext = nextKeys.includes(key)
     const isPrev = prevKeys.includes(key)
-
+    this.setState({ isAnimating: true })
     if (isNext) this.next()
     if (isPrev) this.prev()
+    return false
   })(['ArrowRight'], ['ArrowLeft']);
 
   // We don't want to update if only state changed.
@@ -154,6 +156,8 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     const startingIndex = this.state.activeIndex
     const delta = children[slideIndex].offsetLeft - scrollLeft
     startingIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
+
+    console.log('animating to: ', slideIndex)
     return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       if (startingIndex !== slideIndex) {
         return afterSlide(slideIndex)
