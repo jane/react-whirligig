@@ -74,7 +74,6 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       !this.props.preventSnapping && !this.state.isAnimating && !isScrolling && !getOngoingTouchCount()
 
     onScrollStart(() => {
-      console.log('scrolling started')
       isScrolling = true
     })
     onScrollEnd(() => {
@@ -157,7 +156,6 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     const delta = children[slideIndex].offsetLeft - scrollLeft
     startingIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
 
-    console.log('animating to: ', slideIndex)
     return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       if (startingIndex !== slideIndex) {
         return afterSlide(slideIndex)
