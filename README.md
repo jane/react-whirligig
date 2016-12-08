@@ -1,42 +1,49 @@
 # react-track
 A react carousel/slider like component for sequentially displaying slides or sets of slides.
 
-## Usage
+## Basic Usage
 
 ```jsx
-const Slider = (props) => {
+const Slider = ({slideIndex}) => (
+  <div>
+    <h1>Say hello to my little Slider</h1>
+    <Track visibleSlides={3} gutter='1em' slideTo={slideIndex}>
+      <img src="http://www.fillmurray.com/400/300" />,
+      <img src="http://www.fillmurray.com/300/400" />,
+      <img src="http://www.fillmurray.com/400/200" />,
+      <img src="http://www.fillmurray.com/200/400" />,
+      <img src="http://www.fillmurray.com/500/300" />
+    }</Track>
+  </div>
+)
+```
 
-  let onNext, onPrev
-  const next = () => onNext()
-  const prev = () => onPrev()
+## Advanced Usage
+
+react-track exposes next and prev functions for moving the track forward and backward the number of visible slides.
+These functions can be accessed using the `ref` prop callback to get a reference to the `Track` instance.
+
+```jsx
+const Slider = () => {
+  let track
+  const next = () => track.next()
+  const prev = () => track.prev()
 
   return (
     <div>
       <button onClick={prev}>Prev</button>
-
-      // Track accepts one child which is a function.
-      // This function will be passed a `next` function
-      // and a `previous` function for controlling the track.
-      // the function should return the items that will be
-      // the content of each slide respectively.
-      <Track visibleSlides={3} gutter="1em">{
-       (_next, _previous) => {
-        onNext = _next
-        onPrev = _previous
-
-        return [
-          <img src="http://www.fillmurray.com/400/300" />,
-          <img src="http://www.fillmurray.com/300/400" />,
-          <img src="http://www.fillmurray.com/400/200" />,
-          <img src="http://www.fillmurray.com/200/400" />,
-          <img src="http://www.fillmurray.com/500/300" />
-        ]
-       }
+      <Track visibleSlides={3} gutter="1em" ref={(_trackInstance) => { track = _trackInstance}}>
+        <img src="http://www.fillmurray.com/400/300" />,
+        <img src="http://www.fillmurray.com/300/400" />,
+        <img src="http://www.fillmurray.com/400/200" />,
+        <img src="http://www.fillmurray.com/200/400" />,
+        <img src="http://www.fillmurray.com/500/300" />
       }</Track>
       <button onClick={next}>Next</button>
     </div>
   )
 }
+
 ```
 
 ## Track
@@ -47,10 +54,6 @@ The Track component is a horizontally oriented container of Slides.
 ### afterSlide:_func_
 _default: noop_
 A function to be called after the track transitions to a new "active" slide. The function is passed the new "active" slide index.
-
-### children:_func_
-_default: none_
-A function expected to return the React elements that will be the content of the Track component (Each "child" will be wrapped in a Slide component). The `children` function is passed two arguments; a `next` function and a `previous` function. These functions will respectively advance and recede the Track. These functions typically will be used as `onClick` values on buttons the consumer creates to control the Track.
 
 ### className:_classnames_
 A `classnames` compliant value (string or array of string|array|object) that will be applied as the class attribute.

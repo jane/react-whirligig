@@ -1,30 +1,24 @@
-import { PropTypes } from 'react'
+import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
 const { array } = PropTypes
 
 const Slider = ({ children }) => {
-  let onNext
-  let onPrev
-  const next = () => onNext()
-  const prev = () => onPrev()
+  let track
+  const setTrackRef = (ref) => { track = ref }
+  const next = () => track.next()
+  const prev = () => track.prev()
 
   return (
     <div className="slider">
       <Track
+        ref={setTrackRef}
         visibleSlides={3}
         className="track"
         slideClass="slideClassName"
         onSlideClick={() => { console.log('You clicked on a slide!') }}
-      >{
-        (_next, _prev) => {
-          onNext = _next
-          onPrev = _prev
-
-          return children
-        }
-      }</Track>
+        >{ children }</Track>
       <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
       <button className="nextButton" onClick={next}>Let's see more beards!</button>
     </div>
