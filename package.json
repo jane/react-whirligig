@@ -4,7 +4,7 @@
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
   "main": "lib/track/index.js",
   "scripts": {
-    "build": "NODE_ENV=production babel src --out-dir lib",
+    "build": "npm test && NODE_ENV=production babel src --out-dir lib",
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config ./webpack.config.babel.js",
     "preversion": "npm run build",
     "test": "tape -r babel-register tests/**/*.test.js | tap-spec"

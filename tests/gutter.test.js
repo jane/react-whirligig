@@ -7,8 +7,12 @@ test('Track passes gutter prop to Slide', (t) => {
 
   t.plan(8)
   gutterTrack('1em').find('Slide')
-    .forEach((Slide) => {
-      t.equal(Slide.prop('gutter'), '1em', 'Track passes gutter prop to Slide')
+    .forEach((Slide, i) => {
+      if (i === 0) {
+        t.equal(Slide.prop('gutter'), '', 'gutter prop is not passed to first Slide')
+      } else {
+        t.equal(Slide.prop('gutter'), '1em', 'gutter prop is passed to every other Slide')
+      }
       t.ok(
         Slide.prop('basis').match(/^calc/),
         'Track applies a basis prop to Slide with a css calc value'
