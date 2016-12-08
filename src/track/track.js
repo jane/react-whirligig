@@ -9,14 +9,14 @@ import {
   trackTouchesForElement,
   values
 } from '../utils'
-const { bool, number, string, func, array, oneOfType, object } = PropTypes
+const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
 
 const normalizeIndex = (idx, len) => ((idx % len) + len) % len
 
 export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
-    children: func.isRequired,
+    children: oneOfType([node, array, string]),
     className: oneOfType([array, string, object]),
     gutter: (props, propName, componentName) => {
       const prop = props[propName]
@@ -212,7 +212,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
           // this will return the `children` that will be the content of the individaul slides.
           // Then we wrap the slide content in a slide component to add the fucntionality we need
         }
-        {Children.map(children(this.next, this.prev), (child, i) => (
+        {Children.map(typeof children === 'function' ? children(this.next, this.prev) : children, (child, i) => (
           <Slide
             className={slideClass}
             key={`slide-${i}`}

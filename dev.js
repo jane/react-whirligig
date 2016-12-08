@@ -2,7 +2,7 @@ import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
-const { array } = PropTypes
+const { array, func } = PropTypes
 
 class Slider  extends Component {
 
@@ -25,12 +25,13 @@ class Slider  extends Component {
     target.checked ? this.autoSlide() : this.endAutoSlide()
   }
 
+  makeRef = (name) => (ref) => { this[name] = ref }
+
   render () {
     const { children } = this.props
-    let onNext
-    let onPrev
-    const next = () => onNext()
-    const prev = () => onPrev()
+
+    const next = () => this.track.next()
+    const prev = () => this.track.prev()
 
     return (
       <div className="slider">
@@ -39,19 +40,13 @@ class Slider  extends Component {
           <span>Autoslide</span>
         </label>
         <Track
+          ref={this.makeRef('track')}
           visibleSlides={3}
           className="track"
           slideClass="slideClassName"
           slideTo={this.state.slideIndex}
           onSlideClick={() => { console.log('You clicked on a slide!') }}
-          >{
-            (_next, _prev) => {
-              onNext = _next
-              onPrev = _prev
-
-              return children
-            }
-          }</Track>
+          >{ children }</Track>
         <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
         <button className="nextButton" onClick={next}>Let's see more beards!</button>
       </div>
@@ -60,6 +55,31 @@ class Slider  extends Component {
 }
 
 Slider.propTypes = {
+  children: array
+}
+
+const Slider2 = ({ children }) => {
+  let track
+  const setTrackRef = (ref) => { track = ref }
+  const next = () => track.next()
+  const prev = () => track.prev()
+
+  return (
+    <div className="slider">
+      <Track
+        ref={setTrackRef}
+        visibleSlides={3}
+        className="track"
+        slideClass="slideClassName"
+        onSlideClick={() => { console.log('You clicked on a slide!') }}
+        >{ children }</Track>
+      <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
+      <button className="nextButton" onClick={next}>Let's see more beards!</button>
+    </div>
+  )
+}
+
+Slider2.propTypes = {
   children: array
 }
 
@@ -141,7 +161,7 @@ render((
       <h1>react-track</h1>
       <p>A carousel-like component for react</p>
     </header>
-    <Slider>
+    <Slider2>
       {slides.map(({ src, height, width, joiner, text }, i) => (
         <figure className="mySlide" key={`${src}-${i}`}>
           {src && <img alt="Place Zombie" src={`${src}/${width}${joiner}${height}?${i}`} />}
@@ -149,6 +169,6 @@ render((
           {text && <div className="text">{text}</div>}
         </figure>
       ))}
-    </Slider>
+    </Slider2>
   </div>
 ), document.querySelector('main'))
