@@ -1,4 +1,4 @@
-import { PropTypes, Component } from 'react'
+import { PropTypes } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
@@ -17,6 +17,7 @@ const Slider = ({ children }) => {
         visibleSlides={3}
         className="track"
         slideClass="slideClassName"
+        startAt={4}
         onSlideClick={() => { console.log('You clicked on a slide!') }}
         >{ children }</Track>
       <button className="prevButton" onClick={prev}>Let me see that beard again!</button>

@@ -155,7 +155,6 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     const startingIndex = this.state.activeIndex
     const delta = children[slideIndex].offsetLeft - scrollLeft
     startingIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
-
     return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       if (startingIndex !== slideIndex) {
         return afterSlide(slideIndex)
@@ -219,7 +218,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
             className={slideClass}
             key={`slide-${i}`}
             basis={`calc((100% - (${gutter} * ${visibleSlides - 1})) / ${visibleSlides})`}
-            gutter={gutter}
+            gutter={i > 0 ? gutter : ''}
             onClick={onSlideClick}
           >
             {child}

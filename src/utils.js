@@ -67,7 +67,7 @@ export const animate = (el, {
       // el.style.overflow = overFlowStyle
       // MS Edge doesn't like the above apparently.
       el.setAttribute('style', el.getAttribute('style').replace(/(overflow:\s?)\w*/, '$1auto'))
-      // el[prop] = initialVal + delta // paranoia check. jump to the end when animation time is complete.
+      el[prop] = initialVal + delta // jump to end when animation is complete. necessary at least for immediate scroll
 
       res()
     }
