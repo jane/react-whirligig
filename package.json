@@ -1,11 +1,12 @@
 {
   "name": "react-track",
-  "version": "2.0.0",
+  "version": "1.6.0",
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
   "main": "lib/track/index.js",
   "scripts": {
-    "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config ./webpack.config.babel.js",
     "build": "NODE_ENV=production babel src --out-dir lib",
+    "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config ./webpack.config.babel.js",
+    "preversion": "npm run build",
     "test": "tape -r babel-register tests/**/*.test.js | tap-spec"
   },
   "repository": {
