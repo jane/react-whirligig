@@ -2,63 +2,9 @@ import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
-const { array, func } = PropTypes
+const { array } = PropTypes
 
-class Slider  extends Component {
-
-  state = { slideIndex: 0, autoSlideIntervalID: 0 }
-
-  autoSlide = () => {
-    const id = setInterval(() => {
-      console.log('sliding to index: ', this.state.slideIndex + 1)
-      this.setState({ slideIndex: this.state.slideIndex + 1 })
-    }, 2000)
-    this.setState({ autoSlideIntervalID: id })
-  }
-
-  endAutoSlide = () => {
-    clearInterval(this.state.autoSlideIntervalID)
-    this.setState({ autoSlideIntervalID: 0 })
-  }
-
-  handelAutoSlideToggle = ({ target }) => {
-    target.checked ? this.autoSlide() : this.endAutoSlide()
-  }
-
-  makeRef = (name) => (ref) => { this[name] = ref }
-
-  render () {
-    const { children } = this.props
-
-    const next = () => this.track.next()
-    const prev = () => this.track.prev()
-
-    return (
-      <div className="slider">
-        <label className="autoslideToggler">
-          <input type="checkbox" onChange={this.handelAutoSlideToggle} />
-          <span>Autoslide</span>
-        </label>
-        <Track
-          ref={this.makeRef('track')}
-          visibleSlides={3}
-          className="track"
-          slideClass="slideClassName"
-          slideTo={this.state.slideIndex}
-          onSlideClick={() => { console.log('You clicked on a slide!') }}
-          >{ children }</Track>
-        <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
-        <button className="nextButton" onClick={next}>Let's see more beards!</button>
-      </div>
-    )
-  }
-}
-
-Slider.propTypes = {
-  children: array
-}
-
-const Slider2 = ({ children }) => {
+const Slider = ({ children }) => {
   let track
   const setTrackRef = (ref) => { track = ref }
   const next = () => track.next()
@@ -79,7 +25,7 @@ const Slider2 = ({ children }) => {
   )
 }
 
-Slider2.propTypes = {
+Slider.propTypes = {
   children: array
 }
 
@@ -161,7 +107,7 @@ render((
       <h1>react-track</h1>
       <p>A carousel-like component for react</p>
     </header>
-    <Slider2>
+    <Slider>
       {slides.map(({ src, height, width, joiner, text }, i) => (
         <figure className="mySlide" key={`${src}-${i}`}>
           {src && <img alt="Place Zombie" src={`${src}/${width}${joiner}${height}?${i}`} />}
@@ -169,6 +115,6 @@ render((
           {text && <div className="text">{text}</div>}
         </figure>
       ))}
-    </Slider2>
+    </Slider>
   </div>
 ), document.querySelector('main'))
