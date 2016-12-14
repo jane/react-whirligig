@@ -73,9 +73,8 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     const shouldSelfCorrect = () =>
       !this.props.preventSnapping && !this.state.isAnimating && !isScrolling && !getOngoingTouchCount()
 
-    onScrollStart(() => {
-      isScrolling = true
-    })
+    onScrollStart(() => { isScrolling = true })
+    on('touchstart')(() => { isScrolling = true })(this.track)
     onScrollEnd(() => {
       isScrolling = false
       if (shouldSelfCorrect()) {
@@ -153,8 +152,12 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount)
     const startingIndex = this.state.activeIndex
+    if (startingIndex === slideIndex) {
+      return Promise.reject()
+    } else {
+      this.setState({ activeIndex: slideIndex })
+    }
     const delta = children[slideIndex].offsetLeft - scrollLeft
-    startingIndex !== slideIndex && this.setState({ activeIndex: slideIndex })
     return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
       if (startingIndex !== slideIndex) {
         return afterSlide(slideIndex)
@@ -196,7 +199,8 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       msOverflowStyle: '-ms-autohiding-scrollbar', /* chrome like scrollbar experience for IE/Edge */
       position: 'relative', /* makes .track an offset parent */
       transition: 'all .25s ease-in-quint',
-      outline: 'none'
+      outline: 'none',
+      WebkitOverflowScrolling: 'touch'
     }
 
     return (

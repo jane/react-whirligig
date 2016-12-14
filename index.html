@@ -2,6 +2,11 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="initial-scale=1.0">
+
     <title>React Track Demo</title>
     <style>
       html, body {
@@ -20,7 +25,7 @@
         flex-flow: column nowrap;
         align-items: center;
         justify-content: center;
-        height: 100%;
+        height: 100vh;
       }
 
       figure {
@@ -78,6 +83,12 @@
         color: hsla(0, 100%, 100%, .8);
         font-family: sans-serif;
       }
+      .controls {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-end;
+      }
+
       button {
         background: none;
         border: none;
@@ -103,13 +114,14 @@
       .prevButton::before {
         content: '';
         border: 1em solid hsla(0, 100%, 100%, .2);
-        transform: translateY(.5em) rotate(45deg);
+        transform: translateY(.75em) rotate(45deg);
         transform-origin: center;
         display: inline-block;
         border-top-color: transparent;
         border-right-color: transparent;
         position: absolute;
         left: 1em;
+        bottom: .5em;
       }
       .prevButton::after {
         content: '';
@@ -118,6 +130,7 @@
         border-bottom: .5em solid hsla(0, 100%, 100%, .2);
         position: absolute;
         left: 2em;
+        bottom: .5em;
       }
 
       .nextButton {
@@ -129,13 +142,14 @@
       .nextButton::after {
         content: '';
         border: 1em solid hsla(0, 100%, 100%, .2);
-        transform: translateY(.5em) rotate(45deg);
+        transform: translateY(.75em) rotate(45deg);
         transform-origin: center;
         display: inline-block;
         border-bottom-color: transparent;
         border-left-color: transparent;
         position: absolute;
         right: 1em;
+        bottom: .5em;
       }
       .nextButton::before {
         content: '';
@@ -144,6 +158,7 @@
         border-bottom: .5em solid hsla(0, 100%, 100%, .2);
         position: absolute;
         right: 2em;
+        bottom: .5em;
       }
     </style>
   </head>

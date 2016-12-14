@@ -20,8 +20,10 @@ const Slider = ({ children }) => {
         startAt={4}
         onSlideClick={() => { console.log('You clicked on a slide!') }}
         >{ children }</Track>
-      <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
-      <button className="nextButton" onClick={next}>Let's see more beards!</button>
+      <div className="controls">
+        <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
+        <button className="nextButton" onClick={next}>Let's see more beards!</button>
+      </div>
     </div>
   )
 }
