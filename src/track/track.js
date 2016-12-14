@@ -10,7 +10,7 @@ import {
   values
 } from '../utils'
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
-
+const noop = () => {}
 const normalizeIndex = (idx, len) => ((idx % len) + len) % len
 
 export default class Track extends Component {
@@ -79,7 +79,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       isScrolling = false
       if (shouldSelfCorrect()) {
         this.setState({ isAnimating: true })
-        this.slideTo(this.getNearestSlideIndex())
+        this.slideTo(this.getNearestSlideIndex()).catch(noop)
       }
       this.setState({ isAnimating: false })
     }, { target: this.DOMNode })
@@ -87,18 +87,18 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     on('touchend')(() => {
       if (shouldSelfCorrect()) {
         this.setState({ isAnimating: true })
-        this.slideTo(this.getNearestSlideIndex())
+        this.slideTo(this.getNearestSlideIndex()).catch(noop)
       }
     })(this.track)
 
-    this.slideTo(this.props.startAt, { immediate: true })
+    this.slideTo(this.props.startAt, { immediate: true }).catch(noop)
   }
 
   componentDidUpdate (prevProps) {
     this.childCount = this.track.children.length
 
     if (prevProps.slideTo !== this.props.slideTo) {
-      this.slideTo(this.props.slideTo)
+      this.slideTo(this.props.slideTo).catch(noop)
     }
   }
 
