@@ -18,6 +18,7 @@ export default class Track extends Component {
     afterSlide: func,
     children: oneOfType([node, array, string]),
     className: oneOfType([array, string, object]),
+    style: object,
     gutter: (props, propName, componentName) => {
       const prop = props[propName]
       if (
@@ -43,6 +44,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     preventScroll: false,
     preventSnapping: false,
     startAt: 0,
+    style: {},
     visibleSlides: 1
   }
 
@@ -187,6 +189,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       slideTo, // eslint-disable-line no-unused-vars
       startAt, // eslint-disable-line no-unused-vars
       afterSlide, // eslint-disable-line no-unused-vars
+      style,
       ...props
     } = this.props
 
@@ -207,7 +210,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     return (
       <div
         className={className}
-        style={styles}
+        style={{ ...style, ...styles }}
         ref={this.setRef('track')}
         tabIndex="0"
         onKeyUp={this.handleKeyUp}
