@@ -76,6 +76,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       !this.state.isAnimating &&
       !isScrolling &&
       !isInteracting()
+
     onScrollStart(() => { isScrolling = true })
     on('touchstart')(() => { isScrolling = true })(this.track)
     onScrollEnd(() => {
