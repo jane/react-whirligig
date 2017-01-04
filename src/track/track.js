@@ -6,7 +6,7 @@ import {
   on,
   onScrollEnd,
   onScrollStart,
-  trackTouchesForElement,
+  hasOngoingInteraction,
   values
 } from '../utils'
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
@@ -67,12 +67,13 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     // values or state only the onScrollEnd callback cares about and
     // are not important to the rendering of the component.
     this.childCount = this.track.children.length
-    // let isAnimating = false
     let isScrolling = false
-    const getOngoingTouchCount = trackTouchesForElement(this.DOMNode)
+    const isInteracting = hasOngoingInteraction(this.DOMNode)
     const shouldSelfCorrect = () =>
-      !this.props.preventSnapping && !this.state.isAnimating && !isScrolling && !getOngoingTouchCount()
-
+      !this.props.preventSnapping &&
+      !this.state.isAnimating &&
+      !isScrolling &&
+      !isInteracting()
     onScrollStart(() => { isScrolling = true })
     on('touchstart')(() => { isScrolling = true })(this.track)
     onScrollEnd(() => {

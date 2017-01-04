@@ -45,6 +45,19 @@ export const trackTouchesForElement = (el) => {
   return () => touchIds.length
 }
 
+export const trackOngoingMouseInteraction = (el) => {
+  let isInteracting = false
+  on('mousedown')(() => { isInteracting = true })(el)
+  on('mouseup')(() => { isInteracting = false })(el)
+  return () => isInteracting
+}
+
+export const hasOngoingInteraction = (el) => () => {
+  const getOngoingTouchCount = trackTouchesForElement(el)
+  const getOngoingMouseClick = trackOngoingMouseInteraction(el)
+  return () => getOngoingTouchCount() || getOngoingMouseClick()
+}
+
 export const animate = (el, {
   delta = 0,
   immediate = false,
