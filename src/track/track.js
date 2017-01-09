@@ -162,11 +162,15 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       this.setState({ activeIndex: slideIndex })
     }
     const delta = children[slideIndex].offsetLeft - scrollLeft
-    return animate(this.track, { prop: 'scrollLeft', delta, immediate }).then(() => {
+    this.setState({ isAnimating: true })
+    return animate(this.track, { prop: 'scrollLeft', delta, immediate })
+    .then(() => {
+      this.setState({ isAnimating: false })
       if (startingIndex !== slideIndex) {
         return afterSlide(slideIndex)
       }
     })
+    .catch(() => this.setState({ isAnimating: false }))
   };
 
   getNearestSlideIndex = () => {
