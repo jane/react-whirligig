@@ -1,31 +1,47 @@
-import { PropTypes } from 'react'
+import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
 const { array } = PropTypes
 
-const Slider = ({ children }) => {
-  let track
-  const setTrackRef = (ref) => { track = ref }
-  const next = () => track.next()
-  const prev = () => track.prev()
+class Slider extends Component {
+  state = { toggle: true }
 
-  return (
-    <div className="slider">
-      <Track
-        ref={setTrackRef}
-        visibleSlides={3}
-        className="track"
-        slideClass="slideClassName"
-        startAt={4}
-        onSlideClick={() => { console.log('You clicked on a slide!') }}
-        >{ children }</Track>
-      <div className="controls">
-        <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
-        <button className="nextButton" onClick={next}>Let's see more beards!</button>
+  render () {
+    const { children } = this.props
+    const { toggle } = this.state
+    const setTrackRef = (name) => (ref) => { this[name] = ref }
+    const next = () => this.track.next()
+    const prev = () => this.track.prev()
+
+    return (
+      <div>
+        <label>
+          <input type="checkbox" defaultChecked onClick={({ target: t }) => { this.setState({ toggle: t.checked }) }} />
+          <span>un/mount Tack</span>
+        </label>
+        { toggle
+        ? <div className="slider">
+          <Track
+            ref={setTrackRef}
+            visibleSlides={3}
+            className="track"
+            slideClass="slideClassName"
+            startAt={4}
+            onSlideClick={() => { console.log('You clicked on a slide!') }}
+            slideBy={1}
+            animationDuration={1000}
+            easing={(t) => t}
+            >{ children }</Track>
+          <div className="controls">
+            <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
+            <button className="nextButton" onClick={next}>I wanna see more beards!</button>
+          </div>
+        </div>
+        : null }
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 Slider.propTypes = {

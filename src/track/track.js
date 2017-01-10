@@ -221,6 +221,7 @@ export default class Track extends Component {
       onSlideClick,
       slideClass,
       slideTo, // eslint-disable-line no-unused-vars
+      slideBy, // eslint-disable-line no-unused-vars
       startAt, // eslint-disable-line no-unused-vars
       style,
       visibleSlides,

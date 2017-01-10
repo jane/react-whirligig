@@ -22,13 +22,18 @@ export const onScrollEnd = (cb, { wait = 100, target = window } = {}) => ((timeo
 
 export const onScrollStart = (cb, { target = window } = {}) => {
   let started = false
-  onScrollEnd(() => { started = false }, { target })
-  onScroll((e) => {
+  const offScrollEnd = onScrollEnd(() => { started = false }, { target })
+  const offScroll = onScroll((e) => {
     if (!started) {
       started = true
       cb(e)
     }
   }, { target })
+
+  return () => {
+    offScroll()
+    offScrollEnd()
+  }
 }
 
 export const onSwipe = (cb) => (target) => {
