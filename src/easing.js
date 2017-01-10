@@ -1,3 +1,4 @@
+// https://gist.github.com/gre/1650294
   // no easing, no acceleration
   export const linear = (t) => t
   // accelerating from zero velocity

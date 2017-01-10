@@ -1,13 +1,14 @@
-import { easeInOutQuint } from './easing'
+import { easeOutQuint } from './easing'
 
 export const values = Object.values || ((obj) => Object.keys(obj).map((key) => obj[key]))
-
 export const compose = (...fns) => (val) => fns.reduceRight((currVal, fn) => fn(currVal), val)
-
 export const minMap = (...vals) => (val) => Math.min(...vals, val)
 export const maxMap = (...vals) => (val) => Math.max(...vals, val)
-
-export const on = (evt, opts = false) => (cb) => (el) => el.addEventListener(evt, cb, opts)
+export const noop = () => {}
+export const on = (evt, opts = false) => (cb) => (el) => {
+  el.addEventListener(evt, cb, opts)
+  return () => el.removeEventListener(evt, cb)
+}
 
 export const onWindowScroll = (cb) => on('scroll', true)(cb)(window)
 
@@ -30,18 +31,29 @@ export const onScrollStart = (cb, { target = window } = {}) => {
   }, { target })
 }
 
+export const onSwipe = (cb) => (target) => {
+  const offTouchStart = on('touchstart')(({ targetTouches }) => {
+    const { pageX: startX, pageY: startY } = targetTouches[0]
+    const offTouchEnd = on('touchend')(({ changedTouches }) => {
+      const { pageX: endX, pageY: endY } = changedTouches[0]
+      const xDiff = endX - startX
+      const absXDiff = Math.abs(xDiff)
+      const yDiff = endY - startY
+      const absYDiff = Math.abs(yDiff)
+      if (Math.max(absXDiff, absYDiff) > 20) {
+        const dir = absXDiff > absYDiff ? (/* h */ xDiff < 0 ? 'right' : 'left') : (/* v */ yDiff < 0 ? 'down' : 'up')
+        cb(dir)
+      }
+      offTouchEnd()
+    })(target)
+  })(target)
+
+  return offTouchStart
+}
+
 export const trackTouchesForElement = (el) => {
   let touchIds = []
-  on('touchstart')(({ changedTouches }) => {
-    const changedIds = [].slice.call(changedTouches).map(({ identifier }) => identifier)
-    touchIds = [...touchIds, ...changedIds]
-  })(el)
-
-  on('touchend')(({ changedTouches }) => {
-    const changedIds = [].slice.call(changedTouches).map(({ identifier }) => identifier)
-    touchIds = touchIds.filter((touchId) => !changedIds.includes(touchId))
-  })(el)
-
+  on('touchend')(({ targetTouches }) => { touchIds = targetTouches })(el)
   return () => touchIds.length
 }
 
@@ -61,8 +73,8 @@ export const hasOngoingInteraction = (el) => {
 export const animate = (el, {
   delta = 0,
   immediate = false,
-  duration = immediate ? 0 : 800,
-  easing = easeInOutQuint,
+  duration = immediate ? 0 : 500,
+  easing = easeOutQuint,
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
   if (!delta) res()

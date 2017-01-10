@@ -3,21 +3,31 @@ import { findDOMNode } from 'react-dom'
 import Slide from '../slide'
 import {
   animate,
+  noop,
   on,
+  onSwipe,
   onScrollEnd,
   onScrollStart,
   hasOngoingInteraction,
   values
 } from '../utils'
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
-const noop = () => {}
 const normalizeIndex = (idx, len) => ((idx % len) + len) % len
 
 export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
+    animationDuration: number,
     children: oneOfType([node, array, string]),
     className: oneOfType([array, string, object]),
+    easing: func,
+    preventScroll: bool,
+    onSlideClick: func,
+    preventSnapping: bool,
+    slideTo: number,
+    slideBy: number,
+    slideClass: oneOfType([array, string, object]),
+    startAt: number,
     style: object,
     gutter: (props, propName, componentName) => {
       const prop = props[propName]
@@ -26,20 +36,15 @@ export default class Track extends Component {
         !Number.isNaN(Number(prop))
       ) {
         return new Error(`Invalid value (${prop}) of prop '${propName}' supplied to ${componentName}.
-The value of ${propName} should be a valid css length unit (https://developer.mozilla.org/en-US/docs/Web/CSS/length).`)
+        The value of ${propName} should be a valid css length unit (https://developer.mozilla.org/en-US/docs/Web/CSS/length).`)
       }
     },
-    preventScroll: bool,
-    slideClass: oneOfType([array, string, object]),
-    onSlideClick: func,
-    preventSnapping: bool,
-    slideTo: number,
-    startAt: number,
     visibleSlides: number
   }
 
   static defaultProps = {
     afterSlide: () => {},
+    animationDuration: 500,
     gutter: '1em',
     preventScroll: false,
     preventSnapping: false,
@@ -51,7 +56,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
   constructor (props) {
     super(props)
 
-    this.state = { activeIndex: 0, isAnimating: false }
+    this.state = { activeIndex: 0, isAnimating: false, slideBy: this.props.slideBy || this.props.visibleSlides }
 
     // We can't do arrow function properties for these since
     // we are passing them to the consuming component and we
@@ -60,6 +65,8 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     this.prev = this.prev.bind(this)
     this.slideTo = this.slideTo.bind(this)
   }
+
+  eventListeners = []
 
   componentDidMount () {
     this.DOMNode = findDOMNode(this.track)
@@ -77,25 +84,45 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
       !isScrolling &&
       !isInteracting()
 
-    onScrollStart(() => { isScrolling = true })
-    on('touchstart')(() => { isScrolling = true })(this.track)
-    onScrollEnd(() => {
-      isScrolling = false
-      if (shouldSelfCorrect()) {
-        this.setState({ isAnimating: true })
-        this.slideTo(this.getNearestSlideIndex()).catch(noop)
-      }
-      this.setState({ isAnimating: false })
-    }, { target: this.DOMNode })
+    const slideBy = {
+      left: -this.state.slideBy,
+      right: this.state.slideBy
+    }
 
-    on('touchend')(() => {
-      if (shouldSelfCorrect()) {
-        this.setState({ isAnimating: true })
-        this.slideTo(this.getNearestSlideIndex()).catch(noop)
-      }
-    })(this.track)
+    this.eventListeners = [
+      ...this.eventListeners,
+
+      onScrollStart(() => { isScrolling = true }),
+
+      on('touchstart')(() => { isScrolling = true })(this.track),
+
+      onScrollEnd(() => {
+        isScrolling = false
+        if (shouldSelfCorrect()) {
+          this.setState({ isAnimating: true })
+          this.slideTo(this.getNearestSlideIndex()).catch(noop)
+        }
+        this.setState({ isAnimating: false })
+      }, { target: this.DOMNode }),
+
+      on('touchend')(() => {
+        if (shouldSelfCorrect()) {
+          this.setState({ isAnimating: true })
+          this.slideTo(this.getNearestSlideIndex()).catch(noop)
+        }
+      })(this.track),
+
+      onSwipe((direction) => {
+        this.slideTo(this.state.activeIndex + (slideBy[direction] || 0)).catch(noop)
+      })(this.track)
+
+    ]
 
     this.slideTo(this.props.startAt, { immediate: true }).catch(noop)
+  }
+
+  componentWillUnmount () {
+    this.eventListeners.map((fn) => fn())
   }
 
   componentDidUpdate (prevProps) {
@@ -152,7 +179,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
 
   slideTo (index, { immediate = false } = {}) {
     if (this.childCount === 0) return Promise.reject()
-    const { afterSlide } = this.props
+    const { afterSlide, easing, animationDuration: duration } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount)
     const startingIndex = this.state.activeIndex
@@ -163,7 +190,7 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
     }
     const delta = children[slideIndex].offsetLeft - scrollLeft
     this.setState({ isAnimating: true })
-    return animate(this.track, { prop: 'scrollLeft', delta, immediate })
+    return animate(this.track, { prop: 'scrollLeft', delta, immediate, easing, duration })
     .then(() => {
       this.setState({ isAnimating: false })
       if (startingIndex !== slideIndex) {
@@ -183,18 +210,20 @@ The value of ${propName} should be a valid css length unit (https://developer.mo
 
   render () {
     const {
+      afterSlide, // eslint-disable-line no-unused-vars
+      animationDuration, // eslint-disable-line no-unused-vars
       children,
       className,
+      easing, // eslint-disable-line no-unused-vars
       gutter,
       preventScroll,
       preventSnapping, // eslint-disable-line no-unused-vars
-      slideClass,
       onSlideClick,
-      visibleSlides,
+      slideClass,
       slideTo, // eslint-disable-line no-unused-vars
       startAt, // eslint-disable-line no-unused-vars
-      afterSlide, // eslint-disable-line no-unused-vars
       style,
+      visibleSlides,
       ...props
     } = this.props
 
