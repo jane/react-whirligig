@@ -1,6 +1,6 @@
 {
   "name": "react-track",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
   "main": "lib/track/index.js",
   "scripts": {
