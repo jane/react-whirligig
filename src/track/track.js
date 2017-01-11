@@ -36,7 +36,8 @@ export default class Track extends Component {
         !Number.isNaN(Number(prop))
       ) {
         return new Error(`Invalid value (${prop}) of prop '${propName}' supplied to ${componentName}.
-        The value of ${propName} should be a valid css length unit (https://developer.mozilla.org/en-US/docs/Web/CSS/length).`)
+        The value of ${propName} should be a valid css length unit
+        (https://developer.mozilla.org/en-US/docs/Web/CSS/length).`)
       }
     },
     visibleSlides: number
@@ -67,38 +68,38 @@ export default class Track extends Component {
   }
 
   eventListeners = []
+  isScrolling = false
+  shouldSelfCorrect = () =>
+    !this.props.preventSnapping &&
+    !this.state.isAnimating &&
+    !this.isScrolling &&
+    !this.isInteracting()
 
   componentDidMount () {
     this.DOMNode = findDOMNode(this.track)
+    this.isInteracting = hasOngoingInteraction(this.DOMNode)
 
     // These are not a part of component state since we don't want
     // incure the overhead of calling setState. They are either cached
     // values or state only the onScrollEnd callback cares about and
     // are not important to the rendering of the component.
     this.childCount = this.track.children.length
-    let isScrolling = false
-    const isInteracting = hasOngoingInteraction(this.DOMNode)
-    const shouldSelfCorrect = () =>
-      !this.props.preventSnapping &&
-      !this.state.isAnimating &&
-      !isScrolling &&
-      !isInteracting()
 
     const slideBy = {
-      left: -this.state.slideBy,
-      right: this.state.slideBy
+      left: () => -this.state.slideBy,
+      right: () => this.state.slideBy
     }
 
     this.eventListeners = [
       ...this.eventListeners,
 
-      onScrollStart(() => { isScrolling = true }),
+      onScrollStart(() => { this.isScrolling = true }),
 
-      on('touchstart')(() => { isScrolling = true })(this.track),
+      on('touchstart')(() => { this.isScrolling = true })(this.track),
 
       onScrollEnd(() => {
-        isScrolling = false
-        if (shouldSelfCorrect()) {
+        this.isScrolling = false
+        if (this.shouldSelfCorrect()) {
           this.setState({ isAnimating: true })
           this.slideTo(this.getNearestSlideIndex()).catch(noop)
         }
@@ -106,14 +107,14 @@ export default class Track extends Component {
       }, { target: this.DOMNode }),
 
       on('touchend')(() => {
-        if (shouldSelfCorrect()) {
+        if (this.shouldSelfCorrect()) {
           this.setState({ isAnimating: true })
           this.slideTo(this.getNearestSlideIndex()).catch(noop)
         }
       })(this.track),
 
       onSwipe((direction) => {
-        this.slideTo(this.state.activeIndex + (slideBy[direction] || 0)).catch(noop)
+        this.slideTo(this.state.activeIndex + (slideBy[direction]() || 0)).catch(noop)
       })(this.track)
 
     ]
@@ -121,13 +122,17 @@ export default class Track extends Component {
     this.slideTo(this.props.startAt, { immediate: true }).catch(noop)
   }
 
-  componentWillUnmount () {
-    this.eventListeners.map((fn) => fn())
+  componentWillUnmount () { this.eventListeners.forEach((fn) => fn()) }
+
+  componentWillReceiveProps ({ slideBy, visibleSlides }) {
+    if (slideBy !== this.props.slideBy || visibleSlides !== this.props.visibleSlides) {
+      this.setState({ slideBy: slideBy || visibleSlides })
+    }
   }
 
   componentDidUpdate (prevProps) {
     this.childCount = this.track.children.length
-
+    this.shouldSelfCorrect() && this.slideTo(this.getNearestSlideIndex()).catch(noop)
     if (prevProps.slideTo !== this.props.slideTo) {
       this.slideTo(this.props.slideTo).catch(noop)
     }

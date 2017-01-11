@@ -2,10 +2,22 @@ import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
-const { array } = PropTypes
+const { array, number } = PropTypes
 
 class Slider extends Component {
-  state = { toggle: true }
+  static propTypes = {
+    children: array,
+    visibleSlides: number,
+    slideBy: number
+  }
+  constructor (props) {
+    super(props)
+    this.state = {
+      toggle: true,
+      visibleSlides: this.props.visibleSlides || 3,
+      slideBy: this.props.slideBy
+    }
+  }
 
   render () {
     const { children } = this.props
@@ -16,20 +28,47 @@ class Slider extends Component {
 
     return (
       <div>
-        <label>
-          <input type="checkbox" defaultChecked onClick={({ target: t }) => { this.setState({ toggle: t.checked }) }} />
-          <span>un/mount Tack</span>
-        </label>
+        <div className="options">
+          <label className="option">
+            <span className="label">un/mount Tack</span>
+            <input
+              type="checkbox"
+              defaultChecked
+              onClick={({ target: t }) => { this.setState({ toggle: t.checked }) }}
+            />
+          </label>
+
+          <label className="option">
+            <span className="label">visible slides</span>
+            <input
+              type="number"
+              name="visibleSlides"
+              value={this.state.visibleSlides}
+              onChange={({ target: t }) => { this.setState({ visibleSlides: Number(t.value) }) }}
+            />
+          </label>
+
+          <label className="option">
+            <span className="label">slide by</span>
+            <input
+              type="number"
+              name="slideBy"
+              id="slideBy"
+              value={this.state.slideBy}
+              onChange={({ target: t }) => { this.setState({ slideBy: Number(t.value) }) }}
+            />
+          </label>
+        </div>
         { toggle
         ? <div className="slider">
           <Track
             ref={setTrackRef}
-            visibleSlides={3}
+            visibleSlides={this.state.visibleSlides}
             className="track"
             slideClass="slideClassName"
             startAt={4}
             onSlideClick={() => { console.log('You clicked on a slide!') }}
-            slideBy={1}
+            slideBy={this.state.slideBy}
             animationDuration={1000}
             easing={(t) => t}
             >{ children }</Track>
@@ -42,10 +81,6 @@ class Slider extends Component {
       </div>
     )
   }
-}
-
-Slider.propTypes = {
-  children: array
 }
 
 const slides = [{
