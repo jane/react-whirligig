@@ -122,7 +122,7 @@ export default class Track extends Component {
     this.slideTo(this.props.startAt, { immediate: true }).catch(noop)
   }
 
-  componentWillUnmount () { this.eventListeners.map((fn) => fn()) }
+  componentWillUnmount () { this.eventListeners.forEach((fn) => fn()) }
 
   componentWillReceiveProps ({ slideBy, visibleSlides }) {
     if (slideBy !== this.props.slideBy || visibleSlides !== this.props.visibleSlides) {
