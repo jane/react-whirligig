@@ -2,7 +2,27 @@ import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
 import Track from './src/track/index'
 
-const { array, number } = PropTypes
+const { array, number, string, func, any } = PropTypes
+
+const Control = ({ label, type, name, onChange, value }) => (
+  <label className="option">
+    <span className="label">{label}</span>
+    <input
+      type={type}
+      name={name}
+      id={name}
+      value={value}
+      onChange={onChange}
+    />
+  </label>
+)
+Control.propTypes = {
+  label: string,
+  type: string,
+  name: string,
+  onChange: func,
+  value: any
+}
 
 class Slider extends Component {
   static propTypes = {
@@ -13,64 +33,73 @@ class Slider extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      toggle: true,
+      mount: true,
       visibleSlides: this.props.visibleSlides || 3,
       slideBy: this.props.slideBy
     }
   }
 
+  setRef = (name) => (ref) => { this[name] = ref }
+  setStateFromInput = (propName) => ({ target }) => {
+    const { checked, value, type } = target
+    const isCheckable = (type) => ['checkbox', 'radio'].includes(type)
+    const coerceValueToType = ({ type, vlaue }) => type === 'number' ? Number(value) : value
+    this.setState({
+      [propName]: isCheckable(type) ? checked : coerceValueToType(target)
+    })
+  }
+
+  Control = ({ label, type, name }) => (
+    <label className="option">
+      <span className="label">{label}</span>
+      <input
+        type={type}
+        name={name}
+        id={name}
+        value={this.state[name]}
+        onChange={this.setStateFromInput(name)}
+      />
+    </label>
+  )
+
   render () {
     const { children } = this.props
-    const { toggle } = this.state
-    const setTrackRef = (name) => (ref) => { this[name] = ref }
-    const next = () => this.track.next()
-    const prev = () => this.track.prev()
+    const {
+      animationDuration = 300, infinte, gutter = '1em', preventScroll,
+      preventSnapping, slideBy, startAt = 4, slideTo, mount } = this.state
+    const next = () => this.track.next().catch(() => {})
+    const prev = () => this.track.prev().catch(() => {})
 
     return (
       <div>
         <div className="options">
-          <label className="option">
-            <span className="label">un/mount Tack</span>
-            <input
-              type="checkbox"
-              defaultChecked
-              onClick={({ target: t }) => { this.setState({ toggle: t.checked }) }}
-            />
-          </label>
-
-          <label className="option">
-            <span className="label">visible slides</span>
-            <input
-              type="number"
-              name="visibleSlides"
-              value={this.state.visibleSlides}
-              onChange={({ target: t }) => { this.setState({ visibleSlides: Number(t.value) }) }}
-            />
-          </label>
-
-          <label className="option">
-            <span className="label">slide by</span>
-            <input
-              type="number"
-              name="slideBy"
-              id="slideBy"
-              value={this.state.slideBy}
-              onChange={({ target: t }) => { this.setState({ slideBy: Number(t.value) }) }}
-            />
-          </label>
+          <this.Control label="un/mount Track" type="checkbox" name="mount" />
+          <this.Control label="animationDuration" type="number" name="animationDuration" />
+          <this.Control label="gutter" type="text" name="gutter" />
+          <this.Control label="infinte" type="checkbox" name="infinte" />
+          <this.Control label="preventScroll" type="checkbox" name="preventScroll" />
+          <this.Control label="preventSnapping" type="checkbox" name="preventSnapping" />
+          <this.Control label="slideBy" type="number" name="slideBy" />
+          <this.Control label="slideTo" type="number" name="slideTo" />
+          <this.Control label="visibleSlides" type="number" name="visibleSlides" />
         </div>
-        { toggle
+        { mount
         ? <div className="slider">
           <Track
-            ref={setTrackRef}
-            visibleSlides={this.state.visibleSlides}
+            animationDuration={animationDuration}
             className="track"
-            slideClass="slideClassName"
-            startAt={4}
-            onSlideClick={() => { console.log('You clicked on a slide!') }}
-            slideBy={this.state.slideBy}
-            animationDuration={1000}
             easing={(t) => t}
+            infinite={infinte}
+            gutter={gutter}
+            onSlideClick={() => { console.log('You clicked on a slide!') }}
+            preventScroll={preventScroll}
+            preventSnapping={preventSnapping}
+            ref={this.setRef('track')}
+            slideBy={slideBy}
+            slideClass="slideClassName"
+            slideTo={slideTo}
+            startAt={startAt}
+            visibleSlides={this.state.visibleSlides}
             >{ children }</Track>
           <div className="controls">
             <button className="prevButton" onClick={prev}>Let me see that beard again!</button>

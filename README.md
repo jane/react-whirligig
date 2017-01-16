@@ -68,6 +68,10 @@ A function which takes a `float` representing the percentage of time that has pa
 a `float` representing the relative progress of the element being animated. See https://gist.github.com/gre/1650294
 for examples.
 
+### infinte:_bool_
+_default: false_
+A boolean flag that determines whether the track should wrap to the beginning/end when sliding beyond the slide index bounds.
+
 ### gutter:_string_
 _default: 1em_
 A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string that represents the space between each Slide in the Track.

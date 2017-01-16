@@ -12,8 +12,9 @@ import {
   values
 } from '../utils'
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
-const normalizeIndex = (idx, len) => ((idx % len) + len) % len
-
+const wrapAroundValue = (val, max) => ((val % max) + max) % max
+const hardBoundedValue = (val, max) => Math.max(0, Math.min(max - 1, val))
+const normalizeIndex = (idx, len, wrap = false) => wrap ? wrapAroundValue(idx, len) : hardBoundedValue(idx, len)
 export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
@@ -21,6 +22,7 @@ export default class Track extends Component {
     children: oneOfType([node, array, string]),
     className: oneOfType([array, string, object]),
     easing: func,
+    infinite: bool,
     preventScroll: bool,
     onSlideClick: func,
     preventSnapping: bool,
@@ -158,35 +160,29 @@ export default class Track extends Component {
   next () {
     const { childCount, props, state } = this
     const { activeIndex } = state
-    const { visibleSlides } = props
+    const { visibleSlides, infinite } = props
 
     const firstIndex = 0
     const lastIndex = childCount - visibleSlides
     const nextActive = activeIndex + visibleSlides
-    return this.slideTo(
-      (activeIndex === lastIndex)
-      ? firstIndex
-      : (nextActive < lastIndex) ? nextActive : lastIndex
-    )
+    const nextActiveInfinite = (activeIndex === lastIndex) ? firstIndex : Math.min(nextActive, lastIndex)
+    return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
   prev () {
     const { activeIndex } = this.state
-    const { visibleSlides } = this.props
+    const { visibleSlides, infinite } = this.props
     const firstIndex = 0
     const nextActive = activeIndex - visibleSlides
-    return this.slideTo(
-      (activeIndex === firstIndex) || (nextActive > firstIndex)
-      ? nextActive
-      : firstIndex
-    )
+    const nextActiveInfinite = (activeIndex === firstIndex) || (nextActive > firstIndex) ? nextActive : firstIndex
+    return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
   slideTo (index, { immediate = false } = {}) {
     if (this.childCount === 0) return Promise.reject()
-    const { afterSlide, easing, animationDuration: duration } = this.props
+    const { afterSlide, easing, animationDuration: duration, infinite } = this.props
     const { children, scrollLeft } = this.track
-    const slideIndex = normalizeIndex(index, this.childCount)
+    const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
     if (startingIndex === slideIndex) {
       return Promise.reject()
@@ -220,6 +216,7 @@ export default class Track extends Component {
       children,
       className,
       easing, // eslint-disable-line no-unused-vars
+      infinite, // eslint-disable-line no-unused-vars
       gutter,
       preventScroll,
       preventSnapping, // eslint-disable-line no-unused-vars
