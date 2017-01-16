@@ -19,13 +19,14 @@ export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
     animationDuration: number,
+    beforeSlide: func,
     children: oneOfType([node, array, string]),
     className: oneOfType([array, string, object]),
     easing: func,
     infinite: bool,
     preventScroll: bool,
     onSlideClick: func,
-    preventSnapping: bool,
+    snapToSlide: bool,
     slideTo: number,
     slideBy: number,
     slideClass: oneOfType([array, string, object]),
@@ -48,18 +49,22 @@ export default class Track extends Component {
   static defaultProps = {
     afterSlide: () => {},
     animationDuration: 500,
+    beforeSlide: () => {},
     gutter: '1em',
     preventScroll: false,
-    preventSnapping: false,
+    snapToSlide: false,
     startAt: 0,
-    style: {},
-    visibleSlides: 1
+    style: {}
   }
 
   constructor (props) {
     super(props)
 
-    this.state = { activeIndex: 0, isAnimating: false, slideBy: this.props.slideBy || this.props.visibleSlides }
+    this.state = {
+      activeIndex: 0,
+      isAnimating: false,
+      visibleSlides: this.props.visibleSlides || 1,
+      slideBy: this.props.slideBy || this.props.visibleSlides || 1 }
 
     // We can't do arrow function properties for these since
     // we are passing them to the consuming component and we
@@ -71,11 +76,12 @@ export default class Track extends Component {
 
   eventListeners = []
   isScrolling = false
-  shouldSelfCorrect = () =>
-    !this.props.preventSnapping &&
+  canSelfCorrect = () =>
     !this.state.isAnimating &&
     !this.isScrolling &&
     !this.isInteracting()
+
+  shouldSelfCorrect = () => this.props.snapToSlide && this.canSelfCorrect()
 
   componentDidMount () {
     this.DOMNode = findDOMNode(this.track)
@@ -101,22 +107,27 @@ export default class Track extends Component {
 
       onScrollEnd(() => {
         this.isScrolling = false
-        if (this.shouldSelfCorrect()) {
-          this.setState({ isAnimating: true })
-          this.slideTo(this.getNearestSlideIndex()).catch(noop)
+        if (this.canSelfCorrect()) {
+          if (this.props.snapToSlide) {
+            this.slideTo(this.getNearestSlideIndex()).catch(noop)
+          } else {
+            this.props.afterSlide(this.getNearestSlideIndex())
+          }
         }
-        this.setState({ isAnimating: false })
       }, { target: this.DOMNode }),
 
       on('touchend')(() => {
-        if (this.shouldSelfCorrect()) {
-          this.setState({ isAnimating: true })
-          this.slideTo(this.getNearestSlideIndex()).catch(noop)
+        if (this.canSelfCorrect()) {
+          this.props.snapToSlide
+          ? this.slideTo(this.getNearestSlideIndex()).catch(noop)
+          : this.props.afterSlide(this.getNearestSlideIndex())
         }
       })(this.track),
 
       onSwipe((direction) => {
-        this.slideTo(this.state.activeIndex + (slideBy[direction]() || 0)).catch(noop)
+        if (this.props.snapToSlide) {
+          this.slideTo(this.state.activeIndex + (slideBy[direction]() || 0)).catch(noop)
+        }
       })(this.track)
 
     ]
@@ -180,7 +191,7 @@ export default class Track extends Component {
 
   slideTo (index, { immediate = false } = {}) {
     if (this.childCount === 0) return Promise.reject()
-    const { afterSlide, easing, animationDuration: duration, infinite } = this.props
+    const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
@@ -191,6 +202,7 @@ export default class Track extends Component {
     }
     const delta = children[slideIndex].offsetLeft - scrollLeft
     this.setState({ isAnimating: true })
+    beforeSlide(index)
     return animate(this.track, { prop: 'scrollLeft', delta, immediate, easing, duration })
     .then(() => {
       this.setState({ isAnimating: false })
@@ -198,7 +210,10 @@ export default class Track extends Component {
         return afterSlide(slideIndex)
       }
     })
-    .catch(() => this.setState({ isAnimating: false }))
+    .catch((err) => {
+      console.log('animation failed to complete: ', err)
+      this.setState({ isAnimating: false })
+    })
   };
 
   getNearestSlideIndex = () => {
@@ -213,13 +228,14 @@ export default class Track extends Component {
     const {
       afterSlide, // eslint-disable-line no-unused-vars
       animationDuration, // eslint-disable-line no-unused-vars
+      beforeSlide, // eslint-disable-line no-unused-vars
       children,
       className,
       easing, // eslint-disable-line no-unused-vars
       infinite, // eslint-disable-line no-unused-vars
       gutter,
       preventScroll,
-      preventSnapping, // eslint-disable-line no-unused-vars
+      snapToSlide, // eslint-disable-line no-unused-vars
       onSlideClick,
       slideClass,
       slideTo, // eslint-disable-line no-unused-vars
@@ -262,7 +278,7 @@ export default class Track extends Component {
           <Slide
             className={slideClass}
             key={`slide-${i}`}
-            basis={`calc((100% - (${gutter} * ${visibleSlides - 1})) / ${visibleSlides})`}
+            basis={visibleSlides ? `calc((100% - (${gutter} * ${visibleSlides - 1})) / ${visibleSlides})` : 'auto'}
             gutter={i > 0 ? gutter : ''}
             onClick={onSlideClick}
           >

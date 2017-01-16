@@ -59,10 +59,14 @@ A function to be called after the track transitions to a new "active" slide. The
 _default: 500_
 The number of milliseconds the slide animation should take.
 
+### beforeSlide:_func_
+_default: noop_
+A function to be called before the track transitions to a new "active" slide. The function is passed what the new "active" slide index will be.
+
 ### className:_classnames_
 A `classnames` compliant value (string or array of string|array|object) that will be applied as the class attribute.
 
-### easing:_string_
+### easing:_func_
 _default: easeOutQuint_
 A function which takes a `float` representing the percentage of time that has passed for a given animation and returns
 a `float` representing the relative progress of the element being animated. See https://gist.github.com/gre/1650294
@@ -78,15 +82,11 @@ A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string t
 
 ### preventScroll:_bool_
 _default: false_
-A boolean flag that turns off the ability to natively scroll through the Track.
-
-### preventSnapping:_bool_
-_default: false_
-A boolean flag that turns off the snap-to-slide feature. If set, the Track will not animate scrolling to stop at a slide.
+A boolean flag that turns off/on the ability to natively scroll through the Track.
 
 ### slideBy:_number_
-_default: visibleSlides_
-The number of slides that should advance on a `next`, `prev`, or `swipe` action. If not specified, will match the number of visible slides.
+_default: visibleSlides or 1_
+The number of slides that should advance on a `next`, `prev`, or `swipe` action. If not specified, will reflect the visibleSlides prop value or `1`.
 
 ### slideClass:_classnames_
 _default: ''_
@@ -95,6 +95,10 @@ A class to apply to the Slide container.
 ### slideTo:_number_
 _default: 0_
 The index to which the track should transition if it is not already there. This is distinct from `startAt` in that `startAt` is only effective when the component mounts and does not transition, but moves immediately to the given slide. The `slideTo` prop is meant to be used as a mechanism for the consuming component to directly control when and where the track transitions to.
+
+### snapToSlide:_bool_
+_default: false_
+A boolean flag that turns on/off the snap-to-slide feature. If set, the Track will animate the final bit of scrolling to stop at a slide.
 
 ### startAt:_number_
 _default: 0_
