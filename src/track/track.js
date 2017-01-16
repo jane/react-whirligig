@@ -95,7 +95,9 @@ export default class Track extends Component {
 
     const slideBy = {
       left: () => -this.state.slideBy,
-      right: () => this.state.slideBy
+      right: () => this.state.slideBy,
+      up: () => 0,
+      down: () => 0
     }
 
     this.eventListeners = [
@@ -126,7 +128,7 @@ export default class Track extends Component {
 
       onSwipe((direction) => {
         if (this.props.snapToSlide) {
-          this.slideTo(this.state.activeIndex + (slideBy[direction]() || 0)).catch(noop)
+          this.slideTo(this.state.activeIndex + (slideBy[direction]())).catch(noop)
         }
       })(this.track)
 
