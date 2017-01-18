@@ -135,7 +135,6 @@ export default class Track extends Component {
 
     ]
 
-    console.log('starting at ', this.props.startAt)
     this.slideTo(this.props.startAt, { immediate: true }).catch(noop)
   }
 
@@ -159,8 +158,8 @@ export default class Track extends Component {
     const isNext = nextKeys.includes(key)
     const isPrev = prevKeys.includes(key)
     this.setState({ isAnimating: true })
-    if (isNext) this.next()
-    if (isPrev) this.prev()
+    if (isNext) this.next().catch(noop)
+    if (isPrev) this.prev().catch(noop)
     return false
   })(['ArrowRight'], ['ArrowLeft']);
 
