@@ -7,7 +7,6 @@ test('visibleSlides prop', (t) => {
     let goNext, goPrev
     const next = () => goNext()
     const prev = () => goPrev()
-
     return {
       wrapped: mount(
         <Track visibleSlides={vs}>{
@@ -22,42 +21,25 @@ test('visibleSlides prop', (t) => {
     }
   }
 
-  t.plan(5)
+  t.plan(3)
 
   const vs1 = vs()([0, 1, 2])
 
   t.equal(
     vs1.wrapped.prop('visibleSlides'),
-    1,
-    'visibleSlides defaults to 1'
+    undefined,
+    'visibleSlides has no default'
   )
 
-  const vs2 = vs(2)([0, 1, 2, 3])
-  vs2.next()
   t.equal(
-    vs2.wrapped.state('activeIndex'),
-    2,
-    'activeIndex increments by the number of visibleSlides when remaining slides are greater than visibleSlides'
+    vs1.wrapped.children('Slide').first().props().basis,
+    'auto',
+    'Track children (Slide) have a default basis of `auto` when no `visibleSlides` is set'
   )
 
-  vs2.prev()
-  t.equal(
-    vs2.wrapped.state('activeIndex'),
-    0,
-    'activeIndex decrements by the number of visibleSlides when remaining slides are greater than visibleSlides'
-  )
-
-  const vs3 = vs(2)([0, 1, 2])
-  vs3.next()
-  t.equal(
-    vs3.wrapped.state('activeIndex'),
-    1,
-    'activeIndex increments to the number of slides - visibleSlides when visibleSlides > remaining slides'
-  )
-  vs3.prev()
-  t.equal(
-    vs3.wrapped.state('activeIndex'),
-    0,
-    'activeIndex decrements to the 0 when visibleSlides > remaining previous slides'
+  const vs2 = vs(2)([0, 1, 2])
+  t.ok(
+    vs2.wrapped.children('Slide').first().props().basis.match(/^calc/),
+    'Track children (Slide) have a calculated basis'
   )
 })

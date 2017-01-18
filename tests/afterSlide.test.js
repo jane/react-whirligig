@@ -2,6 +2,8 @@ import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/track'
 
+const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
+
 test('Track afterSlide prop', (t) => {
   const wrapped = mount(<Track>{() => []}</Track>)
   t.plan(3)
@@ -24,6 +26,6 @@ test('Track afterSlide prop', (t) => {
   goNext()
     .then(() => t.equals(called, 1, 'afterSlide function should be called after sliding to next'))
     .then(() => goPrev()
-      .then(() => t.equals(called, 2, 'prevSlide function should be called after sliding to prev'))
-    )
+      .then(() => t.equals(called, 2, 'afterSlide function should be called after sliding to prev'))
+    ).catch(tap('error'))
 })

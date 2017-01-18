@@ -11,6 +11,10 @@ const coerceTable = {
   checkbox: Boolean,
   radio: Boolean
 }
+const coerceValueToType = ({ type, value }) => {
+  const coercer = type in coerceTable ? coerceTable[type] : (ident) => ident
+  return coercer(value)
+}
 
 const Control = ({ label, type, name, onChange, value }) => (
   <label className="option">
@@ -57,13 +61,20 @@ class Slider extends Component {
     animationDuration: 300,
     beforeSlide: (newIndex) => console.log(`about to slide to index ${newIndex}`),
     className: 'track',
+    gutter: '1em',
     onSlideClick: () => { console.log('You clicked on a slide!') },
     easing: (t) => t,
-    slideClass: 'slideClassName'
+    infinite: false,
+    preventScroll: false,
+    slideClass: 'slideClassName',
+    slideBy: 0,
+    slideTo: 0,
+    snapToSlide: false,
+    startAt: 0,
+    visibleSlides: 0
   }
   constructor (props) {
     super(props)
-    console.log(props)
     this.state = {
       afterSlide: props.afterSlide,
       animationDuration: props.animationDuration,
@@ -84,13 +95,30 @@ class Slider extends Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+    this.setState({
+      afterSlide: nextProps.afterSlide,
+      animationDuration: nextProps.animationDuration,
+      beforeSlide: nextProps.beforeSlide,
+      className: nextProps.className,
+      easing: nextProps.easing,
+      infinite: nextProps.infinite,
+      gutter: nextProps.gutter,
+      onSlideClick: nextProps.onSlideClick,
+      preventScroll: nextProps.preventScroll,
+      snapToSlide: nextProps.snapToSlide,
+      slideBy: nextProps.slideBy,
+      slideClass: nextProps.slideClass,
+      slideTo: nextProps.slideTo,
+      startAt: nextProps.startAt,
+      visibleSlides: nextProps.visibleSlides,
+      mount: nextProps.mount
+    })
+  }
+
   setRef = (name) => (ref) => { this[name] = ref }
   setStateFromInput = (propName) => ({ target }) => {
-    const { checked, value, type } = target
-    const coerceValueToType = ({ type, vlaue }) => {
-      const coercer = type in coerceTable ? coerceTable[type] : (ident) => ident
-      coercer(value)
-    }
+    const { checked, type } = target
     this.setState({
       [propName]: isCheckable(type) ? checked : coerceValueToType(target)
     })
@@ -148,14 +176,6 @@ class Slider extends Component {
           <this.Control label="snapToSlide" type="checkbox" name="snapToSlide" />
           <this.Control label="slideBy" type="number" name="slideBy" />
           <this.Control label="slideClass" type="text" name="slideClass" />
-          <this.Control label="slideTo" type="number" name="slideTo" />
-          <this.Control label="startAt" type="number" name="startAt" />
-          <this.Control label="visibleSlides" type="number" name="visibleSlides" />
-          <this.Control label="gutter" type="text" name="gutter" />
-          <this.Control label="infinte" type="checkbox" name="infinte" />
-          <this.Control label="preventScroll" type="checkbox" name="preventScroll" />
-          <this.Control label="snapToSlide" type="checkbox" name="snapToSlide" />
-          <this.Control label="slideBy" type="number" name="slideBy" />
           <this.Control label="slideTo" type="number" name="slideTo" />
           <this.Control label="startAt" type="number" name="startAt" />
           <this.Control label="visibleSlides" type="number" name="visibleSlides" />

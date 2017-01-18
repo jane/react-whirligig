@@ -2,10 +2,12 @@ import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/track'
 
-test('Track passes gutter prop to Slide', (t) => {
-  const gutterTrack = (gutterVal) => mount(<Track gutter={gutterVal}>{ () => [1, 2] }</Track>)
+test('gutter prop', (t) => {
+  const gutterTrack = (gutterVal, visibleSlides) => mount(
+    <Track gutter={gutterVal} visibleSlides={visibleSlides}>{ () => [1, 2] }</Track>
+  )
 
-  t.plan(8)
+  t.plan(10)
   gutterTrack('1em').find('Slide')
     .forEach((Slide, i) => {
       if (i === 0) {
@@ -13,13 +15,21 @@ test('Track passes gutter prop to Slide', (t) => {
       } else {
         t.equal(Slide.prop('gutter'), '1em', 'gutter prop is passed to every other Slide')
       }
+      t.equal(
+        Slide.prop('basis'),
+        'auto',
+        'Track applies a basis prop to Slide with a value of `auto`'
+      )
+    })
+  gutterTrack('1em', 2).find('Slide')
+    .forEach((Slide, i) => {
       t.ok(
         Slide.prop('basis').match(/^calc/),
-        'Track applies a basis prop to Slide with a css calc value'
+        'Track applies a basis prop to Slide with a css calc value if `visibleSlides` is also set'
       )
       t.ok(
         Slide.prop('basis').match('1em'),
-        'Track applies a basis prop to Slide which takes gutter into account'
+        'Track applies a basis prop to Slide which takes gutter into account if `visibleSlides` is also set'
       )
     })
 

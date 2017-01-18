@@ -3,7 +3,7 @@ import { mount } from 'enzyme'
 import Track from '../src/track'
 
 test('activeIndex state', (t) => {
-  const ai = ({ startAt, visibleSlides } = {}) => {
+  const ai = ({ startAt, visibleSlides, infinite } = {}) => {
     let goNext, goPrev
     const next = () => goNext()
     const prev = () => goPrev()
@@ -11,15 +11,23 @@ test('activeIndex state', (t) => {
     return {
       next,
       prev,
-      component: mount(<Track startAt={startAt} visibleSlides={visibleSlides}>{ (_next, _prev) => {
-        goNext = _next
-        goPrev = _prev
-        return [0, 1, 2, 3, 4, 5, 6, 7]
-      } }</Track>)
+      component: mount(
+        <Track
+          startAt={startAt}
+          visibleSlides={visibleSlides}
+          infinite={infinite}
+        >
+          { (_next, _prev) => {
+            goNext = _next
+            goPrev = _prev
+            return [0, 1, 2, 3, 4, 5, 6, 7]
+          }}
+        </Track>
+      )
     }
   }
 
-  t.plan(8)
+  t.plan(6)
 
   t.equal(
     ai().component.state('activeIndex'),
@@ -48,13 +56,6 @@ test('activeIndex state', (t) => {
     'activeIndex advances to the end minus visibleSlides when reaching the end'
   )
 
-  nexted.next()
-  t.equal(
-    nexted.component.state('activeIndex'),
-    0,
-    'activeIndex loops back to 0 when advanced past the end'
-  )
-
   const preved = ai({ visibleSlides: 3, startAt: 5 })
   preved.prev()
   t.equal(
@@ -67,13 +68,6 @@ test('activeIndex state', (t) => {
   t.equal(
     preved.component.state('activeIndex'),
     0,
-    'activeIndex recedes to the 0 when reaching the beginning'
-  )
-
-  preved.prev()
-  t.equal(
-    preved.component.state('activeIndex'),
-    5,
-    'activeIndex loops to the end - visibleSlides when prev\'d past the beginning'
+    'activeIndex should be 0 when reaching the beginning'
   )
 })

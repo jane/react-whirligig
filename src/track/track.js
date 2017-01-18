@@ -13,8 +13,8 @@ import {
 } from '../utils'
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
 const wrapAroundValue = (val, max) => ((val % max) + max) % max
-const hardBoundedValue = (val, max) => Math.max(0, Math.min(max - 1, val))
-const normalizeIndex = (idx, len, wrap = false) => wrap ? wrapAroundValue(idx, len) : hardBoundedValue(idx, len)
+const hardBoundedValue = (val, max) => Math.max(0, Math.min(max, val))
+const normalizeIndex = (idx, len, wrap = false) => wrap ? wrapAroundValue(idx, len) : hardBoundedValue(idx, len - 1)
 export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
@@ -63,7 +63,7 @@ export default class Track extends Component {
     this.state = {
       activeIndex: 0,
       isAnimating: false,
-      visibleSlides: this.props.visibleSlides || 1,
+      visibleSlides: this.props.visibleSlides || 0,
       slideBy: this.props.slideBy || this.props.visibleSlides || 1 }
 
     // We can't do arrow function properties for these since
@@ -141,7 +141,7 @@ export default class Track extends Component {
 
   componentWillReceiveProps ({ slideBy, visibleSlides }) {
     if (slideBy !== this.props.slideBy || visibleSlides !== this.props.visibleSlides) {
-      this.setState({ slideBy: slideBy || visibleSlides })
+      this.setState({ slideBy: slideBy || visibleSlides || 1 })
     }
   }
 
@@ -172,22 +172,24 @@ export default class Track extends Component {
 
   next () {
     const { childCount, props, state } = this
-    const { activeIndex } = state
-    const { visibleSlides, infinite } = props
+    const { activeIndex, slideBy } = state
+    const { infinite } = props
 
     const firstIndex = 0
-    const lastIndex = childCount - visibleSlides
-    const nextActive = activeIndex + visibleSlides
-    const nextActiveInfinite = (activeIndex === lastIndex) ? firstIndex : Math.min(nextActive, lastIndex)
+    const lastIndex = childCount - slideBy
+    const nextActiveCandidate = activeIndex + slideBy
+    const nextActive = Math.min(nextActiveCandidate, lastIndex)
+    const nextActiveInfinite = (activeIndex === lastIndex) ? firstIndex : nextActive
     return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
   prev () {
-    const { activeIndex } = this.state
-    const { visibleSlides, infinite } = this.props
+    const { activeIndex, slideBy } = this.state
+    const { infinite } = this.props
     const firstIndex = 0
-    const nextActive = activeIndex - visibleSlides
-    const nextActiveInfinite = (activeIndex === firstIndex) || (nextActive > firstIndex) ? nextActive : firstIndex
+    const lastIndex = this.childCount - slideBy
+    const nextActive = Math.max(activeIndex - slideBy, firstIndex)
+    const nextActiveInfinite = (nextActive === firstIndex) ? lastIndex : nextActive
     return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
