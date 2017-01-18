@@ -82,6 +82,7 @@ export const animate = (el, {
   easing = easeOutQuint,
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
+  let originalStyleAttr
   if (!delta) res()
   const initialVal = el[prop]
   if (immediate) {
@@ -98,15 +99,15 @@ export const animate = (el, {
       window.requestAnimationFrame(step)
     } else {
       el[prop] = initialVal + delta // jump to end when animation is complete. necessary at least for immediate scroll
-
-      res()
+      res(originalStyleAttr)
     }
   }
   // We are going to temporarily prevent the user from being able to scroll during the animation.
   // This will prevent a janky fight between user scroll and animation which is just bad user experience.
+  originalStyleAttr = el.getAttribute('style')
   el.style.overflow = 'hidden'
   window.requestAnimationFrame(step)
-})).then(() => setTimeout(() => {
+})).then((styles) => setTimeout(() => {
   // Give scroll control back to the user once animation is done.
   // el.style.overflow = overFlowStyle
   // MS Edge doesn't like the above apparently.
@@ -114,5 +115,5 @@ export const animate = (el, {
   // Firefox doesn't like when this is done immediatly after jumping to the end.
   // Setting overflow somehow triggers a scroll event throwing this whole thing into an infinite loop.
   // Kicking to the next tick solves this.
-  el.setAttribute('style', el.getAttribute('style').replace(/(overflow:\s?)\w*/, '$1auto'))
+  el.setAttribute('style', styles || el.getAttribute('style').replace(/(overflow:\s?)\w*/, '$1auto'))
 }, 0))
