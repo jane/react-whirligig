@@ -115,6 +115,20 @@ class Slider extends Component {
       mount: nextProps.mount
     })
   }
+  componentDidMount () {
+    const persistedState = window.localStorage.getItem('react-track')
+
+    if (persistedState) {
+      try {
+        const state = JSON.parse(persistedState)
+        this.setState(state)
+      } catch (e) {}
+    }
+  }
+
+  componentDidUpdate () {
+    window.localStorage.setItem('react-track', JSON.stringify(this.state))
+  }
 
   setRef = (name) => (ref) => { this[name] = ref }
   setStateFromInput = (propName) => ({ target }) => {
@@ -289,7 +303,7 @@ render((
       <h1>react-track</h1>
       <p>A carousel-like component for react</p>
     </header>
-    <Slider>
+    <Slider startAt={5}>
       {slides.map(({ src, height, width, joiner, text }, i) => (
         <figure className="mySlide" key={`${src}-${i}`}>
           {src && <img alt="Place Zombie" src={`${src}/${width}${joiner}${height}?${i}`} />}

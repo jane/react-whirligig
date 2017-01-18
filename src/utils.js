@@ -78,12 +78,16 @@ export const hasOngoingInteraction = (el) => {
 export const animate = (el, {
   delta = 0,
   immediate = false,
-  duration = immediate ? 0 : 500,
+  duration = 500,
   easing = easeOutQuint,
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
   if (!delta) res()
   const initialVal = el[prop]
+  if (immediate) {
+    el[prop] = initialVal + delta
+    res()
+  }
   let startTime = null
   const step = (timestamp) => {
     if (!startTime) startTime = timestamp

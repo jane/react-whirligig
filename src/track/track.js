@@ -11,6 +11,7 @@ import {
   hasOngoingInteraction,
   values
 } from '../utils'
+// const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
 const wrapAroundValue = (val, max) => ((val % max) + max) % max
 const hardBoundedValue = (val, max) => Math.max(0, Math.min(max, val))
@@ -92,6 +93,22 @@ export default class Track extends Component {
     // values or state only the onScrollEnd callback cares about and
     // are not important to the rendering of the component.
     this.childCount = this.track.children.length
+    this.imagesLoaded = Promise.all(
+      [].slice.call(this.track.children)
+      .reduce((imgs, child) => [
+        ...imgs,
+        ...child.nodeName === 'IMAGE' ? [child] : [],
+        ...child.querySelectorAll('img')
+      ], [])
+      .map((img) => new Promise((res, rej) => {
+        if (img.complete) {
+          res()
+        } else {
+          img.addEventListener('load', res)
+          img.addEventListener('error', res)
+        }
+      }))
+    )
 
     const slideBy = {
       left: () => -this.state.slideBy,
@@ -194,29 +211,36 @@ export default class Track extends Component {
   }
 
   slideTo (index, { immediate = false } = {}) {
-    if (this.childCount === 0) return Promise.reject()
-    const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite } = this.props
-    const { children, scrollLeft } = this.track
-    const slideIndex = normalizeIndex(index, this.childCount, infinite)
-    const startingIndex = this.state.activeIndex
-    if (startingIndex === slideIndex) {
-      return Promise.reject()
-    } else {
-      this.setState({ activeIndex: slideIndex })
-    }
-    const delta = children[slideIndex].offsetLeft - scrollLeft
-    this.setState({ isAnimating: true })
-    beforeSlide(index)
-    return animate(this.track, { prop: 'scrollLeft', delta, immediate, easing, duration })
+    return this.imagesLoaded
     .then(() => {
-      this.setState({ isAnimating: false })
-      if (startingIndex !== slideIndex) {
-        return afterSlide(slideIndex)
+      if (this.childCount === 0) return Promise.reject()
+      const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite } = this.props
+      const { children, scrollLeft } = this.track
+      const slideIndex = normalizeIndex(index, this.childCount, infinite)
+      const startingIndex = this.state.activeIndex
+      if (startingIndex === slideIndex) {
+        return Promise.reject()
       }
-    })
-    .catch((err) => {
-      console.log('animation failed to complete: ', err)
-      this.setState({ isAnimating: false })
+      const delta = children[slideIndex].offsetLeft - scrollLeft
+      this.setState({ isAnimating: true })
+      beforeSlide(index)
+      return (new Promise((res, rej) => {
+        if (immediate) {
+          this.track.scrollLeft = children[slideIndex].offsetLeft
+          return res()
+        } else {
+          return res(animate(this.track, { prop: 'scrollLeft', delta, easing, duration }))
+        }
+      }))
+      .then(() => {
+        this.setState({ isAnimating: false, activeIndex: slideIndex  })
+        if (startingIndex !== slideIndex) {
+          return afterSlide(slideIndex)
+        }
+      })
+      .catch((err) => {
+        this.setState({ isAnimating: false })
+      })
     })
   };
 
