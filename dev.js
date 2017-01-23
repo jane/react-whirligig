@@ -1,10 +1,11 @@
 import { PropTypes, Component } from 'react'
 import { render } from 'react-dom'
+import { includes } from './src/utils'
 import Track from './src/track/index'
 
 const { array, bool, number, string, func, any } = PropTypes
 
-const isCheckable = (type) => ['checkbox', 'radio'].includes(type)
+const isCheckable = (type) => includes(type, ['checkbox', 'radio'])
 const coerceTable = {
   number: Number,
   func: (fn) => Function(fn)(), // eslint-disable-line

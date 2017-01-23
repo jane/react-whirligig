@@ -9,7 +9,8 @@ import {
   onScrollEnd,
   onScrollStart,
   hasOngoingInteraction,
-  values
+  values,
+  includes
 } from '../utils'
 // const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
@@ -36,8 +37,8 @@ export default class Track extends Component {
     gutter: (props, propName, componentName) => {
       const prop = props[propName]
       if (
-        typeof Number.parseInt(prop, 10) === 'number' &&
-        !Number.isNaN(Number(prop))
+        typeof parseInt(prop, 10) === 'number' &&
+        !isNaN(Number(prop))
       ) {
         return new Error(`Invalid value (${prop}) of prop '${propName}' supplied to ${componentName}.
         The value of ${propName} should be a valid css length unit
@@ -155,19 +156,18 @@ export default class Track extends Component {
   }
 
   handleKeyUp = ((nextKeys, prevKeys) => ({ key }) => {
-    const isNext = nextKeys.includes(key)
-    const isPrev = prevKeys.includes(key)
+    const isNext = includes(key, nextKeys)
+    const isPrev = includes(key, prevKeys)
     this.setState({ isAnimating: true })
     if (isNext) this.next().catch(noop)
     if (isPrev) this.prev().catch(noop)
     return false
   })(['ArrowRight'], ['ArrowLeft']);
 
-  // We don't want to update if only state changed.
-  // Sate is not important to the rendering of this component
-  shouldComponentUpdate (nextProps) {
-    const propValues = values(this.props)
-    const nextPropValues = values(nextProps)
+  // isAnimating state is the only important state value to the rendering of this component
+  shouldComponentUpdate (nextProps, { isAnimating }) {
+    const propValues = [...values(this.props), this.state.isAnimating]
+    const nextPropValues = [...values(nextProps), isAnimating]
     return !nextPropValues.every((val, i) => val === propValues[i])
   }
 
@@ -255,8 +255,9 @@ export default class Track extends Component {
       ...props
     } = this.props
 
-    const preventScrolling = preventScroll ? 'hidden' : 'auto'
+    const { isAnimating } = this.state
 
+    const preventScrolling = (preventScroll || isAnimating) ? 'hidden' : 'auto'
     const styles = {
       display: 'flex',
       flexFlow: 'row nowrap',
