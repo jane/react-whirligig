@@ -8,10 +8,10 @@ const Slider = ({slideIndex}) => (
   <div>
     <h1>Say hello to my little Slider</h1>
     <Track visibleSlides={3} gutter='1em' slideTo={slideIndex}>
-      <img src="http://www.fillmurray.com/400/300" />,
-      <img src="http://www.fillmurray.com/300/400" />,
-      <img src="http://www.fillmurray.com/400/200" />,
-      <img src="http://www.fillmurray.com/200/400" />,
+      <img src="http://www.fillmurray.com/400/300" />
+      <img src="http://www.fillmurray.com/300/400" />
+      <img src="http://www.fillmurray.com/400/200" />
+      <img src="http://www.fillmurray.com/200/400" />
       <img src="http://www.fillmurray.com/500/300" />
     }</Track>
   </div>
@@ -33,12 +33,12 @@ const Slider = () => {
     <div>
       <button onClick={prev}>Prev</button>
       <Track visibleSlides={3} gutter="1em" ref={(_trackInstance) => { track = _trackInstance}}>
-        <img src="http://www.fillmurray.com/400/300" />,
-        <img src="http://www.fillmurray.com/300/400" />,
-        <img src="http://www.fillmurray.com/400/200" />,
-        <img src="http://www.fillmurray.com/200/400" />,
+        <img src="http://www.fillmurray.com/400/300" />
+        <img src="http://www.fillmurray.com/300/400" />
+        <img src="http://www.fillmurray.com/400/200" />
+        <img src="http://www.fillmurray.com/200/400" />
         <img src="http://www.fillmurray.com/500/300" />
-      }</Track>
+      </Track>
       <button onClick={next}>Next</button>
     </div>
   )
