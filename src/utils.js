@@ -1,5 +1,6 @@
 import { easeOutQuint } from './easing'
 
+export const includes = (val, arr) => arr.includes ? arr.includes(val) : !!arr.filter((item) => item === val).length
 export const values = Object.values || ((obj) => Object.keys(obj).map((key) => obj[key]))
 export const compose = (...fns) => (val) => fns.reduceRight((currVal, fn) => fn(currVal), val)
 export const minMap = (...vals) => (val) => Math.min(...vals, val)
@@ -105,15 +106,13 @@ export const animate = (el, {
   // We are going to temporarily prevent the user from being able to scroll during the animation.
   // This will prevent a janky fight between user scroll and animation which is just bad user experience.
   originalStyleAttr = el.getAttribute('style')
-  el.style.overflow = 'hidden'
+  el.style.overflowX = 'hidden'
   window.requestAnimationFrame(step)
 })).then((styles) => setTimeout(() => {
-  // Give scroll control back to the user once animation is done.
-  // el.style.overflow = overFlowStyle
-  // MS Edge doesn't like the above apparently.
-
   // Firefox doesn't like when this is done immediatly after jumping to the end.
   // Setting overflow somehow triggers a scroll event throwing this whole thing into an infinite loop.
   // Kicking to the next tick solves this.
-  el.setAttribute('style', styles || el.getAttribute('style').replace(/(overflow:\s?)\w*/, '$1auto'))
+
+  // Give scroll control back to the user once animation is done.
+  el.style.overflowX = 'auto'
 }, 0))
