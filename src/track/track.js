@@ -88,6 +88,7 @@ export default class Track extends Component {
   componentDidMount () {
     this.DOMNode = findDOMNode(this.track)
     this.isInteracting = hasOngoingInteraction(this.DOMNode)
+    this.pristineStyles = this.DOMNode.getAttribute('style')
 
     // These are not a part of component state since we don't want
     // incure the overhead of calling setState. They are either cached
@@ -211,7 +212,7 @@ export default class Track extends Component {
         this.track.scrollLeft = children[slideIndex].offsetLeft
         return res()
       } else {
-        return res(animate(this.track, { prop: 'scrollLeft', delta, easing, duration }))
+        return res(animate(this.track, this.pristineStyles, { prop: 'scrollLeft', delta, easing, duration }))
       }
     }))
     .then(() => {

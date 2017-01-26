@@ -76,14 +76,13 @@ export const hasOngoingInteraction = (el) => {
   return () => getOngoingTouchCount() || getOngoingMouseClick()
 }
 
-export const animate = (el, {
+export const animate = (el, originalStyleAttr, {
   delta = 0,
   immediate = false,
   duration = 500,
   easing = easeOutQuint,
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
-  let originalStyleAttr
   if (!delta) res()
   const initialVal = el[prop]
   if (immediate) {
@@ -105,7 +104,6 @@ export const animate = (el, {
   }
   // We are going to temporarily prevent the user from being able to scroll during the animation.
   // This will prevent a janky fight between user scroll and animation which is just bad user experience.
-  originalStyleAttr = el.getAttribute('style')
   el.style.overflowX = 'hidden'
   window.requestAnimationFrame(step)
 })).then((styles) => setTimeout(() => {
