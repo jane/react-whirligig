@@ -80,6 +80,16 @@ A boolean flag that determines whether the track should wrap to the beginning/en
 _default: 1em_
 A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string that represents the space between each Slide in the Track.
 
+### nextKeys:_array_
+_default: ["ArrowRight"]_
+An array of valid "Key" values from a KeyboardEvent (https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) indicating what "Key" values,
+when pressed, should move the track forward
+
+### prevKeys:_array_
+_default: ["ArrowLeft"]_
+An array of valid "Key" values from a KeyboardEvent (https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values) indicating what "Key" values,
+when pressed, should move the track backward
+
 ### preventScroll:_bool_
 _default: false_
 A boolean flag that turns off/on the ability to natively scroll through the Track.
