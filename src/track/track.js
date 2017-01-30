@@ -26,6 +26,8 @@ export default class Track extends Component {
     className: oneOfType([array, string, object]),
     easing: func,
     infinite: bool,
+    nextKeys: array,
+    prevKeys: array,
     preventScroll: bool,
     onSlideClick: func,
     snapToSlide: bool,
@@ -53,6 +55,8 @@ export default class Track extends Component {
     animationDuration: 500,
     beforeSlide: () => {},
     gutter: '1em',
+    nextKeys: ['ArrowRight'],
+    prevKeys: ['ArrowLeft'],
     preventScroll: false,
     snapToSlide: false,
     startAt: 0,
@@ -162,7 +166,7 @@ export default class Track extends Component {
     if (isNext) this.next().catch(noop)
     if (isPrev) this.prev().catch(noop)
     return false
-  })(['ArrowRight'], ['ArrowLeft']);
+  })(this.props.nextKeys, this.props.prevKeys);
 
   // isAnimating state is the only important state value to the rendering of this component
   shouldComponentUpdate (nextProps, { isAnimating }) {
@@ -243,6 +247,8 @@ export default class Track extends Component {
       easing, // eslint-disable-line no-unused-vars
       infinite, // eslint-disable-line no-unused-vars
       gutter,
+      nextKeys, // eslint-disable-line no-unused-vars
+      prevKeys, // eslint-disable-line no-unused-vars
       preventScroll,
       snapToSlide, // eslint-disable-line no-unused-vars
       onSlideClick,
