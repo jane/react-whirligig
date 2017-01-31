@@ -27,6 +27,7 @@ export default class Track extends Component {
     easing: func,
     infinite: bool,
     preventScroll: bool,
+    preventSwipe: bool,
     onSlideClick: func,
     snapToSlide: bool,
     slideTo: number,
@@ -54,6 +55,7 @@ export default class Track extends Component {
     beforeSlide: () => {},
     gutter: '1em',
     preventScroll: false,
+    preventSwipe: false,
     snapToSlide: false,
     startAt: 0,
     style: {}
@@ -88,7 +90,7 @@ export default class Track extends Component {
   componentDidMount () {
     this.DOMNode = findDOMNode(this.track)
     this.isInteracting = hasOngoingInteraction(this.DOMNode)
-    this.pristineStyles = this.DOMNode.getAttribute('style')
+    this.originalOverflowX = this.DOMNode.style.overflowX || 'auto'
 
     // These are not a part of component state since we don't want
     // incure the overhead of calling setState. They are either cached
@@ -130,7 +132,7 @@ export default class Track extends Component {
       })(this.track),
 
       onSwipe((direction) => {
-        if (this.props.snapToSlide) {
+        if (!this.props.preventSwipe && this.props.snapToSlide) {
           this.slideTo(this.state.activeIndex + (slideBy[direction]())).catch(noop)
         }
       })(this.track)
@@ -142,7 +144,7 @@ export default class Track extends Component {
 
   componentWillUnmount () { this.eventListeners.forEach((fn) => fn()) }
 
-  componentWillReceiveProps ({ slideBy, visibleSlides }) {
+  componentWillReceiveProps ({ slideBy, visibleSlides, preventSwipe }) {
     if (slideBy !== this.props.slideBy || visibleSlides !== this.props.visibleSlides) {
       this.setState({ slideBy: slideBy || visibleSlides || 1 })
     }
@@ -197,7 +199,7 @@ export default class Track extends Component {
 
   slideTo (index, { immediate = false } = {}) {
     if (this.childCount === 0) return Promise.reject()
-    const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite } = this.props
+    const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite, preventScroll } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
@@ -212,7 +214,9 @@ export default class Track extends Component {
         this.track.scrollLeft = children[slideIndex].offsetLeft
         return res()
       } else {
-        return res(animate(this.track, this.pristineStyles, { prop: 'scrollLeft', delta, easing, duration }))
+        return res(animate(this.track,
+          (preventScroll ? 'hidden' : this.originalOverflowX),
+          { prop: 'scrollLeft', delta, easing, duration }))
       }
     }))
     .then(() => {
@@ -245,6 +249,7 @@ export default class Track extends Component {
       infinite, // eslint-disable-line no-unused-vars
       gutter,
       preventScroll,
+      preventSwipe, // eslint-disable-line no-unused-vars
       snapToSlide, // eslint-disable-line no-unused-vars
       onSlideClick,
       slideClass,

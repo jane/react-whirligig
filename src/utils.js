@@ -76,7 +76,7 @@ export const hasOngoingInteraction = (el) => {
   return () => getOngoingTouchCount() || getOngoingMouseClick()
 }
 
-export const animate = (el, originalStyleAttr, {
+export const animate = (el, originalOverflowX, {
   delta = 0,
   immediate = false,
   duration = 500,
@@ -99,7 +99,7 @@ export const animate = (el, originalStyleAttr, {
       window.requestAnimationFrame(step)
     } else {
       el[prop] = initialVal + delta // jump to end when animation is complete. necessary at least for immediate scroll
-      res(originalStyleAttr)
+      res(originalOverflowX)
     }
   }
   // We are going to temporarily prevent the user from being able to scroll during the animation.
@@ -112,5 +112,5 @@ export const animate = (el, originalStyleAttr, {
   // Kicking to the next tick solves this.
 
   // Give scroll control back to the user once animation is done.
-  el.style.overflowX = 'auto'
+  el.style.overflowX = originalOverflowX
 }, 0))

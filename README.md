@@ -84,6 +84,10 @@ A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string t
 _default: false_
 A boolean flag that turns off/on the ability to natively scroll through the Track.
 
+### preventSwipe:_bool_
+_default: false_
+A boolean flag that turns off/on the ability to swipe through the Track.
+
 ### slideBy:_number_
 _default: visibleSlides or 1_
 The number of slides that should advance on a `next`, `prev`, or `swipe` action. If not specified, will reflect the visibleSlides prop value or `1`.
