@@ -29,6 +29,7 @@ export default class Track extends Component {
     nextKeys: array,
     prevKeys: array,
     preventScroll: bool,
+    preventSwipe: bool,
     onSlideClick: func,
     snapToSlide: bool,
     slideTo: number,
@@ -58,6 +59,7 @@ export default class Track extends Component {
     nextKeys: ['ArrowRight'],
     prevKeys: ['ArrowLeft'],
     preventScroll: false,
+    preventSwipe: false,
     snapToSlide: false,
     startAt: 0,
     style: {}
@@ -133,7 +135,7 @@ export default class Track extends Component {
       })(this.track),
 
       onSwipe((direction) => {
-        if (this.props.snapToSlide) {
+        if (!this.props.preventSwipe && this.props.snapToSlide) {
           this.slideTo(this.state.activeIndex + (slideBy[direction]())).catch(noop)
         }
       })(this.track)
@@ -145,7 +147,7 @@ export default class Track extends Component {
 
   componentWillUnmount () { this.eventListeners.forEach((fn) => fn()) }
 
-  componentWillReceiveProps ({ slideBy, visibleSlides }) {
+  componentWillReceiveProps ({ slideBy, visibleSlides, preventSwipe }) {
     if (slideBy !== this.props.slideBy || visibleSlides !== this.props.visibleSlides) {
       this.setState({ slideBy: slideBy || visibleSlides || 1 })
     }
@@ -200,7 +202,7 @@ export default class Track extends Component {
 
   slideTo (index, { immediate = false } = {}) {
     if (this.childCount === 0) return Promise.reject()
-    const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite } = this.props
+    const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite, preventScroll } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
@@ -215,7 +217,8 @@ export default class Track extends Component {
         this.track.scrollLeft = children[slideIndex].offsetLeft
         return res()
       } else {
-        return res(animate(this.track, { prop: 'scrollLeft', delta, easing, duration }))
+        const originalOverflowX = preventScroll ? 'hidden' : 'auto'
+        return res(animate(this.track, { prop: 'scrollLeft', delta, easing, duration, originalOverflowX }))
       }
     }))
     .then(() => {
@@ -250,6 +253,7 @@ export default class Track extends Component {
       nextKeys, // eslint-disable-line no-unused-vars
       prevKeys, // eslint-disable-line no-unused-vars
       preventScroll,
+      preventSwipe, // eslint-disable-line no-unused-vars
       snapToSlide, // eslint-disable-line no-unused-vars
       onSlideClick,
       slideClass,

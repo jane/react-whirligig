@@ -81,9 +81,9 @@ export const animate = (el, {
   immediate = false,
   duration = 500,
   easing = easeOutQuint,
+  originalOverflowX = 'auto',
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
-  let originalStyleAttr
   if (!delta) res()
   const initialVal = el[prop]
   if (immediate) {
@@ -100,19 +100,18 @@ export const animate = (el, {
       window.requestAnimationFrame(step)
     } else {
       el[prop] = initialVal + delta // jump to end when animation is complete. necessary at least for immediate scroll
-      res(originalStyleAttr)
+      res()
     }
   }
   // We are going to temporarily prevent the user from being able to scroll during the animation.
   // This will prevent a janky fight between user scroll and animation which is just bad user experience.
-  originalStyleAttr = el.getAttribute('style')
   el.style.overflowX = 'hidden'
   window.requestAnimationFrame(step)
-})).then((styles) => setTimeout(() => {
+})).then(() => setTimeout(() => {
   // Firefox doesn't like when this is done immediatly after jumping to the end.
   // Setting overflow somehow triggers a scroll event throwing this whole thing into an infinite loop.
   // Kicking to the next tick solves this.
 
   // Give scroll control back to the user once animation is done.
-  el.style.overflowX = 'auto'
+  el.style.overflowX = originalOverflowX
 }, 0))
