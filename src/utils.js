@@ -76,11 +76,12 @@ export const hasOngoingInteraction = (el) => {
   return () => getOngoingTouchCount() || getOngoingMouseClick()
 }
 
-export const animate = (el, originalOverflowX, {
+export const animate = (el, {
   delta = 0,
   immediate = false,
   duration = 500,
   easing = easeOutQuint,
+  originalOverflowX = 'auto',
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
   if (!delta) res()
@@ -99,14 +100,14 @@ export const animate = (el, originalOverflowX, {
       window.requestAnimationFrame(step)
     } else {
       el[prop] = initialVal + delta // jump to end when animation is complete. necessary at least for immediate scroll
-      res(originalOverflowX)
+      res()
     }
   }
   // We are going to temporarily prevent the user from being able to scroll during the animation.
   // This will prevent a janky fight between user scroll and animation which is just bad user experience.
   el.style.overflowX = 'hidden'
   window.requestAnimationFrame(step)
-})).then((styles) => setTimeout(() => {
+})).then(() => setTimeout(() => {
   // Firefox doesn't like when this is done immediatly after jumping to the end.
   // Setting overflow somehow triggers a scroll event throwing this whole thing into an infinite loop.
   // Kicking to the next tick solves this.
