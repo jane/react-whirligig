@@ -76,6 +76,12 @@ export const hasOngoingInteraction = (el) => {
   return () => getOngoingTouchCount() || getOngoingMouseClick()
 }
 
+export const isWhollyInView = (parent) => (child = { getBoundingClientRect: () => ({}) }) => {
+  const { left: cLeft, right: cRight } = child.getBoundingClientRect()
+  const { left: pLeft, right: pRight } = parent.getBoundingClientRect()
+  return (cLeft >= pLeft && cRight <= pRight)
+}
+
 export const animate = (el, {
   delta = 0,
   immediate = false,

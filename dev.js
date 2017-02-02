@@ -131,6 +131,8 @@ class Slider extends Component {
     window.localStorage.setItem('react-track', JSON.stringify(this.state))
   }
 
+  handleAfterSlide = (currentSlide) => { this.setState({ currentSlide }) }
+
   setRef = (name) => (ref) => { this[name] = ref }
   setStateFromInput = (propName) => ({ target }) => {
     const { checked, type } = target
@@ -194,11 +196,14 @@ class Slider extends Component {
           <this.Control label="slideTo" type="number" name="slideTo" />
           <this.Control label="startAt" type="number" name="startAt" />
           <this.Control label="visibleSlides" type="number" name="visibleSlides" />
+          <h1>Current Slide is {this.state.currentSlide}</h1>
         </div>
         { mount
         ? <div className="slider">
           <Track
-            afterSlide={afterSlide}
+            afterSlide={(idx) => {
+              this.handleAfterSlide(idx)
+            }}
             animationDuration={animationDuration}
             beforeSlide={beforeSlide}
             className={className}
@@ -212,6 +217,7 @@ class Slider extends Component {
             slideBy={slideBy}
             slideClass={slideClass}
             slideTo={slideTo}
+            slideToCenter
             startAt={startAt}
             visibleSlides={visibleSlides}
             >{ children }</Track>
@@ -304,7 +310,7 @@ render((
       <h1>react-track</h1>
       <p>A carousel-like component for react</p>
     </header>
-    <Slider startAt={5}>
+    <Slider>
       {slides.map(({ src, height, width, joiner, text }, i) => (
         <figure className="mySlide" key={`${src}-${i}`}>
           {src && <img alt="Place Zombie" src={`${src}/${width}${joiner}${height}?${i}`} />}

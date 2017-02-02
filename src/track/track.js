@@ -10,7 +10,8 @@ import {
   onScrollStart,
   hasOngoingInteraction,
   values,
-  includes
+  includes,
+  isWhollyInView
 } from '../utils'
 // const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
 const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
@@ -33,6 +34,7 @@ export default class Track extends Component {
     onSlideClick: func,
     snapToSlide: bool,
     slideTo: number,
+    slideToCenter: bool,
     slideBy: number,
     slideClass: oneOfType([array, string, object]),
     startAt: number,
@@ -69,10 +71,10 @@ export default class Track extends Component {
     super(props)
 
     this.state = {
-      activeIndex: 0,
+      activeIndex: props.startAt,
       isAnimating: false,
       visibleSlides: this.props.visibleSlides || 0,
-      slideBy: this.props.slideBy || this.props.visibleSlides || 1 }
+      slideBy: this.props.slideBy || this.props.visibleSlides || 0 }
 
     // We can't do arrow function properties for these since
     // we are passing them to the consuming component and we
@@ -155,7 +157,12 @@ export default class Track extends Component {
 
   componentDidUpdate (prevProps) {
     this.childCount = this.track.children.length
-    this.shouldSelfCorrect() && this.slideTo(this.getNearestSlideIndex()).catch(noop)
+
+    if (this.shouldSelfCorrect()) {
+      const nearestSlideIndex = this.getNearestSlideIndex()
+      nearestSlideIndex !== this.state.activeIndex && this.slideTo(this.getNearestSlideIndex()).catch(noop)
+    }
+
     if (prevProps.slideTo !== this.props.slideTo) {
       this.slideTo(this.props.slideTo).catch(noop)
     }
@@ -177,13 +184,33 @@ export default class Track extends Component {
     return !nextPropValues.every((val, i) => val === propValues[i])
   }
 
+  getPartiallyObscuredSlides = () => {
+    const { track } = this
+    const findFirstObscuredChildIndex = [...track.children]
+      .findIndex((child, i, children) => !isWhollyInView(track)(child) && isWhollyInView(track)(children[i + 1]))
+
+    const firstObscuredChildIndex = Math.max(findFirstObscuredChildIndex, 0)
+
+    const findLastObscuredChildIndex = [...track.children]
+      .findIndex((child, i, children) => !isWhollyInView(track)(child) && isWhollyInView(track)(children[i - 1]))
+    const lastObscuredChildIndex = Math.max(findLastObscuredChildIndex, 0) || track.children.length - 1
+
+    return [firstObscuredChildIndex, lastObscuredChildIndex]
+  }
+
   next () {
     const { childCount, props, state } = this
     const { activeIndex, slideBy } = state
     const { infinite } = props
-
     const firstIndex = 0
     const lastIndex = childCount - slideBy
+
+    if (!slideBy) {
+      const [_, nextSlide] = this.getPartiallyObscuredSlides()
+      const nextInfinteSlide = (nextSlide === childCount - 1) ? 0 : nextSlide
+      return this.slideTo(infinite ? nextInfinteSlide : nextSlide)
+    }
+
     const nextActiveCandidate = activeIndex + slideBy
     const nextActive = Math.min(nextActiveCandidate, lastIndex)
     const nextActiveInfinite = (activeIndex === lastIndex) ? firstIndex : nextActive
@@ -191,24 +218,30 @@ export default class Track extends Component {
   }
 
   prev () {
-    const { activeIndex, slideBy } = this.state
-    const { infinite } = this.props
+    const { childCount, state, props } = this
+    const { activeIndex, slideBy } = state
+    const { infinite } = props
     const firstIndex = 0
-    const lastIndex = this.childCount - slideBy
+    const lastIndex = childCount - slideBy
+
+    if (!slideBy) {
+      const [prevSlide] = this.getPartiallyObscuredSlides()
+      const prevInfinteSlide = (prevSlide === firstIndex) ? childCount - 1 : prevSlide
+      return this.slideTo(infinite ? prevInfinteSlide : prevSlide)
+    }
+
     const nextActive = Math.max(activeIndex - slideBy, firstIndex)
     const nextActiveInfinite = (nextActive === firstIndex) ? lastIndex : nextActive
     return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
   slideTo (index, { immediate = false } = {}) {
-    if (this.childCount === 0) return Promise.reject()
+    if (this.childCount === 0) return Promise.reject('No children to slide to')
     const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite, preventScroll } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
-    if (startingIndex === slideIndex) {
-      return Promise.reject()
-    }
+    if (startingIndex === slideIndex) return Promise.resolve(slideIndex)
     const delta = children[slideIndex].offsetLeft - scrollLeft
     beforeSlide(index)
     this.setState({ isAnimating: true, activeIndex: slideIndex })
