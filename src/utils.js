@@ -90,11 +90,11 @@ export const animate = (el, {
   originalOverflowX = 'auto',
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
-  if (!delta) res()
+  if (!delta) return res()
   const initialVal = el[prop]
   if (immediate) {
     el[prop] = initialVal + delta
-    res()
+    return res()
   }
   let startTime = null
   const step = (timestamp) => {

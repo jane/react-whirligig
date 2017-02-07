@@ -242,7 +242,6 @@ export default class Track extends Component {
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
     const delta = children[slideIndex].offsetLeft - scrollLeft
-    if (!delta) return Promise.resolve(slideIndex)
     beforeSlide(index)
     this.setState({ isAnimating: true, activeIndex: slideIndex })
     return (new Promise((res, rej) => {
