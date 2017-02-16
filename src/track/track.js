@@ -29,6 +29,7 @@ export default class Track extends Component {
     infinite: bool,
     nextKeys: array,
     prevKeys: array,
+    preventAutoCorrect: bool,
     preventScroll: bool,
     preventSwipe: bool,
     onSlideClick: func,
@@ -60,6 +61,7 @@ export default class Track extends Component {
     gutter: '1em',
     nextKeys: ['ArrowRight'],
     prevKeys: ['ArrowLeft'],
+    preventAutoCorrect: false,
     preventScroll: false,
     preventSwipe: false,
     snapToSlide: false,
@@ -87,6 +89,7 @@ export default class Track extends Component {
   eventListeners = []
   isScrolling = false
   canSelfCorrect = () =>
+    !this.props.preventAutoCorrect &&
     !this.state.isAnimating &&
     !this.isScrolling &&
     !this.isInteracting()
@@ -287,6 +290,7 @@ export default class Track extends Component {
       nextKeys, // eslint-disable-line no-unused-vars
       prevKeys, // eslint-disable-line no-unused-vars
       preventScroll,
+      preventAutoCorrect, // eslint-disable-line no-unused-vars
       preventSwipe, // eslint-disable-line no-unused-vars
       snapToSlide, // eslint-disable-line no-unused-vars
       onSlideClick,
