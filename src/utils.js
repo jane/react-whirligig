@@ -90,21 +90,25 @@ export const animate = (el, {
   originalOverflowX = 'auto',
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
-  let shouldBail = false
-  const setShouldBail = () => { shouldBail = true }
-  el.addEventListener('touchstart', setShouldBail)
   if (!delta) return res()
   const initialVal = el[prop]
   if (immediate) {
     el[prop] = initialVal + delta
     return res()
   }
+  let hasBailed = false
+  const bail = () => {
+    hasBailed = true
+    const pos = el[prop]
+    el.removeEventListener('touchstart', bail)
+    el.style.overflowX = originalOverflowX
+    el[prop] = pos
+    return rej('Animation interupted by interaction')
+  }
+  el.addEventListener('touchstart', bail)
   let startTime = null
   const step = (timestamp) => {
-    if (shouldBail) {
-      el.removeEventListener('touchstart', setShouldBail)
-      return rej('Animation interupted by interaction')
-    }
+    if (hasBailed) return
     if (!startTime) startTime = timestamp
     const progressTime = timestamp - startTime
     const progressRatio = easing(progressTime / duration)
