@@ -87,7 +87,6 @@ export const animate = (el, {
   immediate = false,
   duration = 500,
   easing = easeOutQuint,
-  originalOverflowX = 'auto',
   prop = 'scrollTop'
 } = {}) => (new Promise((res, rej) => {
   if (!delta) return res()
@@ -101,7 +100,6 @@ export const animate = (el, {
     hasBailed = true
     const pos = el[prop]
     el.removeEventListener('touchstart', bail)
-    el.style.overflowX = originalOverflowX
     el[prop] = pos
     return rej('Animation interupted by interaction')
   }
@@ -120,15 +118,5 @@ export const animate = (el, {
       res()
     }
   }
-  // We are going to temporarily prevent the user from being able to scroll during the animation.
-  // This will prevent a janky fight between user scroll and animation which is just bad user experience.
-  // el.style.overflowX = 'hidden'
   window.requestAnimationFrame(step)
-})).then(() => setTimeout(() => {
-  // Firefox doesn't like when this is done immediatly after jumping to the end.
-  // Setting overflow somehow triggers a scroll event throwing this whole thing into an infinite loop.
-  // Kicking to the next tick solves this.
-
-  // Give scroll control back to the user once animation is done.
-  el.style.overflowX = originalOverflowX
-}, 0))
+}))
