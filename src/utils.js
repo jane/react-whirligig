@@ -122,7 +122,7 @@ export const animate = (el, {
   }
   // We are going to temporarily prevent the user from being able to scroll during the animation.
   // This will prevent a janky fight between user scroll and animation which is just bad user experience.
-  el.style.overflowX = 'hidden'
+  // el.style.overflowX = 'hidden'
   window.requestAnimationFrame(step)
 })).then(() => setTimeout(() => {
   // Firefox doesn't like when this is done immediatly after jumping to the end.
