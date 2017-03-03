@@ -303,9 +303,7 @@ export default class Track extends Component {
       ...props
     } = this.props
 
-    const { isAnimating } = this.state
-
-    const preventScrolling = (preventScroll || isAnimating) ? 'hidden' : 'auto'
+    const preventScrolling = preventScroll ? 'hidden' : 'auto'
     const styles = {
       display: 'flex',
       flexFlow: 'row nowrap',
