@@ -27,6 +27,7 @@ export default class Track extends Component {
     className: oneOfType([array, string, object]),
     easing: func,
     infinite: bool,
+    innerRef: func,
     nextKeys: array,
     prevKeys: array,
     preventAutoCorrect: bool,
@@ -104,7 +105,7 @@ export default class Track extends Component {
     // incure the overhead of calling setState. They are either cached
     // values or state only the onScrollEnd callback cares about and
     // are not important to the rendering of the component.
-    this.childCount = this.track.children.length
+    this.childCount = (this.track && this.track.children) ? this.track.children.length : 0
 
     const slideBy = {
       left: () => -this.state.slideBy,
@@ -159,7 +160,7 @@ export default class Track extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    this.childCount = this.track.children.length
+    this.childCount = (this.track && this.track.children) ? this.track.children.length : 0
 
     if (this.shouldSelfCorrect()) {
       const nearestSlideIndex = this.getNearestSlideIndex()
@@ -240,6 +241,7 @@ export default class Track extends Component {
 
   slideTo (index, { immediate = false } = {}) {
     if (this.childCount === 0) return Promise.reject('No children to slide to')
+    if (!this.track) return Promise.reject('The Track is not mounted')
     const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite, preventScroll } = this.props
     const { children, scrollLeft } = this.track
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
@@ -286,6 +288,7 @@ export default class Track extends Component {
       className,
       easing, // eslint-disable-line no-unused-vars
       infinite, // eslint-disable-line no-unused-vars
+      innerRef, // eslint-disable-line no-unused-vars
       gutter,
       nextKeys, // eslint-disable-line no-unused-vars
       prevKeys, // eslint-disable-line no-unused-vars
