@@ -2,8 +2,7 @@
   presets: [
     "env",
     "stage-3",
-    "react",
-    "babili"
+    "react"
   ],
   plugins: [
     "babel-plugin-transform-export-extensions",

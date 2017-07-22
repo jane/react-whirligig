@@ -1,5 +1,4 @@
 import React, { Component, Children } from 'react'
-import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import Slide from '../slide'
 import {
@@ -14,8 +13,8 @@ import {
   includes,
   isWhollyInView
 } from '../utils'
+import { bool, number, string, func, array, oneOfType, object, node } from 'prop-types'
 // const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
-const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
 const wrapAroundValue = (val, max) => ((val % max) + max) % max
 const hardBoundedValue = (val, max) => Math.max(0, Math.min(max, val))
 const normalizeIndex = (idx, len, wrap = false) => wrap ? wrapAroundValue(idx, len) : hardBoundedValue(idx, len - 1)

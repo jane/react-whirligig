@@ -1,6 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-const { string, node, array, oneOfType, object } = PropTypes
+import { string, node, array, oneOfType, object } from 'prop-types'
 
 const Slide = ({
   basis = '100%',
