@@ -1,7 +1,7 @@
 {
   "name": "react-track",
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "author": "Cory Brown <cory@jane.com>",
   "license": "MIT",
   "main": "lib/track/index.js",
