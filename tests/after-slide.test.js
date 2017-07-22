@@ -1,3 +1,4 @@
+import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/track'
@@ -13,8 +14,9 @@ test('Track afterSlide prop', (t) => {
   let next, prev, called = 0
   const goNext = () => next()
   const goPrev = () => prev()
+  const a = () => { called++ }
   mount(
-    <Track afterSlide={() => { called++ }}>{
+    <Track afterSlide={a}>{
       (_next, _prev) => {
         next = _next
         prev = _prev

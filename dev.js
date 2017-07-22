@@ -1,9 +1,8 @@
-import { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { includes } from './src/utils'
-import Track from './src/track/index'
-
-const { array, bool, number, string, func, any } = PropTypes
+import Track from './src/track'
+import { array, bool, number, string, func, any } from 'prop-types'
 
 const isCheckable = (type) => includes(type, ['checkbox', 'radio'])
 const coerceTable = {
@@ -220,7 +219,7 @@ class Slider extends Component {
             slideToCenter
             startAt={startAt}
             visibleSlides={visibleSlides}
-            >{ children }</Track>
+            >{children}</Track>
           <div className="controls">
             <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
             <button className="nextButton" onClick={next}>I wanna see more beards!</button>
