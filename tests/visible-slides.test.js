@@ -1,3 +1,4 @@
+import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/track'
@@ -39,7 +40,7 @@ test('visibleSlides prop', (t) => {
 
   const vs2 = vs(2)([0, 1, 2])
   t.ok(
-    vs2.wrapped.children('Slide').first().props().basis.match(/^calc/),
+    vs2.wrapped.children('Slide').first().props().basis.startsWith('calc'),
     'Track children (Slide) have a calculated basis'
   )
 })

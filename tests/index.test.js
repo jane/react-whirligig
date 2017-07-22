@@ -1,4 +1,5 @@
-import { jsdom } from 'jsdom'
+const { jsdom } = require('jsdom/lib/old-api')
+
 global.document = jsdom('')
 global.window = document.defaultView
 

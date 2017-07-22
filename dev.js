@@ -1,7 +1,8 @@
-import { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { render } from 'react-dom'
 import { includes } from './src/utils'
-import Track from './src/track/index'
+import Track from './src/track'
 
 const { array, bool, number, string, func, any } = PropTypes
 

@@ -1,3 +1,4 @@
+import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/track'
@@ -22,9 +23,9 @@ test('gutter prop', (t) => {
       )
     })
   gutterTrack('1em', 2).find('Slide')
-    .forEach((Slide, i) => {
+    .forEach((Slide) => {
       t.ok(
-        Slide.prop('basis').match(/^calc/),
+        Slide.prop('basis').startsWith('calc'),
         'Track applies a basis prop to Slide with a css calc value if `visibleSlides` is also set'
       )
       t.ok(
@@ -38,7 +39,7 @@ test('gutter prop', (t) => {
    * this unit test captures `console.error` and stores erverything called with it.
    * we then check to make sure the correct number of calls were made, and that the values are correct.
   */
-  let  errorLog = []
+  let errorLog = []
   console.error = (...msgs) =>  { errorLog = [...errorLog, ...msgs] }
   gutterTrack(1)
   t.equals(errorLog.length, 2, 'only one error per slide is logged')

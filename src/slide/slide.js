@@ -1,7 +1,14 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 const { string, node, array, oneOfType, object } = PropTypes
 
-const Slide = ({ basis = '100%', gutter = '1em', className = '', children, ...props }) => (
+const Slide = ({
+  basis = '100%',
+  gutter = '1em',
+  className = '',
+  children,
+  ...props
+}) => (
   <div
     className={className}
     style={{

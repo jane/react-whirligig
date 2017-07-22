@@ -1,4 +1,5 @@
-import React, { Component, Children, PropTypes } from 'react'
+import React, { Component, Children } from 'react'
+import PropTypes from 'prop-types'
 import { findDOMNode } from 'react-dom'
 import Slide from '../slide'
 import {
@@ -18,6 +19,7 @@ const { bool, number, string, func, array, oneOfType, object, node } = PropTypes
 const wrapAroundValue = (val, max) => ((val % max) + max) % max
 const hardBoundedValue = (val, max) => Math.max(0, Math.min(max, val))
 const normalizeIndex = (idx, len, wrap = false) => wrap ? wrapAroundValue(idx, len) : hardBoundedValue(idx, len - 1)
+
 export default class Track extends Component {
   static propTypes = {
     afterSlide: func,
@@ -135,8 +137,8 @@ export default class Track extends Component {
       on('touchend')(() => {
         if (this.canSelfCorrect()) {
           this.props.snapToSlide
-          ? this.slideTo(this.getNearestSlideIndex()).catch(noop)
-          : this.props.afterSlide(this.getNearestSlideIndex())
+            ? this.slideTo(this.getNearestSlideIndex()).catch(noop)
+            : this.props.afterSlide(this.getNearestSlideIndex())
         }
       })(this.track),
 
@@ -153,7 +155,7 @@ export default class Track extends Component {
 
   componentWillUnmount () { this.eventListeners.forEach((fn) => fn()) }
 
-  componentWillReceiveProps ({ slideBy, visibleSlides, preventSwipe }) {
+  componentWillReceiveProps ({ slideBy, visibleSlides }) {
     if (slideBy !== this.props.slideBy || visibleSlides !== this.props.visibleSlides) {
       this.setState({ slideBy: slideBy || visibleSlides || 1 })
     }
@@ -179,7 +181,7 @@ export default class Track extends Component {
     if (isNext) this.next().catch(noop)
     if (isPrev) this.prev().catch(noop)
     return false
-  })(this.props.nextKeys, this.props.prevKeys);
+  })(this.props.nextKeys, this.props.prevKeys)
 
   // isAnimating state is the only important state value to the rendering of this component
   shouldComponentUpdate (nextProps, { isAnimating }) {
@@ -251,7 +253,7 @@ export default class Track extends Component {
       beforeSlide(index)
     }
     this.setState({ isAnimating: true, activeIndex: slideIndex })
-    return (new Promise((res, rej) => {
+    return (new Promise((res, _) => {
       if (immediate) {
         this.track.scrollLeft = children[slideIndex].offsetLeft
         return res()
@@ -260,22 +262,22 @@ export default class Track extends Component {
         return res(animate(this.track, { prop: 'scrollLeft', delta, easing, duration, originalOverflowX }))
       }
     }))
-    .then(() => {
-      this.setState({ isAnimating: false })
-      if (startingIndex !== slideIndex) {
-        return afterSlide(slideIndex)
-      }
-    })
-    .catch((err) => {
-      this.setState({ isAnimating: false })
-    })
-  };
+      .then(() => {
+        this.setState({ isAnimating: false })
+        if (startingIndex !== slideIndex) {
+          return afterSlide(slideIndex)
+        }
+      })
+      .catch((_) => {
+        this.setState({ isAnimating: false })
+      })
+  }
 
   getNearestSlideIndex = () => {
     const { children, scrollLeft } = this.track
     const offsets = [].slice.call(children).map(({ offsetLeft }) => Math.abs(offsetLeft - scrollLeft))
     return offsets.indexOf(Math.min(...offsets))
-  };
+  }
 
   setRef = (name) => (ref) => { this[name] = ref }
 

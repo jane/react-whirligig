@@ -1,20 +1,12 @@
 {
   presets: [
-    // Latest stable ECMAScript features
-    'latest',
-    // stage-2 ECMAScript features
-    'stage-3',
-    // JSX
-    'react',
-    //minification
-    'babili'
+    "env",
+    "stage-3",
+    "react",
+    "babili"
   ],
   plugins: [
-    // export Thing from './thing'
-    'babel-plugin-transform-export-extensions',
-    // class { handleClick = () => { } }
-    'babel-plugin-transform-class-properties',
-    // injects `import React from 'react'` when jsx is present
-    'babel-plugin-react-require'
+    "babel-plugin-transform-export-extensions",
+    "babel-plugin-transform-class-properties"
   ]
 }

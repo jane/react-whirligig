@@ -1,3 +1,4 @@
+import React from 'react'
 import test from 'tape'
 import { shallow } from 'enzyme'
 import Track from '../src/track'
