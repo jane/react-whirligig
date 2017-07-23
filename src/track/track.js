@@ -282,26 +282,26 @@ export default class Track extends Component {
 
   render () {
     const {
-      afterSlide, // eslint-disable-line no-unused-vars
-      animationDuration, // eslint-disable-line no-unused-vars
-      beforeSlide, // eslint-disable-line no-unused-vars
+      afterSlide,
+      animationDuration,
+      beforeSlide,
       children,
       className,
-      easing, // eslint-disable-line no-unused-vars
-      infinite, // eslint-disable-line no-unused-vars
-      innerRef, // eslint-disable-line no-unused-vars
+      easing,
+      infinite,
+      innerRef,
       gutter,
-      nextKeys, // eslint-disable-line no-unused-vars
-      prevKeys, // eslint-disable-line no-unused-vars
+      nextKeys,
+      prevKeys,
       preventScroll,
-      preventAutoCorrect, // eslint-disable-line no-unused-vars
-      preventSwipe, // eslint-disable-line no-unused-vars
-      snapToSlide, // eslint-disable-line no-unused-vars
+      preventAutoCorrect,
+      preventSwipe,
+      snapToSlide,
       onSlideClick,
       slideClass,
-      slideTo, // eslint-disable-line no-unused-vars
-      slideBy, // eslint-disable-line no-unused-vars
-      startAt, // eslint-disable-line no-unused-vars
+      slideTo,
+      slideBy,
+      startAt,
       style,
       visibleSlides,
       ...props
