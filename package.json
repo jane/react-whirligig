@@ -7,11 +7,12 @@
   "main": "lib/track/index.js",
   "scripts": {
     "build": "npm test && NODE_ENV=production babel src --out-dir lib",
-    "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config ./webpack.config.babel.js",
+    "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
+    "doc": "webpack --config webpack.config.babel.js",
     "preversion": "npm run build && git add ./lib",
     "test": "npm run test:lint && npm run test:tape",
-    "test:lint": "eslint -c .eslintrc.json src tests dev.js",
-    "test:tape": "tape -r babel-register tests/**/*.test.js | tap-spec"
+    "test:lint": "eslint -c .eslintrc.json src test dev.js",
+    "test:tape": "tape -r babel-register test/**/*.test.js | tap-spec"
   },
   "homepage": "https://github.com/jane/react-track#readme",
   "repository": {
