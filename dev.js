@@ -133,6 +133,7 @@ class Slider extends Component {
   handleAfterSlide = (currentSlide) => { this.setState({ currentSlide }) }
 
   setRef = (name) => (ref) => { this[name] = ref }
+
   setStateFromInput = (propName) => ({ target }) => {
     const { checked, type } = target
     this.setState({
