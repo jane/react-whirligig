@@ -1,4 +1,7 @@
 import webpack from 'webpack'
+import { resolve } from 'path'
+
+const pub = resolve(__dirname, 'docs')
 
 const { NODE_ENV } = process.env
 
@@ -8,6 +11,7 @@ export default {
     index: './src/track/index.js'
   },
   output: {
+    path: pub,
     filename: '[name].js',
     library: 'react-track',
     libraryTarget: 'umd'

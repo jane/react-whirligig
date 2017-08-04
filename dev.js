@@ -133,6 +133,7 @@ class Slider extends Component {
   handleAfterSlide = (currentSlide) => { this.setState({ currentSlide }) }
 
   setRef = (name) => (ref) => { this[name] = ref }
+
   setStateFromInput = (propName) => ({ target }) => {
     const { checked, type } = target
     this.setState({
@@ -157,7 +158,6 @@ class Slider extends Component {
   render () {
     const { children } = this.props
     const {
-      afterSlide,
       animationDuration,
       beforeSlide,
       className,
@@ -176,6 +176,7 @@ class Slider extends Component {
     } = this.state
     const next = () => this.track.next().catch(() => {})
     const prev = () => this.track.prev().catch(() => {})
+    const after = (idx) => this.handleAfterSlide(idx)
     return (
       <div>
         <div className="options">
@@ -197,35 +198,36 @@ class Slider extends Component {
           <this.Control label="visibleSlides" type="number" name="visibleSlides" />
           <h1>Current Slide is {this.state.currentSlide}</h1>
         </div>
-        { mount
-        ? <div className="slider">
-          <Track
-            afterSlide={(idx) => {
-              this.handleAfterSlide(idx)
-            }}
-            animationDuration={animationDuration}
-            beforeSlide={beforeSlide}
-            className={className}
-            easing={easing}
-            infinite={infinite}
-            gutter={gutter}
-            onSlideClick={onSlideClick}
-            preventScroll={preventScroll}
-            snapToSlide={snapToSlide}
-            ref={this.setRef('track')}
-            slideBy={slideBy}
-            slideClass={slideClass}
-            slideTo={slideTo}
-            slideToCenter
-            startAt={startAt}
-            visibleSlides={visibleSlides}
-            >{children}</Track>
-          <div className="controls">
-            <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
-            <button className="nextButton" onClick={next}>I wanna see more beards!</button>
+        {mount
+          ? <div className="slider">
+            <Track
+              afterSlide={after}
+              animationDuration={animationDuration}
+              beforeSlide={beforeSlide}
+              className={className}
+              easing={easing}
+              infinite={infinite}
+              gutter={gutter}
+              onSlideClick={onSlideClick}
+              preventScroll={preventScroll}
+              snapToSlide={snapToSlide}
+              ref={this.setRef('track')}
+              slideBy={slideBy}
+              slideClass={slideClass}
+              slideTo={slideTo}
+              slideToCenter
+              startAt={startAt}
+              visibleSlides={visibleSlides}
+            >
+              {children}
+            </Track>
+            <div className="controls">
+              <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
+              <button className="nextButton" onClick={next}>I wanna see more beards!</button>
+            </div>
           </div>
-        </div>
-        : null }
+          : null
+        }
       </div>
     )
   }
