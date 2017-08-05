@@ -1,12 +1,16 @@
 html, body {
   box-sizing: border-box;
   margin: 0;
-  background: rebeccapurple;
-  height: 100vh;
+  background: #e5e5e5;
+  font-family: sans-serif;
 }
 
 *, *::before, *::after {
   box-sizing: inherit;
+}
+
+input {
+  font-family: monospace;
 }
 
 main {
@@ -14,18 +18,16 @@ main {
   flex-flow: column nowrap;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100%;
 }
 
 figure { margin: 0; }
 
-.header {
-  color: hsla(0, 100%, 100%, .8);
+header {
+  color: #222;
   font-size: 2em;
   text-align: center;
-  border-top: .25em solid hsla(0, 100%, 100%, .4);
-  border-bottom: .125em solid hsla(0, 100%, 100%, .4);
-  margin-bottom: 1em;
+  border-bottom: 1px solid #222;
 }
 
 .line { display: block; }
@@ -45,9 +47,8 @@ figure { margin: 0; }
 }
 
 .text {
-  color: hsla(0, 100%, 100%, .8);
+  color: #222;
   text-align: left;
-  font-family: sans-serif;
   padding: 2em;
 }
 
@@ -56,7 +57,7 @@ figure { margin: 0; }
 }
 
 .slider {
-  width: 100vw;
+  width: 100%;
   padding-bottom: 4em;
   position: relative;
 }
@@ -64,8 +65,7 @@ figure { margin: 0; }
 .autoslideToggler {
   margin: 1em;
   display: block;
-  color: hsla(0, 100%, 100%, .8);
-  font-family: sans-serif;
+  color: #222;
 }
 .controls {
   display: flex;
@@ -76,7 +76,7 @@ figure { margin: 0; }
 button {
   background: none;
   border: none;
-  color: hsla(0, 100%, 100%, .4);
+  color: #222;
   font-size: 1.1em;
   padding: 1em;
   position: absolute;
@@ -97,7 +97,7 @@ button:hover {
 
 .prevButton::before {
   content: '';
-  border: 1em solid hsla(0, 100%, 100%, .2);
+  border: 1em solid #222;
   transform: translateY(.75em) rotate(45deg);
   transform-origin: center;
   display: inline-block;
@@ -111,7 +111,7 @@ button:hover {
   content: '';
   width: 25%;
   height: calc(50% + .125em);
-  border-bottom: .5em solid hsla(0, 100%, 100%, .2);
+  border-bottom: .5em solid #222;
   position: absolute;
   left: 2em;
   bottom: .5em;
@@ -125,7 +125,7 @@ button:hover {
 
 .nextButton::after {
   content: '';
-  border: 1em solid hsla(0, 100%, 100%, .2);
+  border: 1em solid #222;
   transform: translateY(.75em) rotate(45deg);
   transform-origin: center;
   display: inline-block;
@@ -139,7 +139,7 @@ button:hover {
   content: '';
   width: 25%;
   height: calc(50% + .125em);
-  border-bottom: .5em solid hsla(0, 100%, 100%, .2);
+  border-bottom: .5em solid #222;
   position: absolute;
   right: 2em;
   bottom: .5em;
@@ -160,5 +160,23 @@ button:hover {
 }
 
 .label {
-  color: white;
+  color: #222;
+}
+
+.currentSlide {
+  border-top: 1px solid #222;
+  padding-top: 12px;
+  text-align: center;
+}
+
+.md {
+  margin: 25px auto;
+}
+
+.wrapper {
+  max-width: 900px;
+}
+
+.caption {
+  margin-bottom: auto;
 }

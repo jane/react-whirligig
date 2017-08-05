@@ -34,7 +34,7 @@ export default {
   devtool: NODE_ENV !== 'production' ? '#source-map' : '',
   devServer: {
     host: '0.0.0.0',
-    contentBase: __dirname,
+    contentBase: pub,
     compress: true,
     port: 9090
   }

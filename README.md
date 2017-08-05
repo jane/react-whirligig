@@ -46,7 +46,6 @@ const Slider = () => {
     </div>
   )
 }
-
 ```
 
 ## Track
