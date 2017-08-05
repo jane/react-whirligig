@@ -14,7 +14,7 @@
     "test:lint": "eslint -c .eslintrc.json src test dev.js",
     "test:tape": "tape -r babel-register test/**/*.test.js | tap-spec"
   },
-  "homepage": "https://github.com/jane/react-track#readme",
+  "homepage": "https://jane.github.io/react-track",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jane/react-track.git"
