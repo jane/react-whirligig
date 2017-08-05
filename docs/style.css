@@ -30,13 +30,6 @@ main {
 
 figure { margin: 0; }
 
-header {
-  color: #666;
-  font-size: 2em;
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-}
-
 .line { display: block; }
 .align-left { text-align: left; }
 .align-right { text-align: right; }

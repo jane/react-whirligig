@@ -289,7 +289,6 @@ class Demo extends Component {
   render () {
     return (
       <div className="wrapper">
-        <header><h1>React Track</h1></header>
         <div dangerouslySetInnerHTML={{ __html: this.state.docs }} className="md" />
         <Slider>
           {slides.map(({ src, height, width, joiner, text }, i) => (
