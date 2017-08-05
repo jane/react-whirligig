@@ -161,6 +161,8 @@ button:hover {
 
 .label {
   color: #666;
+  margin-top: 20px;
+  margin-bottom: 8px;
 }
 
 .currentSlide {

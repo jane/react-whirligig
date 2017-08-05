@@ -252,7 +252,7 @@ const slides = [
       <span className="line align-right">beards!</span>
     </h3>
   }, {
-    src: 'http://fillmurray.com',
+    src: 'https://fillmurray.com',
     height: 300,
     width: 300,
     joiner: '/'
