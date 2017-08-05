@@ -207,8 +207,8 @@ class Slider extends Component {
               {children}
             </Track>
             <div className="controls">
-              <button className="prevButton" onClick={prev}>Let me see that beard again!</button>
-              <button className="nextButton" onClick={next}>I wanna see more beards!</button>
+              <button className="prevButton" onClick={prev} />
+              <button className="nextButton" onClick={next} />
             </div>
           </div>
         }

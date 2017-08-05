@@ -1,28 +1,29 @@
-# react-track
+# [react-track](https://jane.github.io/react-track)
 
-A react carousel/slider like component for sequentially displaying slides or
-sets of slides.
+A carousel/slider-like component for sequentially displaying slides or sets of
+slides.
+
+----
 
 ## Basic Usage
 
 ```jsx
-const Slider = ({slideIndex}) => (
+const Slider = ({ slideIndex }) => (
   <div>
-    <h1>Say hello to my little Slider</h1>
-    <Track visibleSlides={3} gutter='1em' slideTo={slideIndex}>
+    <Track visibleSlides={3} gutter="1em" slideTo={slideIndex}>
       <img src="http://www.fillmurray.com/400/300" />
       <img src="http://www.fillmurray.com/300/400" />
       <img src="http://www.fillmurray.com/400/200" />
       <img src="http://www.fillmurray.com/200/400" />
       <img src="http://www.fillmurray.com/500/300" />
-    }</Track>
+    </Track>
   </div>
 )
 ```
 
 ## Advanced Usage
 
-react-track exposes next and prev functions for moving the track forward and
+`react-track` exposes next and prev functions for moving the track forward and
 backward the number of visible slides. These functions can be accessed using the
 `ref` prop callback to get a reference to the `Track` instance.
 
@@ -76,8 +77,9 @@ The function is passed what the new "active" slide index will be.
 
 ### className:_classnames_
 
-A `classnames` compliant value (string or array of string|array|object) that
-will be applied as the class attribute.
+A [`classnames`](https://github.com/JedWatson/classnames) compliant value
+(string or array of `string|array|object` that will be applied as the class
+attribute.
 
 ### easing:_func_
 
@@ -190,3 +192,7 @@ remaining slides to transition the full number of visible slides, it will
 transition to the beginning of the track. If already at the beginning of the
 track, calling `prev` will transition the track to last full set of visible
 slides in the track.
+
+## License
+
+[MIT](https://github.com/jane/react-track/blob/master/LICENSE)

@@ -1,8 +1,15 @@
+@font-face {
+  font-family: 'Proxima Nova';
+  font-style: normal;
+  font-weight: 300;
+  src: url(https://jane.com/cdn.jane/fonts/proximanova-regular-webfont.woff2) format('woff2'),url(https://jane.com/cdn.jane/fonts/proximanova-regular-webfont.woff) format('woff');
+}
+
 html, body {
   box-sizing: border-box;
   margin: 0;
-  background: #e5e5e5;
-  font-family: sans-serif;
+  background: #fff;
+  font-family: 'Proxima Nova', sans-serif;
 }
 
 *, *::before, *::after {
@@ -24,10 +31,10 @@ main {
 figure { margin: 0; }
 
 header {
-  color: #222;
+  color: #666;
   font-size: 2em;
   text-align: center;
-  border-bottom: 1px solid #222;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .line { display: block; }
@@ -47,7 +54,7 @@ header {
 }
 
 .text {
-  color: #222;
+  color: #666;
   text-align: left;
   padding: 2em;
 }
@@ -76,7 +83,7 @@ header {
 button {
   background: none;
   border: none;
-  color: #222;
+  color: #666;
   font-size: 1.1em;
   padding: 1em;
   position: absolute;
@@ -97,7 +104,7 @@ button:hover {
 
 .prevButton::before {
   content: '';
-  border: 1em solid #222;
+  border: 1em solid #999;
   transform: translateY(.75em) rotate(45deg);
   transform-origin: center;
   display: inline-block;
@@ -111,7 +118,7 @@ button:hover {
   content: '';
   width: 25%;
   height: calc(50% + .125em);
-  border-bottom: .5em solid #222;
+  border-bottom: .5em solid #999;
   position: absolute;
   left: 2em;
   bottom: .5em;
@@ -125,7 +132,7 @@ button:hover {
 
 .nextButton::after {
   content: '';
-  border: 1em solid #222;
+  border: 1em solid #999;
   transform: translateY(.75em) rotate(45deg);
   transform-origin: center;
   display: inline-block;
@@ -139,7 +146,7 @@ button:hover {
   content: '';
   width: 25%;
   height: calc(50% + .125em);
-  border-bottom: .5em solid #222;
+  border-bottom: .5em solid #999;
   position: absolute;
   right: 2em;
   bottom: .5em;
@@ -160,11 +167,11 @@ button:hover {
 }
 
 .label {
-  color: #222;
+  color: #666;
 }
 
 .currentSlide {
-  border-top: 1px solid #222;
+  border-top: 1px solid #e5e5e5;
   padding-top: 12px;
   text-align: center;
 }
@@ -179,4 +186,40 @@ button:hover {
 
 .caption {
   margin-bottom: auto;
+}
+
+a {
+  text-decoration: none;
+  color: #36c6b1;
+}
+
+hr {
+  border-top: 1px solid #e5e5e5;
+  border-width: 0px 1px 0px 0px;
+  height: 0;
+}
+
+.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out;
+}
+
+@keyframes octocat-wave {
+  0%, 100% {
+    transform: rotate(0);
+  }
+  20%, 60% {
+    transform: rotate(-25deg);
+  }
+  40%,80% {
+    transform: rotate(10deg)
+  }
+}
+
+@media (max-width:500px) {
+  .github-corner:hover .octo-arm {
+    animation:none;
+  }
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out;
+  }
 }
