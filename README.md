@@ -1,4 +1,4 @@
-# [react-track](https://jane.github.io/react-track)
+# [react-whirligig](https://jane.github.io/react-whirligig)
 
 A carousel/slider-like component for sequentially displaying slides or sets of
 slides.
@@ -23,7 +23,7 @@ const Slider = ({ slideIndex }) => (
 
 ## Advanced Usage
 
-`react-track` exposes next and prev functions for moving the track forward and
+`react-whirligig` exposes next and prev functions for moving the track forward and
 backward the number of visible slides. These functions can be accessed using the
 `ref` prop callback to get a reference to the `Track` instance.
 
@@ -195,4 +195,4 @@ slides in the track.
 
 ## License
 
-[MIT](https://github.com/jane/react-track/blob/master/LICENSE)
+[MIT](https://github.com/jane/react-whirligig/blob/master/LICENSE)
