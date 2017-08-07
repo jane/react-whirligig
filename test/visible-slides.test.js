@@ -22,7 +22,6 @@ test('visibleSlides prop', (t) => {
     }
   }
 
-  t.plan(3)
 
   const vs1 = vs()([0, 1, 2])
 
@@ -43,4 +42,6 @@ test('visibleSlides prop', (t) => {
     vs2.wrapped.children('Slide').first().props().basis.startsWith('calc'),
     'Track children (Slide) have a calculated basis'
   )
+
+  t.end()
 })

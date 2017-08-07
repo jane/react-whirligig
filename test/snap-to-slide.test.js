@@ -6,8 +6,6 @@ import Track from '../src/track'
 test('snapToSlide prop', (t) => {
   const sts = (sts) => mount(<Track snapToSlide={sts}>{ () => [1] }</Track>)
 
-  t.plan(1)
-
   t.equal(
     sts().prop('snapToSlide'),
     false,
@@ -15,4 +13,6 @@ test('snapToSlide prop', (t) => {
   )
 
   // TODO: how to test this properly
+
+  t.end()
 })

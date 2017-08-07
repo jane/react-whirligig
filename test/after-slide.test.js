@@ -7,7 +7,6 @@ const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
 
 test('Track afterSlide prop', (t) => {
   const wrapped = mount(<Track>{() => []}</Track>)
-  t.plan(3)
 
   t.equals(typeof wrapped.prop('afterSlide'), 'function', 'value of afterSlide prop should default to a noop function')
 
@@ -30,4 +29,6 @@ test('Track afterSlide prop', (t) => {
     .then(() => goPrev()
       .then(() => t.equals(called, 2, 'afterSlide function should be called after sliding to prev'))
     ).catch(tap('error'))
+
+  t.end()
 })

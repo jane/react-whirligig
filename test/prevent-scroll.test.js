@@ -6,7 +6,6 @@ import Track from '../src/track'
 test('preventScroll prop', (t) => {
   const ps = (ps) => mount(<Track preventScroll={ps}>{ () => [1, 2] }</Track>)
 
-  t.plan(2)
   t.equal(ps().prop('preventScroll'), false, 'preventScroll defaults to false')
   // Track is triggering an animation that puts the state of overflowX to true. Need to find a better way to test.
   // t.equal(
@@ -19,4 +18,6 @@ test('preventScroll prop', (t) => {
     'hidden',
     'value of overflowX style for containing element when preventScroll is true is `hidden`'
   )
+
+  t.end()
 })
