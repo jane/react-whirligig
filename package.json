@@ -12,7 +12,7 @@
     "build": "npm test && NODE_ENV=production babel src --out-dir lib",
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
     "doc": "webpack -p --config webpack.config.babel.js",
-    "preversion": "npm run build && git add ./lib",
+    "preversion": "npm run build",
     "test": "npm run test:lint && npm run test:tape",
     "test:lint": "eslint -c .eslintrc.json src test dev.js",
     "test:tape": "tape -r babel-register test/**/*.test.js | tap-spec"
