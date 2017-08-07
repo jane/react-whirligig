@@ -1,11 +1,12 @@
 {
-  presets: [
+  "presets": [
     "env",
     "stage-3",
     "react"
   ],
-  plugins: [
-    "babel-plugin-transform-export-extensions",
-    "babel-plugin-transform-class-properties"
+  "plugins": [
+    "transform-export-extensions",
+    "transform-class-properties",
+    "transform-react-remove-prop-types"
   ]
 }

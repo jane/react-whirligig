@@ -22,8 +22,6 @@ test('infinite prop', (t) => {
     }
   }
 
-  t.plan(3)
-
   const infinite1 = infinite()([0, 1, 2])
   t.equal(
     infinite1.wrapped.prop('infinite'),
@@ -45,4 +43,6 @@ test('infinite prop', (t) => {
     0,
     'When infinite is true, preving past the end returns to the begining'
   )
+
+  t.end()
 })

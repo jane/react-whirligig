@@ -6,8 +6,6 @@ import Track from '../src/track'
 test('startAt prop', (t) => {
   const sa = (sa) => mount(<Track startAt={sa}>{ () => [0, 1] }</Track>)
 
-  t.plan(4)
-
   t.equal(
     sa().prop('startAt'),
     0,
@@ -31,4 +29,6 @@ test('startAt prop', (t) => {
     1,
     'activeIndex is normalized to be within the bounds of the number Silde children'
   )
+
+  t.end()
 })

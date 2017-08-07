@@ -8,8 +8,9 @@ test('Track classname prop', (t) => {
   const arr = () => shallow(<Track className={['string']}>{ () => [] }</Track>)
   const obj = () => shallow(<Track className={{ 'string': true }}>{ () => [] }</Track>)
 
-  t.plan(3)
   t.equal(typeof str().prop('className'), 'string', 'className accepts a string')
   t.equal(typeof obj().prop('className'), 'object', 'className accepts an object')
   t.ok(Array.isArray(arr().prop('className')), 'className accepts an array')
+
+  t.end()
 })

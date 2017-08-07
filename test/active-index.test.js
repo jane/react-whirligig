@@ -28,8 +28,6 @@ test('activeIndex state', (t) => {
     }
   }
 
-  t.plan(6)
-
   t.equal(
     ai().component.state('activeIndex'),
     0,
@@ -71,4 +69,6 @@ test('activeIndex state', (t) => {
     0,
     'activeIndex should be 0 when reaching the beginning'
   )
+
+  t.end()
 })
