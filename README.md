@@ -1,4 +1,8 @@
-# [react-whirligig](https://jane.github.io/react-whirligig)
+# react-whirligig
+
+* [demo](https://jane.github.io/react-whirligig)
+* [npm](https://npmjs.com/package/react-whirligig)
+* [repo](https://github.com/jane/react-whirligig)
 
 A carousel/slider-like component for sequentially displaying slides or sets of
 slides.
