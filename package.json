@@ -1,5 +1,5 @@
 {
-  "name": "react-track",
+  "name": "react-whirligig",
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
   "version": "4.2.2",
   "author": "Cory Brown <cory@jane.com>",
@@ -14,13 +14,13 @@
     "test:lint": "eslint -c .eslintrc.json src test dev.js",
     "test:tape": "tape -r babel-register test/**/*.test.js | tap-spec"
   },
-  "homepage": "https://jane.github.io/react-track",
+  "homepage": "https://jane.github.io/react-whirligig",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jane/react-track.git"
+    "url": "git+https://github.com/jane/react-whirligig.git"
   },
   "bugs": {
-    "url": "https://github.com/jane/react-track/issues"
+    "url": "https://github.com/jane/react-whirligig/issues"
   },
   "keywords": [
     "carousel",
@@ -44,7 +44,7 @@
     "css-loader": "0.28.4",
     "enhanced-resolve": "3.4.1",
     "enzyme": "2.9.1",
-    "eslint": "4.3.0",
+    "eslint": "4.4.1",
     "eslint-config-jane": "0.4.1",
     "eslint-plugin-babel": "4.1.2",
     "eslint-plugin-jest": "20.0.3",
