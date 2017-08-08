@@ -22,7 +22,6 @@ test('visibleSlides prop', (t) => {
     }
   }
 
-
   const vs1 = vs()([0, 1, 2])
 
   t.equal(

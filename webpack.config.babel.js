@@ -3,8 +3,6 @@ import { resolve } from 'path'
 
 const pub = resolve(__dirname, 'docs')
 
-const { NODE_ENV } = process.env
-
 export default {
   entry: {
     demo: './dev.js',
@@ -31,7 +29,7 @@ export default {
       }
     })
   ],
-  devtool: NODE_ENV !== 'production' ? '#source-map' : '',
+  devtool: 'source-map',
   devServer: {
     host: '0.0.0.0',
     contentBase: pub,

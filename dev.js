@@ -119,7 +119,7 @@ class Slider extends Component {
   }
 
   componentDidMount () {
-    const persistedState = window.localStorage.getItem('react-track')
+    const persistedState = window.localStorage.getItem('react-whirligig')
 
     if (persistedState) {
       try {
@@ -130,7 +130,7 @@ class Slider extends Component {
   }
 
   componentDidUpdate () {
-    window.localStorage.setItem('react-track', JSON.stringify(this.state))
+    window.localStorage.setItem('react-whirligig', JSON.stringify(this.state))
   }
 
   handleAfterSlide = (currentSlide) => { this.setState({ currentSlide }) }
@@ -196,7 +196,7 @@ class Slider extends Component {
               onSlideClick={onSlideClick}
               preventScroll={preventScroll}
               snapToSlide={snapToSlide}
-              ref={this.setRef('track')}
+              ref={this.setRef('whirligig')}
               slideBy={slideBy}
               slideClass={slideClass}
               slideTo={slideTo}
@@ -244,12 +244,9 @@ const slides = [
   })),
   {
     text: <h3>
-      <span className="line align-right">It</span>
-      <span className="line align-right">need</span>
-      <span className="line align-right">not</span>
-      <span className="line align-right">only</span>
-      <span className="line align-right">be</span>
-      <span className="line align-right">beards!</span>
+      {[ 'it', 'need', 'not', 'only', 'be', 'beards!' ].map((t) =>
+        <span key={t} className="line align-right">{t}</span>
+      )}
     </h3>
   }, {
     src: 'https://fillmurray.com',
@@ -258,12 +255,9 @@ const slides = [
     joiner: '/'
   }, {
     text: <h3>
-      <span className="line align-left">It</span>
-      <span className="line align-left">can</span>
-      <span className="line align-left">be</span>
-      <span className="line align-left">anything</span>
-      <span className="line align-left">you</span>
-      <span className="line align-left">want!</span>
+      {[ 'it', 'can', 'be', 'anything', 'you', 'want!' ].map((t) =>
+        <span key={t} className="line align-left">{t}</span>
+      )}
     </h3>
   },
   { text: <h3>Featuring:</h3> },
@@ -278,7 +272,7 @@ class Demo extends Component {
   state = { docs: '' }
 
   componentDidMount () {
-    window.fetch('https://raw.githubusercontent.com/jane/react-track/master/README.md')
+    window.fetch('https://raw.githubusercontent.com/jane/react-whirligig/master/README.md')
       .then((a) => a.text())
       .then((t) => {
         this.setState({ docs: marked(t) })
