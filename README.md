@@ -207,9 +207,9 @@ slides in the track.
 
 ## Contributors
 
-* Authored by @uniqname
-* Thanks @RachelTheRiveter for the name!
-* Maintained by @jane
+* Authored by [@uniqname](https://github.com/uniqname)
+* Thanks [@RachelTheRiveter](https://github.com/RachelTheRiveter) for the name!
+* Maintained by [@jane](https://github.com/jane)
 
 ## License
 
