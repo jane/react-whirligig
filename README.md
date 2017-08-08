@@ -205,6 +205,12 @@ transition to the beginning of the track. If already at the beginning of the
 track, calling `prev` will transition the track to last full set of visible
 slides in the track.
 
+## Contributors
+
+* Authored by @uniqname
+* Thanks @RachelTheRiveter for the name!
+* Maintained by @jane
+
 ## License
 
 [MIT](https://github.com/jane/react-whirligig/blob/master/LICENSE)
