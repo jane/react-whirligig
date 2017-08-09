@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { includes } from './src/utils'
 import W from './src/whirligig'
-import { array, bool, number, string, func, any } from 'prop-types'
+import { array, bool, number, string, func } from 'prop-types'
 import marked from 'marked'
 
 const isCheckable = (type) => includes(type, ['checkbox', 'radio'])
@@ -17,26 +17,6 @@ const coerceValueToType = ({ type, value }) => {
   return coercer(value)
 }
 
-const Control = ({ label, type, name, onChange, value }) => (
-  <label className="option">
-    <span className="label">{label}</span>
-    <input
-      type={type}
-      name={name}
-      id={name}
-      value={value}
-      onChange={onChange}
-    />
-  </label>
-)
-Control.propTypes = {
-  label: string,
-  type: string,
-  name: string,
-  onChange: func,
-  value: any
-}
-
 class Slider extends Component {
   static propTypes = {
     afterSlide: func,
@@ -47,7 +27,6 @@ class Slider extends Component {
     easing: func,
     gutter: string,
     infinite: bool,
-    mount: bool,
     onSlideClick: func,
     preventScroll: bool,
     slideBy: number,
@@ -75,26 +54,23 @@ class Slider extends Component {
     startAt: 0,
     visibleSlides: 0
   }
-  constructor (props) {
-    super(props)
-    this.state = {
-      afterSlide: props.afterSlide,
-      animationDuration: props.animationDuration,
-      beforeSlide: props.beforeSlide,
-      className: props.className,
-      easing: props.easing,
-      infinite: props.infinite,
-      gutter: props.gutter,
-      onSlideClick: props.onSlideClick,
-      preventScroll: props.preventScroll,
-      snapToSlide: props.snapToSlide,
-      slideBy: props.slideBy,
-      slideClass: props.slideClass,
-      slideTo: props.slideTo,
-      startAt: props.startAt,
-      visibleSlides: props.visibleSlides,
-      mount: true
-    }
+
+  state = {
+    afterSlide: this.props.afterSlide,
+    animationDuration: this.props.animationDuration,
+    beforeSlide: this.props.beforeSlide,
+    className: this.props.className,
+    easing: this.props.easing,
+    infinite: this.props.infinite,
+    gutter: this.props.gutter,
+    onSlideClick: this.props.onSlideClick,
+    preventScroll: this.props.preventScroll,
+    snapToSlide: this.props.snapToSlide,
+    slideBy: this.props.slideBy,
+    slideClass: this.props.slideClass,
+    slideTo: this.props.slideTo,
+    startAt: this.props.startAt,
+    visibleSlides: this.props.visibleSlides
   }
 
   componentWillReceiveProps (nextProps) {
@@ -113,20 +89,18 @@ class Slider extends Component {
       slideClass: nextProps.slideClass,
       slideTo: nextProps.slideTo,
       startAt: nextProps.startAt,
-      visibleSlides: nextProps.visibleSlides,
-      mount: nextProps.mount
+      visibleSlides: nextProps.visibleSlides
     })
   }
 
   componentDidMount () {
-    const persistedState = window.localStorage.getItem('react-whirligig')
-
-    if (persistedState) {
-      try {
+    try {
+      const persistedState = window.localStorage.getItem('react-whirligig')
+      if (persistedState) {
         const state = JSON.parse(persistedState)
         this.setState(state)
-      } catch (e) {}
-    }
+      }
+    } catch (_) { }
   }
 
   componentDidUpdate () {
@@ -174,46 +148,42 @@ class Slider extends Component {
       slideClass,
       slideTo,
       startAt,
-      visibleSlides,
-      mount
+      visibleSlides
     } = this.state
     const next = () => this.track.next().catch(() => {})
     const prev = () => this.track.prev().catch(() => {})
     const after = (idx) => this.handleAfterSlide(idx)
     return (
       <div>
-        <h3 className="currentSlide">Current Slide is {this.state.currentSlide}</h3>
-        {mount &&
-          <div className="slider">
-            <W
-              afterSlide={after}
-              animationDuration={animationDuration}
-              beforeSlide={beforeSlide}
-              className={className}
-              easing={easing}
-              infinite={infinite}
-              gutter={gutter}
-              onSlideClick={onSlideClick}
-              preventScroll={preventScroll}
-              snapToSlide={snapToSlide}
-              ref={this.setRef('whirligig')}
-              slideBy={slideBy}
-              slideClass={slideClass}
-              slideTo={slideTo}
-              slideToCenter
-              startAt={startAt}
-              visibleSlides={visibleSlides}
-            >
-              {children}
-            </W>
-            <div className="controls">
-              <button className="prevButton" onClick={prev} />
-              <button className="nextButton" onClick={next} />
-            </div>
+        <div className="slider">
+          <W
+            afterSlide={after}
+            animationDuration={animationDuration}
+            beforeSlide={beforeSlide}
+            className={className}
+            easing={easing}
+            infinite={infinite}
+            gutter={gutter}
+            onSlideClick={onSlideClick}
+            preventScroll={preventScroll}
+            snapToSlide={snapToSlide}
+            ref={this.setRef('whirligig')}
+            slideBy={slideBy}
+            slideClass={slideClass}
+            slideTo={slideTo}
+            slideToCenter
+            startAt={startAt}
+            visibleSlides={visibleSlides}
+          >
+            {children}
+          </W>
+          <div className="controls">
+            <button className="prevButton" onClick={prev} />
+            <button className="nextButton" onClick={next} />
           </div>
-        }
+        </div>
         <div className="options">
-          <this.Control label="un/mount Whirligig" type="checkbox" name="mount" />
+          <span className="option currentSlide">Current slide is {this.state.currentSlide}</span>
           <this.Control label="afterSlide" type="func" name="afterSlide" />
           <this.Control label="animationDuration" type="number" name="animationDuration" />
           <this.Control label="beforeSlide" type="func" name="beforeSlide" />
@@ -271,7 +241,7 @@ const slides = [
 class Demo extends Component {
   state = { docs: '' }
 
-  componentDidMount () {
+  componentWillMount () {
     window.fetch('https://raw.githubusercontent.com/jane/react-whirligig/master/README.md')
       .then((a) => a.text())
       .then((t) => {
