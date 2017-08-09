@@ -57,6 +57,9 @@ figure { margin: 0; }
 }
 
 .slider {
+  border-top: 1px solid #e5e5e5;
+  padding-top: 12px;
+  text-align: center;
   width: 100%;
   padding-bottom: 4em;
   position: relative;
@@ -166,9 +169,7 @@ button:hover {
 }
 
 .currentSlide {
-  border-top: 1px solid #e5e5e5;
-  padding-top: 12px;
-  text-align: center;
+  padding-top: 19px;
 }
 
 .md {
