@@ -1,7 +1,7 @@
 import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'
-import Track from '../src/track'
+import Track from '../src/whirligig'
 
 const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
 

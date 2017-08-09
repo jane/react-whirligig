@@ -1,7 +1,7 @@
 import React from 'react'
 import test from 'tape'
 import { shallow } from 'enzyme'
-import Track from '../src/track'
+import Track from '../src/whirligig'
 
 test('slideClass prop', (t) => {
   const slideclass = (cn) => shallow(<Track slideClass={cn}>{ () => [1] }</Track>)

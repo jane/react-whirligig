@@ -87,11 +87,9 @@ _default: noop_
 A function to be called before the track transitions to a new "active" slide.
 The function is passed what the new "active" slide index will be.
 
-### className:_classnames_
+### className:_string_
 
-A [`classnames`](https://github.com/JedWatson/classnames) compliant value
-(string or array of `string|array|object` that will be applied as the class
-attribute.
+A string that will be applied as the class attribute.
 
 ### easing:_func_
 
