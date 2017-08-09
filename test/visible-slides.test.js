@@ -1,7 +1,7 @@
 import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'
-import Track from '../src/track'
+import Track from '../src/whirligig'
 
 test('visibleSlides prop', (t) => {
   const vs = (vs) => (kids) => {

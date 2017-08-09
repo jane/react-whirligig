@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { includes } from './src/utils'
-import Track from './src/track'
+import W from './src/whirligig'
 import { array, bool, number, string, func, any } from 'prop-types'
 import marked from 'marked'
 
@@ -185,7 +185,7 @@ class Slider extends Component {
         <h3 className="currentSlide">Current Slide is {this.state.currentSlide}</h3>
         {mount &&
           <div className="slider">
-            <Track
+            <W
               afterSlide={after}
               animationDuration={animationDuration}
               beforeSlide={beforeSlide}
@@ -205,7 +205,7 @@ class Slider extends Component {
               visibleSlides={visibleSlides}
             >
               {children}
-            </Track>
+            </W>
             <div className="controls">
               <button className="prevButton" onClick={prev} />
               <button className="nextButton" onClick={next} />
@@ -213,7 +213,7 @@ class Slider extends Component {
           </div>
         }
         <div className="options">
-          <this.Control label="un/mount Track" type="checkbox" name="mount" />
+          <this.Control label="un/mount Whirligig" type="checkbox" name="mount" />
           <this.Control label="afterSlide" type="func" name="afterSlide" />
           <this.Control label="animationDuration" type="number" name="animationDuration" />
           <this.Control label="beforeSlide" type="func" name="beforeSlide" />

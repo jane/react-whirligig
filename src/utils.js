@@ -1,11 +1,11 @@
-import { easeOutQuint } from './easing'
-
-export const includes = (val, arr) => arr.includes ? arr.includes(val) : !!arr.filter((item) => item === val).length
+export const includes = (val, arr) =>
+  arr.includes ? arr.includes(val) : !!arr.filter((item) => item === val).length
 export const values = Object.values || ((obj) => Object.keys(obj).map((key) => obj[key]))
 export const compose = (...fns) => (val) => fns.reduceRight((currVal, fn) => fn(currVal), val)
 export const minMap = (...vals) => (val) => Math.min(...vals, val)
 export const maxMap = (...vals) => (val) => Math.max(...vals, val)
 export const noop = () => {}
+export const easeOutQuint = (t) => 1 + (--t) * t ** 4
 export const on = (evt, opts = false) => (cb) => (el) => {
   el.addEventListener(evt, cb, opts)
   return () => el.removeEventListener(evt, cb)

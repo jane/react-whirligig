@@ -1,7 +1,7 @@
 import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'
-import Track from '../src/track'
+import Track from '../src/whirligig'
 
 test('snapToSlide prop', (t) => {
   const sts = (sts) => mount(<Track snapToSlide={sts}>{ () => [1] }</Track>)

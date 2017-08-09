@@ -1,6 +1,6 @@
 import React, { Component, Children } from 'react'
 import { findDOMNode } from 'react-dom'
-import Slide from '../slide'
+import Slide from './slide'
 import {
   animate,
   noop,
@@ -12,7 +12,7 @@ import {
   values,
   includes,
   isWhollyInView
-} from '../utils'
+} from './utils'
 import { bool, number, string, func, array, oneOfType, object, node } from 'prop-types'
 // const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
 const wrapAroundValue = (val, max) => ((val % max) + max) % max
@@ -25,7 +25,7 @@ export default class Track extends Component {
     animationDuration: number,
     beforeSlide: func,
     children: oneOfType([node, array, string]),
-    className: oneOfType([array, string, object]),
+    className: string,
     easing: func,
     infinite: bool,
     innerRef: func,

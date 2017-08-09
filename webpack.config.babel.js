@@ -6,7 +6,7 @@ const pub = resolve(__dirname, 'docs')
 export default {
   entry: {
     demo: './dev.js',
-    index: './src/track/index.js'
+    index: './src/whirligig.js'
   },
   output: {
     path: pub,
@@ -14,7 +14,6 @@ export default {
     library: 'react-track',
     libraryTarget: 'umd'
   },
-
   module: {
     loaders: [{
       test: /\.js$/,
@@ -29,7 +28,7 @@ export default {
       }
     })
   ],
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   devServer: {
     host: '0.0.0.0',
     contentBase: pub,

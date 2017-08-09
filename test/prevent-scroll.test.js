@@ -1,7 +1,7 @@
 import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'
-import Track from '../src/track'
+import Track from '../src/whirligig'
 
 test('preventScroll prop', (t) => {
   const ps = (ps) => mount(<Track preventScroll={ps}>{ () => [1, 2] }</Track>)
