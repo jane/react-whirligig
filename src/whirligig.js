@@ -37,7 +37,6 @@ export default class Track extends Component {
     onSlideClick: func,
     snapToSlide: bool,
     slideTo: number,
-    slideToCenter: bool,
     slideBy: number,
     slideClass: oneOfType([array, string, object]),
     startAt: number,

@@ -119,7 +119,7 @@ class Slider extends Component {
   }
 
   Control = ({ label, type, name }) => (
-    <label className="option">
+    <label htmlFor={name} className="option">
       <span className="label">{label}</span>
       <input
         type={type}
@@ -150,8 +150,8 @@ class Slider extends Component {
       startAt,
       visibleSlides
     } = this.state
-    const next = () => this.track.next().catch(() => {})
-    const prev = () => this.track.prev().catch(() => {})
+    const next = () => this.whirligig.next().catch(() => {})
+    const prev = () => this.whirligig.prev().catch(() => {})
     const after = (idx) => this.handleAfterSlide(idx)
     return (
       <div>
@@ -171,7 +171,6 @@ class Slider extends Component {
             slideBy={slideBy}
             slideClass={slideClass}
             slideTo={slideTo}
-            slideToCenter
             startAt={startAt}
             visibleSlides={visibleSlides}
           >
