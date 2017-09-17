@@ -8,11 +8,10 @@ import pkg from './package.json'
 
 const processShim = '\0process-shim'
 
-const es = process.env.ESBUNDLE
-
-const targets = es
-  ? [{ dest: 'lib/react-whirligig.es.js', format: 'es' }]
-  : [{ dest: 'lib/react-whirligig.js', format: 'umd' }]
+const output = [
+  { file: pkg.main, format: 'umd'},
+  { file: pkg.module, format: 'es' }
+]
 
 const plugins = [
   {
@@ -46,11 +45,11 @@ const plugins = [
 ]
 
 export default {
-  entry: 'src/whirligig.js',
-  moduleName: 'react-whirligig',
-  external: [ 'react', 'react-dom' ].concat(es ? Object.keys(pkg.dependencies) : []),
+  input: 'src/whirligig.js',
+  name: 'react-whirligig',
+  external: [ 'react', 'react-dom' ],
   exports: 'named',
-  targets,
+  output,
   plugins,
   globals: { react: 'React', 'react-dom': 'ReactDOM' },
 }
