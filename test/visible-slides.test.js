@@ -31,14 +31,14 @@ test('visibleSlides prop', (t) => {
   )
 
   t.equal(
-    vs1.wrapped.children('Slide').first().props().basis,
+    vs1.wrapped.children().find('Slide').first().props().basis,
     'auto',
     'Track children (Slide) have a default basis of `auto` when no `visibleSlides` is set'
   )
 
   const vs2 = vs(2)([0, 1, 2])
   t.ok(
-    vs2.wrapped.children('Slide').first().props().basis.startsWith('calc'),
+    vs2.wrapped.children().find('Slide').first().props().basis.startsWith('calc'),
     'Track children (Slide) have a calculated basis'
   )
 
