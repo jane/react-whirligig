@@ -3,7 +3,7 @@ import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/whirligig'
 
-test('visibleSlides prop', (t) => {
+test.skip('visibleSlides prop', (t) => {
   const vs = (vs) => (kids) => {
     let goNext, goPrev
     const next = () => goNext()
