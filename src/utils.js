@@ -7,8 +7,10 @@ export const maxMap = (...vals) => (val) => Math.max(...vals, val)
 export const noop = () => {}
 export const easeOutQuint = (t) => 1 + (--t) * t ** 4
 export const on = (evt, opts = false) => (cb) => (el) => {
-  el.addEventListener(evt, cb, opts)
-  return () => el.removeEventListener(evt, cb)
+  if (el && typeof el.addEventListener === 'function') {
+    el.addEventListener(evt, cb, opts)
+    return () => el.removeEventListener(evt, cb)
+  }
 }
 
 export const onWindowScroll = (cb) => on('scroll', true)(cb)(window)
