@@ -229,7 +229,7 @@ export default class Track extends Component {
     const lastIndex = childCount - slideBy
 
     if (!slideBy) {
-      const [prevSlide] = Math.max(activeIndex - 1, firstIndex)
+      const prevSlide = Math.max(activeIndex - 1, firstIndex)
       const prevInfinteSlide = (prevSlide === activeIndex) ? childCount - 1 : prevSlide
       return this.slideTo(infinite ? prevInfinteSlide : prevSlide)
     }
