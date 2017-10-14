@@ -229,13 +229,13 @@ export default class Track extends Component {
     const lastIndex = childCount - slideBy
 
     if (!slideBy) {
-      const [prevSlide] = this.getPartiallyObscuredSlides()
-      const prevInfinteSlide = (prevSlide === firstIndex) ? childCount - 1 : prevSlide
+      const [prevSlide] = Math.max(activeIndex - 1, firstIndex)
+      const prevInfinteSlide = (prevSlide === activeIndex) ? childCount - 1 : prevSlide
       return this.slideTo(infinite ? prevInfinteSlide : prevSlide)
     }
 
     const nextActive = Math.max(activeIndex - slideBy, firstIndex)
-    const nextActiveInfinite = (nextActive === firstIndex) ? lastIndex : nextActive
+    const nextActiveInfinite = (activeIndex === firstIndex) ? lastIndex : nextActive
     return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
