@@ -1,5 +1,3 @@
-## Change Details
-
 ## Change Type
 
 * [ ] Feature
@@ -12,10 +10,12 @@
 * [ ] minor
 * [ ] patch
 
+## Further Information (screenshots, etc)
+
+#### Relevant Links (Asana Task Link, etc)
+
 ## Checklist
+
 * [ ] Added tests / Task did not decrease code coverage
-* [ ] If UI change, tested across browsers
-
-#### Other Context (if appropriate)
-
-#### Screenshots (if appropriate)
+* [ ] If UI change, tested across supported browsers
+* [ ] Documented manual test cases, if applicable
