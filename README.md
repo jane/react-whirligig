@@ -25,7 +25,7 @@ const Slider = ({ slideIndex }) => (
 )
 ```
 
-`react-whirligig` exposes next and prev functions for moving the track forward and
+`react-whirligig` exposes next and prev functions for moving the whirligig forward and
 backward the number of visible slides. These functions can be accessed using the
 `ref` prop callback to get a reference to the `Whirligig` instance.
 
@@ -34,9 +34,9 @@ import React from 'react'
 import Whirligig from 'react-whirligig'
 
 const Slider = () => {
-  let track
-  const next = () => track.next()
-  const prev = () => track.prev()
+  let whirligig
+  const next = () => whirligig.next()
+  const prev = () => whirligig.prev()
 
   return (
     <div>
@@ -44,7 +44,7 @@ const Slider = () => {
       <Whirligig
         visibleSlides={3}
         gutter="1em"
-        ref={(_trackInstance) => { track = _trackInstance}}
+        ref={(_whirligigInstance) => { whirligig = _whirligigInstance}}
       >
         <img src="http://www.fillmurray.com/400/300" />
         <img src="http://www.fillmurray.com/300/400" />
@@ -71,7 +71,7 @@ The Whirligig component is a horizontally oriented container of Slides.
 
 _default: noop_
 
-A function to be called after the track transitions to a new "active" slide. The
+A function to be called after the whirligig transitions to a new "active" slide. The
 function is passed the new "active" slide index.
 
 ### animationDuration:_func_
@@ -84,7 +84,7 @@ The number of milliseconds the slide animation should take.
 
 _default: noop_
 
-A function to be called before the track transitions to a new "active" slide.
+A function to be called before the whirligig transitions to a new "active" slide.
 The function is passed what the new "active" slide index will be.
 
 ### className:_string_
@@ -104,7 +104,7 @@ progress of the element being animated. See
 
 _default: false_
 
-A boolean flag that determines whether the track should wrap to the
+A boolean flag that determines whether the whirligig should wrap to the
 beginning/end when sliding beyond the slide index bounds.
 
 ### gutter:_string_
@@ -120,7 +120,7 @@ _default: ["ArrowRight"]_
 
 An array of valid "Key" values from a
 [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
-indicating what "Key" values, when pressed, should move the track forward.
+indicating what "Key" values, when pressed, should move the whirligig forward.
 
 ### prevKeys:_array_
 
@@ -128,7 +128,7 @@ _default: ["ArrowLeft"]_
 
 An array of valid "Key" values from a
 [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
-indicating what "Key" values, when pressed, should move the track backward
+indicating what "Key" values, when pressed, should move the whirligig backward
 
 ### preventScroll:_bool_
 
@@ -160,11 +160,11 @@ A class to apply to the Slide container.
 
 _default: 0_
 
-The index to which the track should transition if it is not already there. This
+The index to which the whirligig should transition if it is not already there. This
 is distinct from `startAt` in that `startAt` is only effective when the
 component mounts and does not transition, but moves immediately to the given
 slide. The `slideTo` prop is meant to be used as a mechanism for the consuming
-component to directly control when and where the track transitions to.
+component to directly control when and where the whirligig transitions to.
 
 ### snapToSlide:_bool_
 
@@ -190,18 +190,18 @@ The number of slides that should be visible at a time for the Whirligig
 
 ### next:_func_
 
-Advances the track to the next set of visible slides. If there are not enough
+Advances the whirligig to the next set of visible slides. If there are not enough
 remaining slides to transition the full number of visible slides, it will
-transition to the end of the track. If already at the end of the track, calling
-`next` will transition the track to index 0
+transition to the end of the whirligig If already at the end of the whirligig, calling
+`next` will transition the whirligig to index 0.
 
 ### prev:_func_
 
-Recedes the track to the previous set of visible slides. If there are not enough
+Recedes the whirligig to the previous set of visible slides. If there are not enough
 remaining slides to transition the full number of visible slides, it will
-transition to the beginning of the track. If already at the beginning of the
-track, calling `prev` will transition the track to last full set of visible
-slides in the track.
+transition to the beginning of the whirligig If already at the beginning of the
+whirligig, calling `prev` will transition the whirligig to last full set of visible
+slides in the whirligig.
 
 ## Contributors
 

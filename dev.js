@@ -41,7 +41,7 @@ class Slider extends Component {
     afterSlide: (newIndex) => console.log(`slid to index ${newIndex}`),
     animationDuration: 300,
     beforeSlide: (newIndex) => console.log(`about to slide to index ${newIndex}`),
-    className: 'track',
+    className: 'whirligig',
     gutter: '1em',
     onSlideClick: () => { console.log('You clicked on a slide!') },
     easing: (t) => t,
@@ -230,7 +230,7 @@ const slides = [
     </h3>
   },
   { text: <h3>Featuring:</h3> },
-  { text: <p>A native scrolling "track"</p> },
+  { text: <p>A native scrolling "whirligig"</p> },
   { text: <p>snap-to-slide option</p> },
   { text: <p>set the number of slide visible at a time</p> },
   { text: <p>start at any slide you want</p> },

@@ -19,7 +19,7 @@ const wrapAroundValue = (val, max) => ((val % max) + max) % max
 const hardBoundedValue = (val, max) => Math.max(0, Math.min(max, val))
 const normalizeIndex = (idx, len, wrap = false) => wrap ? wrapAroundValue(idx, len) : hardBoundedValue(idx, len - 1)
 
-export default class Track extends Component {
+export default class Whirligig extends Component {
   static propTypes = {
     afterSlide: func,
     animationDuration: number,
@@ -98,14 +98,14 @@ export default class Track extends Component {
   shouldSelfCorrect = () => this.props.snapToSlide && this.canSelfCorrect()
 
   componentDidMount () {
-    this.DOMNode = findDOMNode(this.track)
+    this.DOMNode = findDOMNode(this.whirligig)
     this.isInteracting = hasOngoingInteraction(this.DOMNode)
 
     // These are not a part of component state since we don't want
     // incure the overhead of calling setState. They are either cached
     // values or state only the onScrollEnd callback cares about and
     // are not important to the rendering of the component.
-    this.childCount = (this.track && this.track.children) ? this.track.children.length : 0
+    this.childCount = (this.whirligig && this.whirligig.children) ? this.whirligig.children.length : 0
 
     const slideBy = {
       left: () => -this.state.slideBy,
@@ -119,7 +119,7 @@ export default class Track extends Component {
 
       onScrollStart(() => { this.isScrolling = true }),
 
-      on('touchstart')(() => { this.isScrolling = true })(this.track),
+      on('touchstart')(() => { this.isScrolling = true })(this.whirligig),
 
       onScrollEnd(() => {
         this.isScrolling = false
@@ -138,13 +138,13 @@ export default class Track extends Component {
             ? this.slideTo(this.getNearestSlideIndex()).catch(noop)
             : this.props.afterSlide(this.getNearestSlideIndex())
         }
-      })(this.track),
+      })(this.whirligig),
 
       onSwipe((direction) => {
         if (!this.props.preventSwipe && this.props.snapToSlide) {
           this.slideTo(this.state.activeIndex + (slideBy[direction]())).catch(noop)
         }
-      })(this.track)
+      })(this.whirligig)
 
     ]
 
@@ -160,7 +160,7 @@ export default class Track extends Component {
   }
 
   componentDidUpdate (prevProps) {
-    this.childCount = (this.track && this.track.children) ? this.track.children.length : 0
+    this.childCount = (this.whirligig && this.whirligig.children) ? this.whirligig.children.length : 0
 
     if (this.shouldSelfCorrect()) {
       const nearestSlideIndex = this.getNearestSlideIndex()
@@ -189,15 +189,18 @@ export default class Track extends Component {
   }
 
   getPartiallyObscuredSlides = () => {
-    const { track } = this
-    const findFirstObscuredChildIndex = [...track.children]
-      .findIndex((child, i, children) => !isWhollyInView(track)(child) && isWhollyInView(track)(children[i + 1]))
+    const { whirligig } = this
+    const findFirstObscuredChildIndex = [ ...whirligig.children ]
+      .findIndex((child, i, children) =>
+        !isWhollyInView(whirligig)(child) && isWhollyInView(whirligig)(children[i + 1]))
 
     const firstObscuredChildIndex = Math.max(findFirstObscuredChildIndex, 0)
 
-    const findLastObscuredChildIndex = [...track.children]
-      .findIndex((child, i, children) => !isWhollyInView(track)(child) && isWhollyInView(track)(children[i - 1]))
-    const lastObscuredChildIndex = Math.max(findLastObscuredChildIndex, 0) || track.children.length - 1
+    const findLastObscuredChildIndex = [ ...whirligig.children ]
+      .findIndex((child, i, children) =>
+        !isWhollyInView(whirligig)(child) && isWhollyInView(whirligig)(children[i - 1]))
+
+    const lastObscuredChildIndex = Math.max(findLastObscuredChildIndex, 0) || whirligig.children.length - 1
 
     return [firstObscuredChildIndex, lastObscuredChildIndex]
   }
@@ -241,9 +244,9 @@ export default class Track extends Component {
 
   slideTo (index, { immediate = false } = {}) {
     if (this.childCount === 0) return Promise.reject('No children to slide to')
-    if (!this.track) return Promise.reject('The Track is not mounted')
+    if (!this.whirligig) return Promise.reject('The Whirligig is not mounted')
     const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite, preventScroll } = this.props
-    const { children, scrollLeft } = this.track
+    const { children, scrollLeft } = this.whirligig
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
     const delta = children[slideIndex].offsetLeft - scrollLeft
@@ -253,11 +256,11 @@ export default class Track extends Component {
     this.setState({ isAnimating: true, activeIndex: slideIndex })
     return (new Promise((res, _) => {
       if (immediate) {
-        this.track.scrollLeft = children[slideIndex].offsetLeft
+        this.whirligig.scrollLeft = children[slideIndex].offsetLeft
         return res()
       } else {
         const originalOverflowX = preventScroll ? 'hidden' : 'auto'
-        return res(animate(this.track, { prop: 'scrollLeft', delta, easing, duration, originalOverflowX }))
+        return res(animate(this.whirligig, { prop: 'scrollLeft', delta, easing, duration, originalOverflowX }))
       }
     }))
       .then(() => {
@@ -272,7 +275,7 @@ export default class Track extends Component {
   }
 
   getNearestSlideIndex = () => {
-    const { children, scrollLeft } = this.track
+    const { children, scrollLeft } = this.whirligig
     const offsets = [].slice.call(children).map(({ offsetLeft }) => Math.abs(offsetLeft - scrollLeft))
     return offsets.indexOf(Math.min(...offsets))
   }
@@ -313,7 +316,7 @@ export default class Track extends Component {
       justifyContent: 'space-between',
       overflowX: preventScrolling,
       msOverflowStyle: '-ms-autohiding-scrollbar', /* chrome like scrollbar experience for IE/Edge */
-      position: 'relative', /* makes .track an offset parent */
+      position: 'relative', /* makes .whirligig an offset parent */
       transition: 'all .25s ease-in-quint',
       outline: 'none',
       WebkitOverflowScrolling: 'touch'
@@ -323,7 +326,7 @@ export default class Track extends Component {
       <div
         className={className}
         style={{ ...style, ...styles }}
-        ref={this.setRef('track')}
+        ref={this.setRef('whirligig')}
         tabIndex="0"
         onKeyUp={this.handleKeyUp}
         {...props}
