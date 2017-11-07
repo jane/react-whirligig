@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-import { includes } from './src/utils'
+import { includes, noop } from './src/utils'
 import W from './src/whirligig'
 import { array, bool, number, string, func } from 'prop-types'
 import marked from 'marked'
@@ -150,8 +150,8 @@ class Slider extends Component {
       startAt,
       visibleSlides
     } = this.state
-    const next = () => this.whirligig.next().catch(() => {})
-    const prev = () => this.whirligig.prev().catch(() => {})
+    const next = () => this.whirligig.next().catch(noop)
+    const prev = () => this.whirligig.prev().catch(noop)
     const after = (idx) => this.handleAfterSlide(idx)
     return (
       <div>
@@ -267,4 +267,4 @@ class Demo extends Component {
   }
 }
 
-render(<Demo />, document.querySelector('main'))
+render(<Demo />, document.getElementById('root'))

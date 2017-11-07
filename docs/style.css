@@ -20,7 +20,7 @@ input {
   font-family: monospace;
 }
 
-main {
+#root {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;

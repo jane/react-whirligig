@@ -1,16 +1,11 @@
 {
   "presets": [
+    "flow",
     "env",
     "stage-3",
     "react"
   ],
   "plugins": [
-    "transform-class-properties",
-    [
-      "transform-react-remove-prop-types",
-      {
-        "removeImport": true
-      }
-    ]
+    "transform-class-properties"
   ]
 }

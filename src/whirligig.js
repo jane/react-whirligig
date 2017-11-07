@@ -1,67 +1,73 @@
-import React, { Component, Children } from 'react'
+// @flow
+
+import * as React from 'react'
 import { findDOMNode } from 'react-dom'
 import Slide from './slide'
 import {
   animate,
+  hasOngoingInteraction,
+  includes,
+  isWhollyInView,
   noop,
+  normalizeIndex,
   on,
-  onSwipe,
   onScrollEnd,
   onScrollStart,
-  hasOngoingInteraction,
-  values,
-  includes,
-  isWhollyInView
+  onSwipe,
+  values
 } from './utils'
-import { bool, number, string, func, array, oneOfType, object, node } from 'prop-types'
-// const tap = (msg) => (thing) => { console.log(msg, thing); return thing }
-const wrapAroundValue = (val, max) => ((val % max) + max) % max
-const hardBoundedValue = (val, max) => Math.max(0, Math.min(max, val))
-const normalizeIndex = (idx, len, wrap = false) => wrap ? wrapAroundValue(idx, len) : hardBoundedValue(idx, len - 1)
 
-export default class Whirligig extends Component {
-  static propTypes = {
-    afterSlide: func,
-    animationDuration: number,
-    beforeSlide: func,
-    children: oneOfType([node, array, string]),
-    className: string,
-    easing: func,
-    infinite: bool,
-    innerRef: func,
-    nextKeys: array,
-    prevKeys: array,
-    preventAutoCorrect: bool,
-    preventScroll: bool,
-    preventSwipe: bool,
-    onSlideClick: func,
-    snapToSlide: bool,
-    slideTo: number,
-    slideBy: number,
-    slideClass: oneOfType([array, string, object]),
-    startAt: number,
-    style: object,
-    gutter: (props, propName, componentName) => {
-      const prop = props[propName]
-      if (
-        typeof parseInt(prop, 10) === 'number' &&
-        !isNaN(Number(prop))
-      ) {
-        return new Error(`Invalid value (${prop}) of prop '${propName}' supplied to ${componentName}.
-        The value of ${propName} should be a valid css length unit
-        (https://developer.mozilla.org/en-US/docs/Web/CSS/length).`)
-      }
-    },
-    visibleSlides: number
-  }
+export type WhirligigProps = {|
+  afterSlide: (number) => void,
+  animationDuration: number,
+  beforeSlide: (number) => void,
+  children: React.ChildrenArray<*>,
+  className: string,
+  easing: (number) => number,
+  gutter: string,
+  infinite: bool,
+  nextKeys: string[],
+  onSlideClick: (SyntheticMouseEvent<*>) => void,
+  prevKeys: string[],
+  preventAutoCorrect: bool,
+  preventScroll: bool,
+  preventSwipe: bool,
+  slideBy: number,
+  slideClass: string,
+  slideTo: number,
+  snapToSlide: bool,
+  startAt: number,
+  style: Object,
+  visibleSlides: number
+|}
+
+export type WhirligigState = {
+  activeIndex: number,
+  isAnimating: bool,
+  slideBy: number,
+  visibleSlides: number
+}
+
+export default class Whirligig extends React.Component<WhirligigProps, WhirligigState> {
+  DOMNode: Element
+  canSelfCorrect: bool
+  childCount: number
+  eventListeners: EventListener[]
+  isInteracting: () => bool
+  isScrolling: bool
+  whirligig: any
+  next: (any) => Promise<*>
+  prev: (any) => Promise<*>
+  slideTo: (number, ?{ immediate: bool }) => Promise<*>
 
   static defaultProps = {
-    afterSlide: () => {},
+    afterSlide: noop,
     animationDuration: 500,
-    beforeSlide: () => {},
+    beforeSlide: noop,
     gutter: '1em',
-    nextKeys: ['ArrowRight'],
-    prevKeys: ['ArrowLeft'],
+    nextKeys: [ 'ArrowRight' ],
+    onSlideClick: noop,
+    prevKeys: [ 'ArrowLeft' ],
     preventAutoCorrect: false,
     preventScroll: false,
     preventSwipe: false,
@@ -70,14 +76,15 @@ export default class Whirligig extends Component {
     style: {}
   }
 
-  constructor (props) {
+  constructor (props: WhirligigProps) {
     super(props)
 
     this.state = {
       activeIndex: props.startAt,
       isAnimating: false,
       visibleSlides: this.props.visibleSlides || 0,
-      slideBy: this.props.slideBy || this.props.visibleSlides || 0 }
+      slideBy: this.props.slideBy || this.props.visibleSlides || 0
+    }
 
     // We can't do arrow function properties for these since
     // we are passing them to the consuming component and we
@@ -98,7 +105,9 @@ export default class Whirligig extends Component {
   shouldSelfCorrect = () => this.props.snapToSlide && this.canSelfCorrect()
 
   componentDidMount () {
+    // $FlowFixMe
     this.DOMNode = findDOMNode(this.whirligig)
+    // $FlowFixMe
     this.isInteracting = hasOngoingInteraction(this.DOMNode)
 
     // These are not a part of component state since we don't want
@@ -151,15 +160,17 @@ export default class Whirligig extends Component {
     this.slideTo(this.props.startAt, { immediate: true }).catch(noop)
   }
 
-  componentWillUnmount () { this.eventListeners.forEach((fn) => fn()) }
+  componentWillUnmount () {
+    this.eventListeners.forEach((fn) => typeof fn === 'function' && fn())
+  }
 
-  componentWillReceiveProps ({ slideBy, visibleSlides }) {
+  componentWillReceiveProps ({ slideBy, visibleSlides }: WhirligigProps) {
     if (slideBy !== this.props.slideBy || visibleSlides !== this.props.visibleSlides) {
       this.setState({ slideBy: slideBy || visibleSlides || 1 })
     }
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate (prevProps: WhirligigProps) {
     this.childCount = (this.whirligig && this.whirligig.children) ? this.whirligig.children.length : 0
 
     if (this.shouldSelfCorrect()) {
@@ -172,7 +183,7 @@ export default class Whirligig extends Component {
     }
   }
 
-  handleKeyUp = ((nextKeys, prevKeys) => ({ key }) => {
+  handleKeyUp = ((nextKeys, prevKeys) => ({ key }: SyntheticKeyboardEvent<*>): bool => {
     const isNext = includes(key, nextKeys)
     const isPrev = includes(key, prevKeys)
     this.setState({ isAnimating: true })
@@ -182,13 +193,13 @@ export default class Whirligig extends Component {
   })(this.props.nextKeys, this.props.prevKeys)
 
   // isAnimating state is the only important state value to the rendering of this component
-  shouldComponentUpdate (nextProps, { isAnimating }) {
+  shouldComponentUpdate (nextProps: WhirligigProps, { isAnimating }: WhirligigState): bool {
     const propValues = [...values(this.props), this.state.isAnimating]
     const nextPropValues = [...values(nextProps), isAnimating]
     return !nextPropValues.every((val, i) => val === propValues[i])
   }
 
-  getPartiallyObscuredSlides = () => {
+  getPartiallyObscuredSlides = (): [ number, number ] => {
     const { whirligig } = this
     const findFirstObscuredChildIndex = [ ...whirligig.children ]
       .findIndex((child, i, children) =>
@@ -202,10 +213,10 @@ export default class Whirligig extends Component {
 
     const lastObscuredChildIndex = Math.max(findLastObscuredChildIndex, 0) || whirligig.children.length - 1
 
-    return [firstObscuredChildIndex, lastObscuredChildIndex]
+    return [ firstObscuredChildIndex, lastObscuredChildIndex ]
   }
 
-  next () {
+  next (): Promise<*> {
     const { childCount, props, state } = this
     const { activeIndex, slideBy } = state
     const { infinite } = props
@@ -224,7 +235,7 @@ export default class Whirligig extends Component {
     return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
-  prev () {
+  prev (): Promise<*> {
     const { childCount, state, props } = this
     const { activeIndex, slideBy } = state
     const { infinite } = props
@@ -242,7 +253,7 @@ export default class Whirligig extends Component {
     return this.slideTo(infinite ? nextActiveInfinite : nextActive)
   }
 
-  slideTo (index, { immediate = false } = {}) {
+  slideTo (index: number, { immediate = false }: { immediate: bool } = {}): Promise<*> {
     if (this.childCount === 0) return Promise.reject('No children to slide to')
     if (!this.whirligig) return Promise.reject('The Whirligig is not mounted')
     const { afterSlide, beforeSlide, easing, animationDuration: duration, infinite, preventScroll } = this.props
@@ -254,16 +265,17 @@ export default class Whirligig extends Component {
       beforeSlide(index)
     }
     this.setState({ isAnimating: true, activeIndex: slideIndex })
-    return (new Promise((res, _) => {
+    return (new Promise((res, _): void => {
       if (immediate) {
         this.whirligig.scrollLeft = children[slideIndex].offsetLeft
         return res()
       } else {
         const originalOverflowX = preventScroll ? 'hidden' : 'auto'
-        return res(animate(this.whirligig, { prop: 'scrollLeft', delta, easing, duration, originalOverflowX }))
+        const prop = 'scrollLeft'
+        return res(animate(this.whirligig, { prop, delta, easing, duration, originalOverflowX })) // .catch(noop)
       }
     }))
-      .then(() => {
+      .then((): void => {
         this.setState({ isAnimating: false })
         if (startingIndex !== slideIndex) {
           return afterSlide(slideIndex)
@@ -274,15 +286,17 @@ export default class Whirligig extends Component {
       })
   }
 
-  getNearestSlideIndex = () => {
+  getNearestSlideIndex = (): number => {
     const { children, scrollLeft } = this.whirligig
     const offsets = [].slice.call(children).map(({ offsetLeft }) => Math.abs(offsetLeft - scrollLeft))
     return offsets.indexOf(Math.min(...offsets))
   }
 
-  setRef = (name) => (ref) => { this[name] = ref }
+  setWhirligigRef = (r: React$ElementRef<*>) => {
+    this.whirligig = r
+  }
 
-  render () {
+  render (): React.Node {
     const {
       afterSlide,
       animationDuration,
@@ -291,7 +305,6 @@ export default class Whirligig extends Component {
       className,
       easing,
       infinite,
-      innerRef,
       gutter,
       nextKeys,
       prevKeys,
@@ -315,8 +328,8 @@ export default class Whirligig extends Component {
       flexFlow: 'row nowrap',
       justifyContent: 'space-between',
       overflowX: preventScrolling,
-      msOverflowStyle: '-ms-autohiding-scrollbar', /* chrome like scrollbar experience for IE/Edge */
-      position: 'relative', /* makes .whirligig an offset parent */
+      msOverflowStyle: '-ms-autohiding-scrollbar', // chrome like scrollbar experience for IE/Edge
+      position: 'relative', // makes .whirligig an offset parent
       transition: 'all .25s ease-in-quint',
       outline: 'none',
       WebkitOverflowScrolling: 'touch'
@@ -326,17 +339,17 @@ export default class Whirligig extends Component {
       <div
         className={className}
         style={{ ...style, ...styles }}
-        ref={this.setRef('whirligig')}
+        ref={this.setWhirligigRef}
         tabIndex="0"
         onKeyUp={this.handleKeyUp}
         {...props}
       >
         {
           // We first pass the slide control functions to the function child.
-          // this will return the `children` that will be the content of the individaul slides.
-          // Then we wrap the slide content in a slide component to add the fucntionality we need
+          // This will return the `children` that will be the content of the individual slides.
+          // Then we wrap the slide content in a slide component to add the functionality we need.
         }
-        {Children.map(typeof children === 'function' ? children(this.next, this.prev) : children, (child, i) => (
+        {React.Children.map(typeof children === 'function' ? children(this.next, this.prev) : children, (child, i) => (
           <Slide
             className={slideClass}
             key={`slide-${i}`}

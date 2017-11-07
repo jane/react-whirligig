@@ -27,16 +27,17 @@ const plugins = [
   babel({
     babelrc: false,
     presets: [
-      [ 'env', { modules: false } ],
+      'flow',
+      ['env', {
+        targets: ['>1%', 'last 3 versions', 'Firefox ESR', 'ie >= 11'],
+        modules: false
+      }],
       'stage-3',
       'react',
     ],
     plugins: [
       'external-helpers',
       'transform-class-properties',
-      [ 'transform-react-remove-prop-types', {
-        removeImport: true
-      }]
     ]
   }),
   nodeResolve(),
