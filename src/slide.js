@@ -1,5 +1,13 @@
-import React from 'react'
-import { string, node } from 'prop-types'
+// @flow
+
+import * as React from 'react'
+
+export type SlideProps = {
+  basis: string,
+  children: React.Node,
+  className: string,
+  gutter: string
+}
 
 const Slide = ({
   basis = '100%',
@@ -7,7 +15,7 @@ const Slide = ({
   className = '',
   children,
   ...props
-}) => (
+}: SlideProps) => (
   <div
     className={className}
     style={{
@@ -20,12 +28,5 @@ const Slide = ({
     {children}
   </div>
 )
-
-Slide.propTypes = {
-  basis: string,
-  gutter: string,
-  children: node,
-  className: string
-}
 
 export default Slide

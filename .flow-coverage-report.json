@@ -1,0 +1,11 @@
+{
+  "concurrentFiles": 5,
+  "excludeGlob": [
+    "node_modules/**"
+  ],
+  "includeGlob": [
+    "src/*.js"
+  ],
+  "threshold": 80,
+  "type": "text"
+}

@@ -13,12 +13,17 @@
   ],
   "scripts": {
     "build": "rollup -c",
+    "copy-flow": "flow-copy-source src lib",
+    "cover": "npm run cover:tape && npm run cover:flow",
+    "cover:flow": "flow-coverage-report --config .flow-coverage-report.json",
+    "cover:tape": "nyc npm run test:tape",
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
     "doc": "webpack -p --config webpack.config.babel.js",
-    "postbuild": "npm run doc",
+    "postbuild": "npm run doc && npm run copy-flow",
     "prebuild": "npm test",
     "preversion": "npm run build",
-    "test": "npm run test:lint && npm run test:tape",
+    "test": "npm run test:lint && npm run test:flow && npm run test:tape",
+    "test:flow": "flow check",
     "test:lint": "eslint -c .eslintrc.json src test dev.js",
     "test:tape": "tape -r babel-register test/**/*.test.js | tap-spec"
   },
@@ -45,8 +50,8 @@
     "babel-loader": "7.1.2",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-plugin-transform-class-properties": "6.24.1",
-    "babel-plugin-transform-react-remove-prop-types": "0.4.10",
     "babel-preset-env": "1.6.1",
+    "babel-preset-flow": "6.23.0",
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-3": "6.24.1",
     "babel-register": "6.26.0",
@@ -57,15 +62,20 @@
     "eslint": "4.10.0",
     "eslint-config-jane": "0.6.2",
     "eslint-plugin-babel": "4.1.2",
+    "eslint-plugin-flowtype": "2.39.1",
+    "eslint-plugin-flowtype-errors": "3.3.5",
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-promise": "3.6.0",
     "eslint-plugin-react": "7.4.0",
     "eslint-plugin-unicorn": "2.1.2",
     "find-cache-dir": "1.0.0",
+    "flow-bin": "0.58.0",
+    "flow-copy-source": "1.2.1",
+    "flow-coverage-report": "0.4.0",
     "jsdom": "11.3.0",
     "loglevel": "1.5.1",
     "marked": "0.3.6",
-    "prop-types": "15.6.0",
+    "nyc": "11.3.0",
     "react": "16.0.0",
     "react-dom": "16.0.0",
     "react-test-renderer": "16.0.0",
@@ -81,6 +91,16 @@
     "tape": "4.8.0",
     "webpack": "3.8.1",
     "webpack-dev-server": "2.9.4"
+  },
+  "nyc": {
+    "include": [
+      "src"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "sourceMap": true,
+    "instrument": true
   },
   "peerDependencies": {
     "react": "^15.4.0 || ^16.0.0"

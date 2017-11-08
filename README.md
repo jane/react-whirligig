@@ -67,98 +67,80 @@ The Whirligig component is a horizontally oriented container of Slides.
 
 ## Props
 
-### afterSlide:_func_
+Each of these is written in the form `propName: type = default`. So,
+`foo: (string) => bool = noop` is a prop called `foo` which is expected to be a
+function that takes a string and returns a boolean, and it defaults to a noop.
 
-_default: noop_
+### `afterSlide: (number) => void = noop`
 
 A function to be called after the whirligig transitions to a new "active" slide. The
 function is passed the new "active" slide index.
 
-### animationDuration:_func_
-
-_default: 500_
+### `animationDuration: number = 500`
 
 The number of milliseconds the slide animation should take.
 
-### beforeSlide:_func_
-
-_default: noop_
+### `beforeSlide: (number) => void = noop`
 
 A function to be called before the whirligig transitions to a new "active" slide.
 The function is passed what the new "active" slide index will be.
 
-### className:_string_
+### `className: string = ''`
 
-A string that will be applied as the class attribute.
+A className applied to the Whirligig.
 
-### easing:_func_
-
-_default: easeOutQuint_
+### `easing: (number) => number = easeOutQuint`
 
 A function which takes a `float` representing the percentage of time that has
 passed for a given animation and returns a `float` representing the relative
 progress of the element being animated. See
 <https://gist.github.com/gre/1650294> for examples.
 
-### infinte:_bool_
-
-_default: false_
+### `infinte: bool = false`
 
 A boolean flag that determines whether the whirligig should wrap to the
 beginning/end when sliding beyond the slide index bounds.
 
-### gutter:_string_
-
-_default: 1em_
+### `gutter: string = '1em'`
 
 A css [length](https://developer.mozilla.org/en-US/docs/Web/CSS/length) string
 that represents the space between each Slide in the Whirligig
 
-### nextKeys:_array_
-
-_default: ["ArrowRight"]_
+### `nextKeys: string[] = [ 'ArrowRight' ]`
 
 An array of valid "Key" values from a
 [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
 indicating what "Key" values, when pressed, should move the whirligig forward.
 
-### prevKeys:_array_
+### `onSlideClick: (SyntheticMouseEvent<*>) => void = noop`
 
-_default: ["ArrowLeft"]_
+Function that takes a `SyntheticMouseEvent`.
+
+### `prevKeys: string[] = [ 'ArrowLeft' ]`
 
 An array of valid "Key" values from a
 [KeyboardEvent](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values)
 indicating what "Key" values, when pressed, should move the whirligig backward
 
-### preventScroll:_bool_
-
-_default: false_
+### `preventScroll: bool = false`
 
 A boolean flag that turns off/on the ability to natively scroll through the
 Whirligig
 
-### preventSwipe:_bool_
-
-_default: false_
+### `preventSwipe: bool = false`
 
 A boolean flag that turns off/on the ability to swipe through the Whirligig
 
-### slideBy:_number_
-
-_default: visibleSlides or 1_
+### `slideBy: number = visibleSlides || 1`
 
 The number of slides that should advance on a `next`, `prev`, or `swipe` action.
 If not specified, will reflect the visibleSlides prop value or `1`.
 
-### slideClass:_classnames_
+### `slideClass: string = ''`
 
-_default: ''_
+A className to apply to the Slide container.
 
-A class to apply to the Slide container.
-
-### slideTo:_number_
-
-_default: 0_
+### `slideTo: number = 0`
 
 The index to which the whirligig should transition if it is not already there. This
 is distinct from `startAt` in that `startAt` is only effective when the
@@ -166,36 +148,30 @@ component mounts and does not transition, but moves immediately to the given
 slide. The `slideTo` prop is meant to be used as a mechanism for the consuming
 component to directly control when and where the whirligig transitions to.
 
-### snapToSlide:_bool_
-
-_default: false_
+### `snapToSlide: bool = false`
 
 A boolean flag that turns on/off the snap-to-slide feature. If set, the
 Whirligig will animate the final bit of scrolling to stop at a slide.
 
-### startAt:_number_
-
-_default: 0_
+### `startAt: number = 0`
 
 The Slide index that will be the "active" slide when the Whirligig mounts. The value
 will be normalized to be within the range of the length of the Whirligig's children.
 
-### visibleSlides:_number_
-
-_default: 1_
+### `visibleSlides: number = 1`
 
 The number of slides that should be visible at a time for the Whirligig
 
 ## Instance methods
 
-### next:_func_
+### `next: () => Promise<*>`
 
 Advances the whirligig to the next set of visible slides. If there are not enough
 remaining slides to transition the full number of visible slides, it will
 transition to the end of the whirligig If already at the end of the whirligig, calling
 `next` will transition the whirligig to index 0.
 
-### prev:_func_
+### `prev: () => Promise<*>`
 
 Recedes the whirligig to the previous set of visible slides. If there are not enough
 remaining slides to transition the full number of visible slides, it will
@@ -205,9 +181,9 @@ slides in the whirligig.
 
 ## Contributors
 
-* Authored by [@uniqname](https://github.com/uniqname)
-* Thanks [@RachelTheRiveter](https://github.com/RachelTheRiveter) for the name!
-* Maintained by [@jane](https://github.com/jane)
+* Authored by [@uniqname](https://github.com/uniqname).
+* Thanks to [@RachelTheRiveter](https://github.com/RachelTheRiveter) for the name!
+* Maintained by the [@jane](https://github.com/jane) front-end team.
 
 ## License
 

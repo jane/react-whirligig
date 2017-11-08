@@ -12,10 +12,9 @@
 
 ## Further Information (screenshots, etc)
 
-#### Relevant Links (Asana Task Link, etc)
+#### Relevant Links (bug reports, etc)
 
 ## Checklist
 
-* [ ] Added tests / Task did not decrease code coverage
-* [ ] If UI change, tested across supported browsers
-* [ ] Documented manual test cases, if applicable
+* [ ] Added tests / did not decrease code coverage
+* [ ] Tested across browsers
