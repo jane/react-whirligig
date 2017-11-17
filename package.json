@@ -15,7 +15,7 @@
     "build": "rollup -c",
     "copy-flow": "flow-copy-source src lib",
     "cover": "npm run cover:tape && npm run cover:flow",
-    "cover:coveralls": "coveralls < coverage/lcov.info",
+    "cover:coveralls": "nyc report --reporter=text-lcov | coveralls",
     "cover:flow": "flow-coverage-report --config .flow-coverage-report.json",
     "cover:tape": "nyc npm run test:tape",
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
@@ -97,10 +97,6 @@
   "nyc": {
     "include": [
       "src"
-    ],
-    "reporters": [
-      "lcov",
-      "text-summary"
     ],
     "require": [
       "babel-register"
