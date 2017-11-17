@@ -34,4 +34,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm run prebuild && npm run cover:coveralls
+      - run: npm run prebuild
+      - run: npm run cover:coveralls
