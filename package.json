@@ -20,7 +20,7 @@
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
     "doc": "webpack -p --config webpack.config.babel.js",
     "postbuild": "npm run doc && npm run copy-flow",
-    "prebuild": "npm test",
+    "prebuild": "npm run test:lint && npm run cover",
     "preversion": "npm run build",
     "test": "npm run test:lint && npm run test:flow && npm run test:tape",
     "test:flow": "flow check",
