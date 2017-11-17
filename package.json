@@ -15,6 +15,7 @@
     "build": "rollup -c",
     "copy-flow": "flow-copy-source src lib",
     "cover": "npm run cover:tape && npm run cover:flow",
+    "cover:coveralls": "coveralls < coverage/lcov.info",
     "cover:flow": "flow-coverage-report --config .flow-coverage-report.json",
     "cover:tape": "nyc npm run test:tape",
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
@@ -55,6 +56,7 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-3": "6.24.1",
     "babel-register": "6.26.0",
+    "coveralls": "3.0.0",
     "css-loader": "0.28.7",
     "enhanced-resolve": "3.4.1",
     "enzyme": "3.2.0",
@@ -95,6 +97,10 @@
   "nyc": {
     "include": [
       "src"
+    ],
+    "reporters": [
+      "lcov",
+      "text-summary"
     ],
     "require": [
       "babel-register"
