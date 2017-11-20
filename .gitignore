@@ -18,3 +18,4 @@ pids
 tmp
 /lib
 .nyc_output
+flow-coverage/
