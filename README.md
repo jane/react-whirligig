@@ -8,6 +8,7 @@ A carousel/slider-like component for sequentially displaying slides or sets of
 slides.
 
 [![CircleCI](https://circleci.com/gh/jane/react-whirligig.svg?style=svg)](https://circleci.com/gh/jane/react-whirligig)
+[![Known Vulnerabilities](https://snyk.io/test/github/jane/react-whirligig/badge.svg)](https://snyk.io/test/github/jane/react-whirligig)
 [![Coverage Status](https://coveralls.io/repos/github/jane/react-whirligig/badge.svg?branch=master)](https://coveralls.io/github/jane/react-whirligig?branch=master)
 
 ----
