@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-bind, flowtype/require-return-type */
+
 const { jsdom } = require('jsdom/lib/old-api')
 
 import Enzyme from 'enzyme'

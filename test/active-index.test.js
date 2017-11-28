@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-bind, flowtype/require-return-type */
+
 import React from 'react'
 import test from 'tape'
 import { mount } from 'enzyme'

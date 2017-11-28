@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-bind, flowtype/require-return-type */
+
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { includes, noop } from './src/utils'

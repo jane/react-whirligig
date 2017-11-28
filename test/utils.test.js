@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-no-bind, flowtype/require-return-type */
+
 import * as u from '../src/utils'
 import test from 'tape'
 
