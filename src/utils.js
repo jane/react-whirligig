@@ -125,6 +125,16 @@ export const isWhollyInView = (parent: Element) =>
     return (cLeft >= pLeft && cRight <= pRight)
   }
 
+const supportsPassive = (): bool => {
+  try {
+    window.addEventListener('__rw_test__', null, { passive: true })
+    window.removeEventListener('__rw_test__', null)
+    return true
+  } catch (_) {
+    return false
+  }
+}
+
 export const animate = (el: Element, {
   delta = 0,
   immediate = false,
@@ -157,7 +167,7 @@ export const animate = (el: Element, {
       el[prop] = pos
       return rej('Animation interrupted by interaction')
     }
-    el.addEventListener('touchstart', bail)
+    el.addEventListener('touchstart', bail, supportsPassive() ? { passive: true } : false)
     let startTime = null
     const step = (timestamp: number) => {
       if (hasBailed) return
