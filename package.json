@@ -81,7 +81,7 @@
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "react-test-renderer": "16.2.0",
-    "rollup": "0.52.0",
+    "rollup": "0.52.1",
     "rollup-plugin-babel": "3.0.2",
     "rollup-plugin-commonjs": "8.2.6",
     "rollup-plugin-inject": "2.0.0",
@@ -91,7 +91,7 @@
     "style-loader": "0.19.0",
     "tap-spec": "4.1.1",
     "tape": "4.8.0",
-    "webpack": "3.9.1",
+    "webpack": "3.10.0",
     "webpack-dev-server": "2.9.5"
   },
   "nyc": {
