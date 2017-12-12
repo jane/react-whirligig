@@ -61,17 +61,16 @@
     "css-loader": "0.28.7",
     "enzyme": "3.2.0",
     "enzyme-adapter-react-16": "1.1.0",
-    "eslint": "4.12.1",
+    "eslint": "4.13.1",
     "eslint-config-jane": "0.7.1",
     "eslint-plugin-babel": "4.1.2",
-    "eslint-plugin-flowtype": "2.39.1",
-    "eslint-plugin-flowtype-errors": "3.3.6",
+    "eslint-plugin-flowtype": "2.40.1",
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-promise": "3.6.0",
     "eslint-plugin-react": "7.5.1",
     "eslint-plugin-unicorn": "3.0.0",
     "find-cache-dir": "1.0.0",
-    "flow-bin": "0.60.1",
+    "flow-bin": "0.61.0",
     "flow-copy-source": "1.2.1",
     "flow-coverage-report": "0.4.0",
     "jsdom": "11.5.1",
@@ -92,7 +91,7 @@
     "tap-spec": "4.1.1",
     "tape": "4.8.0",
     "webpack": "3.10.0",
-    "webpack-dev-server": "2.9.5"
+    "webpack-dev-server": "2.9.7"
   },
   "nyc": {
     "include": [

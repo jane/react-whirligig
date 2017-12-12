@@ -1,9 +1,8 @@
 {
   "root": true,
   "extends": [ "eslint-config-jane", "plugin:flowtype/recommended" ],
-  "plugins": [ "flowtype", "flowtype-errors" ],
+  "plugins": [ "flowtype" ],
   "rules": {
-    "flowtype-errors/show-errors": [ 1 ],
     "flowtype/boolean-style": [ 1, "bool" ],
     "flowtype/no-weak-types": [ 0 ],
     "flowtype/space-after-type-colon": [ 1 ],
