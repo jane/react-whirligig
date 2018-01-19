@@ -1,3 +1,4 @@
 package-lock.json -diff
 docs/index.js -diff
 docs/demo.js -diff
+js linguist-language=JSX
