@@ -8,11 +8,6 @@ import pkg from './package.json'
 
 const processShim = '\0process-shim'
 
-const output = [
-  { file: pkg.main, format: 'umd'},
-  { file: pkg.module, format: 'es' }
-]
-
 const plugins = [
   {
     resolveId (importee) {
@@ -22,8 +17,8 @@ const plugins = [
       return id === processShim ? 'export default { argv: [], env: {} }' : null
     }
   },
-  replace({ 'process.env.NODE_ENV': JSON.stringify('production'), }),
-  inject({ process: processShim, }),
+  replace({ 'process.env.NODE_ENV': JSON.stringify('production') }),
+  inject({ process: processShim }),
   babel({
     babelrc: false,
     presets: [
@@ -33,11 +28,11 @@ const plugins = [
         modules: false
       }],
       'stage-3',
-      'react',
+      'react'
     ],
     plugins: [
       'external-helpers',
-      'transform-class-properties',
+      'transform-class-properties'
     ]
   }),
   nodeResolve(),
@@ -45,12 +40,17 @@ const plugins = [
   json()
 ]
 
+const name = 'react-whirligig'
+const globals = { react: 'React', 'react-dom': 'ReactDOM' }
+
+const output = [
+  { file: pkg.main, format: 'umd', name, globals, exports: 'named' },
+  { file: pkg.module, format: 'es', name, globals, exports: 'named' }
+]
+
 export default {
   input: 'src/whirligig.js',
-  name: 'react-whirligig',
   external: [ 'react', 'react-dom' ],
-  exports: 'named',
   output,
-  plugins,
-  globals: { react: 'React', 'react-dom': 'ReactDOM' },
+  plugins
 }
