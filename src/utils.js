@@ -53,10 +53,11 @@ export const onScrollEnd = (
   cb: () => void,
   { wait = 100, target = window }: { wait?: number, target: Object } = {}
 ): void =>
-  ((timeoutID: number) =>
+  ((timeoutID: TimeoutID) =>
     onScroll((evt: SyntheticEvent<*>) => {
       clearTimeout(timeoutID)
       timeoutID = setTimeout(() => evt.target === target ? cb() : undefined, wait)
+      // $FlowFixMe
     }))(0)
 
 export const onScrollStart = (
