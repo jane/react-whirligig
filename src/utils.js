@@ -28,8 +28,10 @@ export const maxMap = (...vals: number[]) =>
 export const noop = () =>
   undefined
 
-export const easeOutQuint = (t: number): number =>
-  1 + (--t) * t ** 4
+export const easeOutQuint = (t: number): number => {
+  let n = t
+  return 1 + (--n) * n ** 4
+}
 
 export const on = (evt: string, opts: bool = false) =>
   (cb: (SyntheticTouchEvent<*>) => any) =>
@@ -56,6 +58,7 @@ export const onScrollEnd = (
   ((timeoutID: TimeoutID) =>
     onScroll((evt: SyntheticEvent<*>) => {
       clearTimeout(timeoutID)
+      // $FlowFixMe
       timeoutID = setTimeout(() => evt.target === target ? cb() : undefined, wait)
       // $FlowFixMe
     }))(0)
