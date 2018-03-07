@@ -3,7 +3,6 @@
   "extends": [ "eslint-config-jane", "plugin:flowtype/recommended" ],
   "plugins": [ "flowtype" ],
   "rules": {
-    "flowtype/boolean-style": [ 1, "bool" ],
     "flowtype/no-weak-types": [ 0 ],
     "flowtype/space-after-type-colon": [ 1 ],
     "flowtype/no-types-missing-file-annotation": [ 0 ],

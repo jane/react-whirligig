@@ -12,13 +12,14 @@ test('infinite prop', (t) => {
     const prev = () => goPrev()
     return {
       wrapped: mount(
-        <Track infinite={infinite}>{
-          (_next, _prev) => {
+        <Track infinite={infinite}>
+          {(_next, _prev) => {
             goNext = _next
             goPrev = _prev
             return kids
-          }
-        }</Track>),
+          }}
+        </Track>
+      ),
       next,
       prev
     }

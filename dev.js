@@ -42,10 +42,13 @@ class Slider extends Component {
   static defaultProps = {
     afterSlide: (newIndex) => console.log(`slid to index ${newIndex}`),
     animationDuration: 300,
-    beforeSlide: (newIndex) => console.log(`about to slide to index ${newIndex}`),
+    beforeSlide: (newIndex) =>
+      console.log(`about to slide to index ${newIndex}`),
     className: 'whirligig',
     gutter: '1em',
-    onSlideClick: () => { console.log('You clicked on a slide!') },
+    onSlideClick: () => {
+      console.log('You clicked on a slide!')
+    },
     easing: (t) => t,
     infinite: false,
     preventScroll: false,
@@ -75,7 +78,7 @@ class Slider extends Component {
     visibleSlides: this.props.visibleSlides
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     this.setState({
       afterSlide: nextProps.afterSlide,
       animationDuration: nextProps.animationDuration,
@@ -95,23 +98,27 @@ class Slider extends Component {
     })
   }
 
-  componentDidMount () {
+  componentDidMount() {
     try {
       const persistedState = window.localStorage.getItem('react-whirligig')
       if (persistedState) {
         const state = JSON.parse(persistedState)
         this.setState(state)
       }
-    } catch (_) { }
+    } catch (_) {}
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     window.localStorage.setItem('react-whirligig', JSON.stringify(this.state))
   }
 
-  handleAfterSlide = (currentSlide) => { this.setState({ currentSlide }) }
+  handleAfterSlide = (currentSlide) => {
+    this.setState({ currentSlide })
+  }
 
-  setRef = (name) => (ref) => { this[name] = ref }
+  setRef = (name) => (ref) => {
+    this[name] = ref
+  }
 
   setStateFromInput = (propName) => ({ target }) => {
     const { checked, type } = target
@@ -134,7 +141,7 @@ class Slider extends Component {
     </label>
   )
 
-  render () {
+  render() {
     const { children } = this.props
     const {
       animationDuration,
@@ -184,22 +191,40 @@ class Slider extends Component {
           </div>
         </div>
         <div className="options">
-          <span className="option currentSlide">Current slide is {this.state.currentSlide}</span>
+          <span className="option currentSlide">
+            Current slide is {this.state.currentSlide}
+          </span>
           <this.Control label="afterSlide" type="func" name="afterSlide" />
-          <this.Control label="animationDuration" type="number" name="animationDuration" />
+          <this.Control
+            label="animationDuration"
+            type="number"
+            name="animationDuration"
+          />
           <this.Control label="beforeSlide" type="func" name="beforeSlide" />
           <this.Control label="className" type="text" name="className" />
           <this.Control label="easing" type="func" name="easing" />
           <this.Control label="infinite" type="checkbox" name="infinite" />
           <this.Control label="gutter" type="text" name="gutter" />
           <this.Control label="onSlideClick" type="func" name="onSlideClick" />
-          <this.Control label="preventScroll" type="checkbox" name="preventScroll" />
-          <this.Control label="snapToSlide" type="checkbox" name="snapToSlide" />
+          <this.Control
+            label="preventScroll"
+            type="checkbox"
+            name="preventScroll"
+          />
+          <this.Control
+            label="snapToSlide"
+            type="checkbox"
+            name="snapToSlide"
+          />
           <this.Control label="slideBy" type="number" name="slideBy" />
           <this.Control label="slideClass" type="text" name="slideClass" />
           <this.Control label="slideTo" type="number" name="slideTo" />
           <this.Control label="startAt" type="number" name="startAt" />
-          <this.Control label="visibleSlides" type="number" name="visibleSlides" />
+          <this.Control
+            label="visibleSlides"
+            type="number"
+            name="visibleSlides"
+          />
         </div>
       </div>
     )
@@ -207,43 +232,62 @@ class Slider extends Component {
 }
 
 const slides = [
-  ...Array(7).fill().map(() => ({
-    src: 'https://placebeard.it',
-    height: 300,
-    width: 300,
-    joiner: 'x'
-  })),
+  ...Array(7)
+    .fill()
+    .map(() => ({
+      src: 'https://placebeard.it',
+      height: 300,
+      width: 300,
+      joiner: 'x'
+    })),
   {
-    text: <h3>
-      {[ 'it', 'need', 'not', 'only', 'be', 'beards!' ].map((t) =>
-        <span key={t} className="line align-right">{t}</span>
-      )}
-    </h3>
-  }, {
+    text: (
+      <h3>
+        {['it', 'need', 'not', 'only', 'be', 'beards!'].map((t) => (
+          <span key={t} className="line align-right">
+            {t}
+          </span>
+        ))}
+      </h3>
+    )
+  },
+  {
     src: 'https://fillmurray.com',
     height: 300,
     width: 300,
     joiner: '/'
-  }, {
-    text: <h3>
-      {[ 'it', 'can', 'be', 'anything', 'you', 'want!' ].map((t) =>
-        <span key={t} className="line align-left">{t}</span>
-      )}
-    </h3>
+  },
+  {
+    text: (
+      <h3>
+        {['it', 'can', 'be', 'anything', 'you', 'want!'].map((t) => (
+          <span key={t} className="line align-left">
+            {t}
+          </span>
+        ))}
+      </h3>
+    )
   },
   { text: <h3>Featuring:</h3> },
   { text: <p>A native scrolling "whirligig"</p> },
   { text: <p>snap-to-slide option</p> },
   { text: <p>set the number of slide visible at a time</p> },
   { text: <p>start at any slide you want</p> },
-  { text: <p>slide indecies are normalized to stay within the slide count range</p> }
+  {
+    text: (
+      <p>slide indecies are normalized to stay within the slide count range</p>
+    )
+  }
 ]
 
 class Demo extends Component {
   state = { docs: '' }
 
-  componentWillMount () {
-    window.fetch('https://raw.githubusercontent.com/jane/react-whirligig/master/README.md')
+  componentWillMount() {
+    window
+      .fetch(
+        'https://raw.githubusercontent.com/jane/react-whirligig/master/README.md'
+      )
       .then((a) => a.text())
       .then((t) => {
         this.setState({ docs: marked(t) })
@@ -251,15 +295,23 @@ class Demo extends Component {
       .catch(console.error)
   }
 
-  render () {
+  render() {
     return (
       <div className="wrapper">
-        <div dangerouslySetInnerHTML={{ __html: this.state.docs }} className="md" />
+        <div
+          dangerouslySetInnerHTML={{ __html: this.state.docs }}
+          className="md"
+        />
         <Slider>
           {slides.map(({ src, height, width, joiner, text }, i) => (
             <figure className="mySlide" key={`${src}-${i}`}>
               <figcaption className="caption">Slide index {i}</figcaption>
-              {src && <img alt="Place Zombie" src={`${src}/${width}${joiner}${height}?${i}`} />}
+              {src && (
+                <img
+                  alt="Place Zombie"
+                  src={`${src}/${width}${joiner}${height}?${i}`}
+                />
+              )}
               {text && <div className="text">{text}</div>}
             </figure>
           ))}

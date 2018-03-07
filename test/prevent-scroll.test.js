@@ -6,7 +6,7 @@ import { mount } from 'enzyme'
 import Track from '../src/whirligig'
 
 test('preventScroll prop', (t) => {
-  const ps = (ps) => mount(<Track preventScroll={ps}>{ () => [1, 2] }</Track>)
+  const ps = (ps) => mount(<Track preventScroll={ps}>{() => [1, 2]}</Track>)
 
   t.equal(ps().prop('preventScroll'), false, 'preventScroll defaults to false')
   // Track is triggering an animation that puts the state of overflowX to true. Need to find a better way to test.
@@ -16,7 +16,10 @@ test('preventScroll prop', (t) => {
   //   'default value of overflowX style for containing element is `auto`'
   // )
   t.equal(
-    ps(true).find('div').first().prop('style').overflowX,
+    ps(true)
+      .find('div')
+      .first()
+      .prop('style').overflowX,
     'hidden',
     'value of overflowX style for containing element when preventScroll is true is `hidden`'
   )
