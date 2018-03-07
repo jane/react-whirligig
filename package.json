@@ -104,6 +104,9 @@
     "*.js": [
       "prettier --write",
       "git add"
+    ],
+    "ignore": [
+      "docs/*.js"
     ]
   },
   "nyc": {
