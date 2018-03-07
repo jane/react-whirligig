@@ -6,13 +6,9 @@ import { mount } from 'enzyme'
 import Track from '../src/whirligig'
 
 test('startAt prop', (t) => {
-  const sa = (sa) => mount(<Track startAt={sa}>{ () => [0, 1] }</Track>)
+  const sa = (sa) => mount(<Track startAt={sa}>{() => [0, 1]}</Track>)
 
-  t.equal(
-    sa().prop('startAt'),
-    0,
-    'startAt defaults to 0'
-  )
+  t.equal(sa().prop('startAt'), 0, 'startAt defaults to 0')
 
   t.equal(
     sa().state('activeIndex'),

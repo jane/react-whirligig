@@ -20,7 +20,7 @@ test('activeIndex state', (t) => {
           visibleSlides={visibleSlides}
           infinite={infinite}
         >
-          { (_next, _prev) => {
+          {(_next, _prev) => {
             goNext = _next
             goPrev = _prev
             return [0, 1, 2, 3, 4, 5, 6, 7]
