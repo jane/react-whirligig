@@ -12,7 +12,7 @@ const coerceTable = {
   number: Number,
   func: (fn) => Function(fn)(), // eslint-disable-line
   checkbox: Boolean,
-  radio: Boolean
+  radio: Boolean,
 }
 const coerceValueToType = ({ type, value }) => {
   const coercer = type in coerceTable ? coerceTable[type] : (ident) => ident
@@ -36,7 +36,7 @@ class Slider extends Component {
     slideTo: number,
     snapToSlide: bool,
     startAt: number,
-    visibleSlides: number
+    visibleSlides: number,
   }
 
   static defaultProps = {
@@ -57,7 +57,7 @@ class Slider extends Component {
     slideTo: 0,
     snapToSlide: false,
     startAt: 0,
-    visibleSlides: 0
+    visibleSlides: 0,
   }
 
   state = {
@@ -75,7 +75,7 @@ class Slider extends Component {
     slideClass: this.props.slideClass,
     slideTo: this.props.slideTo,
     startAt: this.props.startAt,
-    visibleSlides: this.props.visibleSlides
+    visibleSlides: this.props.visibleSlides,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -94,7 +94,7 @@ class Slider extends Component {
       slideClass: nextProps.slideClass,
       slideTo: nextProps.slideTo,
       startAt: nextProps.startAt,
-      visibleSlides: nextProps.visibleSlides
+      visibleSlides: nextProps.visibleSlides,
     })
   }
 
@@ -123,7 +123,7 @@ class Slider extends Component {
   setStateFromInput = (propName) => ({ target }) => {
     const { checked, type } = target
     this.setState({
-      [propName]: isCheckable(type) ? checked : coerceValueToType(target)
+      [propName]: isCheckable(type) ? checked : coerceValueToType(target),
     })
   }
 
@@ -157,7 +157,7 @@ class Slider extends Component {
       slideClass,
       slideTo,
       startAt,
-      visibleSlides
+      visibleSlides,
     } = this.state
     const next = () => this.whirligig.next().catch(noop)
     const prev = () => this.whirligig.prev().catch(noop)
@@ -238,7 +238,7 @@ const slides = [
       src: 'https://placebeard.it',
       height: 300,
       width: 300,
-      joiner: 'x'
+      joiner: 'x',
     })),
   {
     text: (
@@ -249,13 +249,13 @@ const slides = [
           </span>
         ))}
       </h3>
-    )
+    ),
   },
   {
     src: 'https://fillmurray.com',
     height: 300,
     width: 300,
-    joiner: '/'
+    joiner: '/',
   },
   {
     text: (
@@ -266,7 +266,7 @@ const slides = [
           </span>
         ))}
       </h3>
-    )
+    ),
   },
   { text: <h3>Featuring:</h3> },
   { text: <p>A native scrolling "whirligig"</p> },
@@ -276,8 +276,8 @@ const slides = [
   {
     text: (
       <p>slide indecies are normalized to stay within the slide count range</p>
-    )
-  }
+    ),
+  },
 ]
 
 class Demo extends Component {

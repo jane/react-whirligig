@@ -21,7 +21,7 @@ test('infinite prop', (t) => {
         </Track>
       ),
       next,
-      prev
+      prev,
     }
   }
 

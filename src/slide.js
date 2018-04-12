@@ -6,7 +6,7 @@ export type SlideProps = {
   basis: string,
   children: React.Node,
   className: string,
-  gutter: string
+  gutter: string,
 }
 
 const Slide = ({
@@ -21,7 +21,7 @@ const Slide = ({
     style={{
       flex: '0 0 auto',
       width: basis,
-      marginLeft: gutter
+      marginLeft: gutter,
     }}
     {...props}
   >

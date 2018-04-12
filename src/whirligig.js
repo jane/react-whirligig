@@ -14,7 +14,7 @@ import {
   onScrollEnd,
   onScrollStart,
   onSwipe,
-  values
+  values,
 } from './utils'
 
 export type WhirligigProps = {|
@@ -38,14 +38,14 @@ export type WhirligigProps = {|
   snapToSlide: boolean,
   startAt: number,
   style: Object,
-  visibleSlides: number
+  visibleSlides: number,
 |}
 
 export type WhirligigState = {
   activeIndex: number,
   isAnimating: boolean,
   slideBy: number,
-  visibleSlides: number
+  visibleSlides: number,
 }
 
 export default class Whirligig extends React.Component<
@@ -76,7 +76,7 @@ export default class Whirligig extends React.Component<
     preventSwipe: false,
     snapToSlide: false,
     startAt: 0,
-    style: {}
+    style: {},
   }
 
   constructor(props: WhirligigProps) {
@@ -86,7 +86,7 @@ export default class Whirligig extends React.Component<
       activeIndex: props.startAt,
       isAnimating: false,
       visibleSlides: this.props.visibleSlides || 0,
-      slideBy: this.props.slideBy || this.props.visibleSlides || 0
+      slideBy: this.props.slideBy || this.props.visibleSlides || 0,
     }
 
     // We can't do arrow function properties for these since
@@ -126,7 +126,7 @@ export default class Whirligig extends React.Component<
       left: () => -this.state.slideBy,
       right: () => this.state.slideBy,
       up: () => 0,
-      down: () => 0
+      down: () => 0,
     }
 
     this.eventListeners = [
@@ -168,7 +168,7 @@ export default class Whirligig extends React.Component<
             noop
           )
         }
-      })(this.whirligig)
+      })(this.whirligig),
     ]
 
     this.slideTo(this.props.startAt, { immediate: true }).catch(noop)
@@ -205,7 +205,7 @@ export default class Whirligig extends React.Component<
   }
 
   handleKeyUp = ((nextKeys, prevKeys) => ({
-    key
+    key,
   }: SyntheticKeyboardEvent<*>): boolean => {
     const isNext = includes(key, nextKeys)
     const isPrev = includes(key, prevKeys)
@@ -299,7 +299,7 @@ export default class Whirligig extends React.Component<
       easing,
       animationDuration: duration,
       infinite,
-      preventScroll
+      preventScroll,
     } = this.props
     const { children, scrollLeft } = this.whirligig
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
@@ -322,7 +322,7 @@ export default class Whirligig extends React.Component<
             delta,
             easing,
             duration,
-            originalOverflowX
+            originalOverflowX,
           })
         ) // .catch(noop)
       }
@@ -386,7 +386,7 @@ export default class Whirligig extends React.Component<
       position: 'relative', // makes .whirligig an offset parent
       transition: 'all .25s ease-in-quint',
       outline: 'none',
-      WebkitOverflowScrolling: 'touch'
+      WebkitOverflowScrolling: 'touch',
     }
 
     return (

@@ -18,5 +18,5 @@ Object.keys(global.document).reduce((global, property) => {
 })
 
 global.navigator = {
-  userAgent: 'node.js'
+  userAgent: 'node.js',
 }

@@ -21,7 +21,7 @@ test('visibleSlides prop', (t) => {
         </Track>
       ),
       next,
-      prev
+      prev,
     }
   }
 

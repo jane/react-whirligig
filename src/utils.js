@@ -110,8 +110,12 @@ export const onSwipe = (cb: (string) => void) => (
       if (Math.max(absXDiff, absYDiff) > 20) {
         const dir =
           absXDiff > absYDiff
-            ? /* h */ xDiff < 0 ? 'right' : 'left'
-            : /* v */ yDiff < 0 ? 'down' : 'up'
+            ? /* h */ xDiff < 0
+              ? 'right'
+              : 'left'
+            : /* v */ yDiff < 0
+              ? 'down'
+              : 'up'
         cb(dir)
       }
       if (typeof offTouchEnd === 'function') offTouchEnd()
@@ -172,13 +176,13 @@ export const animate = (
     immediate = false,
     duration = 500,
     easing = easeOutQuint,
-    prop = 'scrollTop'
+    prop = 'scrollTop',
   }: {
     delta: number,
     immediate?: boolean,
     duration: number,
     easing: (number) => number,
-    prop: string
+    prop: string,
   } = {}
 ): Promise<*> =>
   new Promise((res, rej): void => {
