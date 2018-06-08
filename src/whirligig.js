@@ -309,30 +309,34 @@ export default class Whirligig extends React.Component<
       beforeSlide(index)
     }
     this.setState({ isAnimating: true, activeIndex: slideIndex })
-    return new Promise((res, _): void => {
-      if (immediate) {
-        this.whirligig.scrollLeft = children[slideIndex].offsetLeft
-        return res()
-      } else {
-        const originalOverflowX = preventScroll ? 'hidden' : 'auto'
-        const prop = 'scrollLeft'
-        return res(
-          animate(this.whirligig, {
-            prop,
-            delta,
-            easing,
-            duration,
-            originalOverflowX,
-          })
-        ) // .catch(noop)
-      }
-    })
-      .then((): void => {
-        this.setState({ isAnimating: false })
-        if (startingIndex !== slideIndex) {
-          return afterSlide(slideIndex)
+    return new Promise(
+      (res, _): void => {
+        if (immediate) {
+          this.whirligig.scrollLeft = children[slideIndex].offsetLeft
+          return res()
+        } else {
+          const originalOverflowX = preventScroll ? 'hidden' : 'auto'
+          const prop = 'scrollLeft'
+          return res(
+            animate(this.whirligig, {
+              prop,
+              delta,
+              easing,
+              duration,
+              originalOverflowX,
+            })
+          ) // .catch(noop)
         }
-      })
+      }
+    )
+      .then(
+        (): void => {
+          this.setState({ isAnimating: false })
+          if (startingIndex !== slideIndex) {
+            return afterSlide(slideIndex)
+          }
+        }
+      )
       .catch((_) => {
         this.setState({ isAnimating: false })
       })

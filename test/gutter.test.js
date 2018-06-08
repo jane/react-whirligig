@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind, flowtype/require-return-type */
+/* eslint-disable react/jsx-no-bind, flowtype/require-return-type, no-console */
 
 import React from 'react'
 import test from 'tape'

@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind, flowtype/require-return-type */
+/* eslint-disable react/jsx-no-bind, flowtype/require-return-type, no-console */
 
 import React, { Component } from 'react'
 import { render } from 'react-dom'
