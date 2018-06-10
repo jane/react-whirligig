@@ -6,7 +6,7 @@ export const includes = (val: any, arr: any[]): boolean =>
   arr.includes ? arr.includes(val) : !!arr.filter((item) => item === val).length
 
 const wrapAroundValue = (val: number, max: number): number =>
-  (val % max + max) % max
+  ((val % max) + max) % max
 
 const hardBoundedValue = (val: number, max: number): number =>
   Math.max(0, Math.min(max, val))
@@ -185,45 +185,47 @@ export const animate = (
     prop: string,
   } = {}
 ): Promise<*> =>
-  new Promise((res, rej): void => {
-    if (!delta) return res()
-    // $FlowFixMe
-    const initialVal = el[prop]
-    if (immediate) {
+  new Promise(
+    (res, rej): void => {
+      if (!delta) return res()
       // $FlowFixMe
-      el[prop] = initialVal + delta
-      return res()
-    }
-    let hasBailed = false
-    const bail = (): void => {
-      hasBailed = true
-      // $FlowFixMe
-      const pos = el[prop]
-      el.removeEventListener('touchstart', bail)
-      // $FlowFixMe
-      el[prop] = pos
-      return rej('Animation interrupted by interaction')
-    }
-    el.addEventListener(
-      'touchstart',
-      bail,
-      supportsPassive() ? { passive: true } : false
-    )
-    let startTime = null
-    const step = (timestamp: number) => {
-      if (hasBailed) return
-      if (!startTime) startTime = timestamp
-      const progressTime = timestamp - startTime
-      const progressRatio = easing(progressTime / duration)
-      // $FlowFixMe
-      el[prop] = initialVal + delta * progressRatio
-      if (progressTime < duration) {
-        window.requestAnimationFrame(step)
-      } else {
+      const initialVal = el[prop]
+      if (immediate) {
         // $FlowFixMe
-        el[prop] = initialVal + delta // jump to end when animation is complete. necessary at least for immediate scroll
-        res()
+        el[prop] = initialVal + delta
+        return res()
       }
+      let hasBailed = false
+      const bail = (): void => {
+        hasBailed = true
+        // $FlowFixMe
+        const pos = el[prop]
+        el.removeEventListener('touchstart', bail)
+        // $FlowFixMe
+        el[prop] = pos
+        return rej('Animation interrupted by interaction')
+      }
+      el.addEventListener(
+        'touchstart',
+        bail,
+        supportsPassive() ? { passive: true } : false
+      )
+      let startTime = null
+      const step = (timestamp: number) => {
+        if (hasBailed) return
+        if (!startTime) startTime = timestamp
+        const progressTime = timestamp - startTime
+        const progressRatio = easing(progressTime / duration)
+        // $FlowFixMe
+        el[prop] = initialVal + delta * progressRatio
+        if (progressTime < duration) {
+          window.requestAnimationFrame(step)
+        } else {
+          // $FlowFixMe
+          el[prop] = initialVal + delta // jump to end when animation is complete. necessary at least for immediate scroll
+          res()
+        }
+      }
+      window.requestAnimationFrame(step)
     }
-    window.requestAnimationFrame(step)
-  })
+  )
