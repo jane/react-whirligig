@@ -19,9 +19,9 @@ test('Track afterSlide prop', (t) => {
     'value of afterSlide prop should default to a noop function'
   )
 
-  let next,
-    prev,
-    called = 0
+  let next: () => void
+  let prev: () => void
+  let called: number = 0
   const goNext = () => next()
   const goPrev = () => prev()
   const a = () => {

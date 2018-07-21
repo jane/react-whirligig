@@ -1,7 +1,11 @@
 {
   "root": true,
-  "extends": [ "eslint-config-jane", "plugin:flowtype/recommended" ],
-  "plugins": [ "flowtype" ],
+  "extends": [
+    "plugin:jane/recommended",
+    "plugin:jane/react",
+    "plugin:jane/flow"
+  ],
+  "plugins": [ "jane" ],
   "rules": {
     "flowtype/no-weak-types": [ 0 ],
     "flowtype/space-after-type-colon": [ 1 ],

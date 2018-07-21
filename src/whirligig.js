@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+
 // @flow
 
 import * as React from 'react'

@@ -53,7 +53,7 @@ test('gutter prop', (t) => {
    * this unit test captures `console.error` and stores erverything called with it.
    * we then check to make sure the correct number of calls were made, and that the values are correct.
    */
-  let errorLog = []
+  let errorLog: Array<*> = []
   console.error = (...msgs) => {
     errorLog = [...errorLog, ...msgs]
   }

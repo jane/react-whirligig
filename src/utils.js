@@ -29,7 +29,7 @@ export const maxMap = (...vals: number[]) => (val: number): number =>
 export const noop = () => undefined
 
 export const easeOutQuint = (t: number): number => {
-  let n = t
+  let n: number = t
   return 1 + --n * n ** 4
 }
 
@@ -73,7 +73,7 @@ export const onScrollStart = (
   cb: (SyntheticEvent<*>) => any,
   { target = window }: { target: Object } = {}
 ): (() => void) => {
-  let started = false
+  let started: boolean = false
   const offScrollEnd = onScrollEnd(
     () => {
       started = false
@@ -126,7 +126,7 @@ export const onSwipe = (cb: (string) => void) => (
 }
 
 export const trackTouchesForElement = (el: Element): (() => number) => {
-  let touchIds = []
+  let touchIds: Array<*> = []
   on('touchend')(({ targetTouches }) => {
     touchIds = targetTouches
   })(el)
@@ -134,7 +134,7 @@ export const trackTouchesForElement = (el: Element): (() => number) => {
 }
 
 export const trackOngoingMouseInteraction = (el: Element): (() => boolean) => {
-  let isInteracting = false
+  let isInteracting: boolean = false
   on('mousedown')(() => {
     isInteracting = true
   })(el)
@@ -195,7 +195,7 @@ export const animate = (
         el[prop] = initialVal + delta
         return res()
       }
-      let hasBailed = false
+      let hasBailed: boolean = false
       const bail = (): void => {
         hasBailed = true
         // $FlowFixMe
@@ -210,7 +210,7 @@ export const animate = (
         bail,
         supportsPassive() ? { passive: true } : false
       )
-      let startTime = null
+      let startTime: number | null = null
       const step = (timestamp: number) => {
         if (hasBailed) return
         if (!startTime) startTime = timestamp

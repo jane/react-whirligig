@@ -7,7 +7,8 @@ import Track from '../src/whirligig'
 
 test('infinite prop', (t) => {
   const infinite = (infinite) => (kids) => {
-    let goNext, goPrev
+    let goNext: () => void
+    let goPrev: () => void
     const next = () => goNext()
     const prev = () => goPrev()
     return {
