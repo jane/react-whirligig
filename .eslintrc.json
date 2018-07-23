@@ -2,6 +2,7 @@
   "root": true,
   "extends": [
     "plugin:jane/recommended",
+    "plugin:jane/prettier",
     "plugin:jane/react",
     "plugin:jane/flow"
   ],

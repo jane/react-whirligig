@@ -1,1 +1,1 @@
-module.exports = require('eslint-config-jane/prettier')
+module.exports = require('eslint-plugin-jane/prettier')
