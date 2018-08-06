@@ -1,7 +1,4 @@
-/* eslint-disable react/jsx-no-bind, flowtype/require-return-type, no-console */
-
 import React from 'react'
-import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/whirligig'
 
@@ -10,23 +7,21 @@ const tap = (msg) => (thing) => {
   return thing
 }
 
-test('Track afterSlide prop', (t) => {
+test('Track afterSlide prop', () => {
   const wrapped = mount(<Track>{() => []}</Track>)
 
-  t.equals(
-    typeof wrapped.prop('afterSlide'),
-    'function',
-    'value of afterSlide prop should default to a noop function'
-  )
+  expect(typeof wrapped.prop('afterSlide')).toBe('function')
 
   let next: () => void
   let prev: () => void
   let called: number = 0
+
   const goNext = () => next()
   const goPrev = () => prev()
   const a = () => {
     called++
   }
+
   mount(
     <Track afterSlide={a}>
       {(_next, _prev) => {
@@ -38,23 +33,13 @@ test('Track afterSlide prop', (t) => {
   )
 
   goNext()
-    .then(() =>
-      t.equals(
-        called,
-        1,
-        'afterSlide function should be called after sliding to next'
-      )
-    )
-    .then(() =>
-      goPrev().then(() =>
-        t.equals(
-          called,
-          2,
-          'afterSlide function should be called after sliding to prev'
-        )
-      )
-    )
+    .then(() => {
+      expect(called).toBe(1)
+    })
+    .then(() => {
+      goPrev().then(() => {
+        expect(called).toBe(2)
+      })
+    })
     .catch(tap('error'))
-
-  t.end()
 })

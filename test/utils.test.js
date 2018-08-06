@@ -1,27 +1,20 @@
-/* eslint-disable react/jsx-no-bind, flowtype/require-return-type */
-
 import * as u from '../src/utils'
-import test from 'tape'
 
-test('utils.includes', (t) => {
-  t.true(u.includes(1, [1, 2, 3]), 'arr includes el')
-  t.false(u.includes(1, [0, 2, 3]), 'arr does not include el')
-  t.end()
+test('utils.includes', () => {
+  expect(u.includes(1, [1, 2, 3])).toBe(true)
+  expect(u.includes(1, [0, 2, 3])).toBe(false)
 })
 
-test('utils.values', (t) => {
+test('utils.values', () => {
   const o = { a: 1, b: 2, c: 3, d: 4 }
   const e = [1, 2, 3, 4]
-  t.deepEqual(u.values(o), e, 'is Object.values')
-  t.end()
+  expect(u.values(o)).toEqual(e)
 })
 
-test('utils.minMap', (t) => {
-  t.equal(u.minMap(1, 2, 3, 4)(5), 1, 'works')
-  t.end()
+test('utils.minMap', () => {
+  expect(u.minMap(1, 2, 3, 4)(5)).toBe(1)
 })
 
-test('utils.maxMap', (t) => {
-  t.equal(u.maxMap(1, 2, 3, 4)(5), 5, 'works')
-  t.end()
+test('utils.maxMap', () => {
+  expect(u.maxMap(1, 2, 3, 4)(5)).toBe(5)
 })

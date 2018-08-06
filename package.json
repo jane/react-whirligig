@@ -2,7 +2,7 @@
   "name": "react-whirligig",
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
   "version": "6.5.7",
-  "author": "Cory Brown <cory@jane.com>",
+  "author": "Jane Web Team",
   "license": "MIT",
   "main": "lib/react-whirligig.js",
   "module": "lib/react-whirligig.es.js",
@@ -14,21 +14,21 @@
   "scripts": {
     "build": "rollup -c",
     "copy-flow": "flow-copy-source src lib",
-    "cover": "npm run cover:tape && npm run cover:flow",
-    "cover:coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "cover": "run-s -s cover:jest cover:flow",
+    "cover:coveralls": "if [ -n \"$COVERALLS_REPO_TOKEN\" ] ; then coveralls < coverage/lcov.info ; fi || true",
     "cover:flow": "flow-coverage-report --config .flow-coverage-report.json",
-    "cover:tape": "nyc npm run test:tape",
+    "cover:jest": "npm run test:jest -- --coverage",
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
     "doc": "webpack-cli -p --config webpack.config.babel.js",
     "format": "prettier --write dev.js rollup.config.js \"{src,test}/**/*.js\"",
-    "postbuild": "npm run doc && npm run copy-flow",
-    "prebuild": "npm run test:lint && npm run cover",
+    "postbuild": "run-s -s doc copy-flow",
+    "prebuild": "run-s -s test:lint cover",
     "precommit": "lint-staged",
     "preversion": "npm run build",
-    "test": "npm run test:lint && npm run test:flow && npm run test:tape",
+    "test": "run-s -s test:lint test:flow test:jest",
     "test:flow": "flow check",
     "test:lint": "eslint -c .eslintrc.json src test dev.js",
-    "test:tape": "babel-tape-runner test/**/*.test.js | tap-spec"
+    "test:jest": "jest"
   },
   "homepage": "https://jane.github.io/react-whirligig",
   "repository": {
@@ -50,6 +50,7 @@
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-eslint": "8.2.6",
+    "babel-jest": "23.4.2",
     "babel-loader": "7.1.5",
     "babel-plugin-external-helpers": "6.22.0",
     "babel-plugin-transform-class-properties": "6.24.1",
@@ -58,7 +59,6 @@
     "babel-preset-react": "6.24.1",
     "babel-preset-stage-3": "6.24.1",
     "babel-register": "6.26.0",
-    "babel-tape-runner": "2.0.1",
     "coveralls": "3.0.2",
     "enzyme": "3.3.0",
     "enzyme-adapter-react-16": "1.1.1",
@@ -68,10 +68,12 @@
     "flow-copy-source": "2.0.0",
     "flow-coverage-report": "0.5.0",
     "husky": "0.14.3",
+    "jest": "23.4.2",
     "jsdom": "11.11.0",
     "lint-staged": "7.2.0",
     "loglevel": "1.6.1",
     "marked": "0.4.0",
+    "npm-run-all": "4.1.3",
     "nyc": "12.0.2",
     "prettier": "1.13.7",
     "react": "16.4.0",
@@ -85,7 +87,6 @@
     "rollup-plugin-replace": "2.0.0",
     "style-loader": "0.21.0",
     "tap-spec": "5.0.0",
-    "tape": "4.9.1",
     "webpack": "4.12.0",
     "webpack-cli": "3.0.3",
     "webpack-dev-server": "3.1.4"
@@ -99,19 +100,33 @@
       "docs/*.js"
     ]
   },
-  "nyc": {
-    "include": [
-      "src"
+  "jest": {
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "setupFiles": [
+      "<rootDir>/config/jest-setup.js"
     ],
-    "require": [
-      "babel-register"
+    "moduleFileExtensions": [
+      "js",
+      "json"
     ],
-    "sourceMap": true,
-    "instrument": true,
-    "reporter": [
+    "modulePaths": [
+      "<rootDir>/src/"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/(lib|node_modules)/"
+    ],
+    "testEnvironment": "jsdom",
+    "testRegex": "\\.test\\.js$",
+    "coverageReporters": [
+      "json-summary",
+      "lcov",
       "text",
-      "json",
-      "html"
+      "json"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js"
     ]
   },
   "peerDependencies": {

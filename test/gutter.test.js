@@ -1,11 +1,8 @@
-/* eslint-disable react/jsx-no-bind, flowtype/require-return-type, no-console */
-
 import React from 'react'
-import test from 'tape'
 import { mount } from 'enzyme'
 import Track from '../src/whirligig'
 
-test('gutter prop', (t) => {
+test('gutter prop', () => {
   const gutterTrack = (gutterVal, visibleSlides) =>
     mount(
       <Track gutter={gutterVal} visibleSlides={visibleSlides}>
@@ -17,35 +14,18 @@ test('gutter prop', (t) => {
     .find('Slide')
     .forEach((Slide, i) => {
       if (i === 0) {
-        t.equal(
-          Slide.prop('gutter'),
-          '',
-          'gutter prop is not passed to first Slide'
-        )
+        expect(Slide.prop('gutter')).toBe('')
       } else {
-        t.equal(
-          Slide.prop('gutter'),
-          '1em',
-          'gutter prop is passed to every other Slide'
-        )
+        expect(Slide.prop('gutter')).toBe('1em')
       }
-      t.equal(
-        Slide.prop('basis'),
-        'auto',
-        'Track applies a basis prop to Slide with a value of `auto`'
-      )
+      expect(Slide.prop('basis')).toBe('auto')
     })
+
   gutterTrack('1em', 2)
     .find('Slide')
     .forEach((Slide) => {
-      t.ok(
-        Slide.prop('basis').startsWith('calc'),
-        'Track applies a basis prop to Slide with a css calc value if `visibleSlides` is also set'
-      )
-      t.ok(
-        Slide.prop('basis').match('1em'),
-        'Track applies a basis prop to Slide which takes gutter into account if `visibleSlides` is also set'
-      )
+      expect(Slide.prop('basis').startsWith('calc')).toBeTruthy()
+      expect(Slide.prop('basis').match('1em')).toBeTruthy()
     })
 
   /***
@@ -60,6 +40,4 @@ test('gutter prop', (t) => {
   gutterTrack(1)
   // t.equals(errorLog.length, 2, 'only one error per slide is logged')
   // t.ok(errorLog[0].match(/valid css length unit/), 'the error matches the custom validation message')
-
-  t.end()
 })
