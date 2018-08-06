@@ -1,0 +1,12 @@
+{
+  "env": {
+    "jest": true
+  },
+  "extends": [
+    "plugin:jane/jest"
+  ],
+  "rules": {
+    "react/jsx-no-bind": 0,
+    "flowtype/require-return-type": 0
+  }
+}
