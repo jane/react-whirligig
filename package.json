@@ -27,8 +27,8 @@
     "preversion": "npm run build",
     "test": "run-s -s test:lint test:flow test:jest",
     "test:flow": "flow check",
-    "test:lint": "eslint -c .eslintrc.json src test dev.js",
-    "test:jest": "jest"
+    "test:jest": "jest",
+    "test:lint": "eslint -c .eslintrc.json src test dev.js"
   },
   "homepage": "https://jane.github.io/react-whirligig",
   "repository": {
@@ -91,15 +91,6 @@
     "webpack-cli": "3.0.3",
     "webpack-dev-server": "3.1.4"
   },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ],
-    "ignore": [
-      "docs/*.js"
-    ]
-  },
   "jest": {
     "transform": {
       "^.+\\.js$": "babel-jest"
@@ -128,6 +119,17 @@
     "collectCoverageFrom": [
       "src/**/*.js"
     ]
+  },
+  "lint-staged": {
+    "linters": {
+      "*.js": [
+        "prettier --write",
+        "git add"
+      ],
+      "ignore": [
+        "docs/*.js"
+      ]
+    }
   },
   "peerDependencies": {
     "react": "^15.4.0 || ^16.0.0"
