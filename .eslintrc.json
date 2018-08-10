@@ -8,9 +8,10 @@
   ],
   "plugins": [ "jane" ],
   "rules": {
-    "flowtype/no-weak-types": [ 0 ],
-    "flowtype/space-after-type-colon": [ 1 ],
-    "flowtype/no-types-missing-file-annotation": [ 0 ],
+    "flowtype/no-weak-types": 0,
+    "flowtype/space-after-type-colon": 1,
+    "flowtype/no-types-missing-file-annotation": 0,
+    "flowtype/require-parameter-type": 0,
     "flowtype/require-return-type": [ 1, "always", { "excludeArrowFunctions": "expressionsOnly" } ]
   }
 }
