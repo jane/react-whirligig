@@ -21,18 +21,19 @@ const plugins = [
   babel({
     babelrc: false,
     presets: [
-      'flow',
       [
-        'env',
+        '@babel/preset-env',
         {
           targets: ['>1%', 'last 3 versions', 'Firefox ESR', 'ie >= 11'],
           modules: false,
         },
       ],
-      'stage-3',
-      'react',
+      '@babel/preset-react',
     ],
-    plugins: ['external-helpers', 'transform-class-properties'],
+    plugins: [
+      '@babel/plugin-transform-flow-strip-types',
+      '@babel/plugin-proposal-class-properties',
+    ],
   }),
   nodeResolve(),
   commonjs({ ignoreGlobal: true }),
