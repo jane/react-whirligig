@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind, flowtype/require-return-type, no-console */
 
-import React, { Component } from 'react'
+import * as React from 'react'
 import { render } from 'react-dom'
 import { includes, noop } from './src/utils'
 import W from './src/whirligig'
@@ -19,7 +19,7 @@ const coerceValueToType = ({ type, value }) => {
   return coercer(value)
 }
 
-class Slider extends Component {
+class Slider extends React.Component {
   static propTypes = {
     afterSlide: func,
     animationDuration: number,
@@ -280,7 +280,7 @@ const slides = [
   },
 ]
 
-class Demo extends Component {
+class Demo extends React.Component {
   state = { docs: '' }
 
   componentWillMount() {

@@ -31,7 +31,7 @@ backward the number of visible slides. These functions can be accessed using the
 `ref` prop callback to get a reference to the `Whirligig` instance.
 
 ```jsx
-import React from 'react'
+import * as React from 'react'
 import Whirligig from 'react-whirligig'
 
 const Slider = () => {
