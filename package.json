@@ -8,8 +8,8 @@
   "module": "lib/react-whirligig.es.js",
   "jsnext:main": "lib/react-whirligig.es.js",
   "files": [
-    "lib",
-    "es"
+    "es",
+    "lib"
   ],
   "scripts": {
     "build": "rollup -c",
@@ -92,11 +92,14 @@
     "webpack-dev-server": "3.1.14"
   },
   "jest": {
-    "transform": {
-      "^.+\\.js$": "babel-jest"
-    },
-    "setupFiles": [
-      "<rootDir>/config/jest-setup.js"
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageReporters": [
+      "json-summary",
+      "lcov",
+      "text",
+      "json"
     ],
     "moduleFileExtensions": [
       "js",
@@ -105,31 +108,28 @@
     "modulePaths": [
       "<rootDir>/src/"
     ],
+    "setupFiles": [
+      "<rootDir>/config/jest-setup.js"
+    ],
+    "testEnvironment": "jsdom",
     "testPathIgnorePatterns": [
       "<rootDir>/(lib|node_modules)/"
     ],
-    "testEnvironment": "jsdom",
     "testRegex": "\\.test\\.js$",
-    "coverageReporters": [
-      "json-summary",
-      "lcov",
-      "text",
-      "json"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.js"
-    ]
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "lint-staged": {
+    "ignore": [
+      "docs/*.js"
+    ],
     "linters": {
       "*.js": [
         "prettier --write",
         "git add"
       ]
-    },
-    "ignore": [
-      "docs/*.js"
-    ]
+    }
   },
   "peerDependencies": {
     "react": "^15.4.0 || ^16.0.0"
