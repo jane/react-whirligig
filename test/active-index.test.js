@@ -4,8 +4,8 @@ import Track from '../src/whirligig'
 
 test('activeIndex state', () => {
   const ai = ({ startAt, visibleSlides, infinite } = {}) => {
-    let goNext: () => void
-    let goPrev: () => void
+    let goNext
+    let goPrev
     const next = () => goNext()
     const prev = () => goPrev()
 

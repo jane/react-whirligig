@@ -4,8 +4,8 @@ import Track from '../src/whirligig'
 
 test('visibleSlides prop', () => {
   const vs = (vs) => (kids) => {
-    let goNext: () => void
-    let goPrev: () => void
+    let goNext
+    let goPrev
     const next = () => goNext()
     const prev = () => goPrev()
 

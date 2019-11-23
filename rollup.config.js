@@ -30,10 +30,7 @@ const plugins = [
       ],
       '@babel/preset-react',
     ],
-    plugins: [
-      '@babel/plugin-transform-flow-strip-types',
-      '@babel/plugin-proposal-class-properties',
-    ],
+    plugins: ['@babel/plugin-proposal-class-properties'],
   }),
   nodeResolve(),
   commonjs({ ignoreGlobal: true }),

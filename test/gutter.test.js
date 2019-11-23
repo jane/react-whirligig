@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import * as React from 'react'
 import { mount } from 'enzyme'
 import Track from '../src/whirligig'
@@ -33,7 +35,7 @@ test('gutter prop', () => {
    * this unit test captures `console.error` and stores erverything called with it.
    * we then check to make sure the correct number of calls were made, and that the values are correct.
    */
-  let errorLog: Array<*> = []
+  let errorLog = []
   console.error = (...msgs) => {
     errorLog = [...errorLog, ...msgs]
   }
