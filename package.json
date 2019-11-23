@@ -1,7 +1,7 @@
 {
   "name": "react-whirligig",
   "description": "A react carousel/slider like component for sequentially displaying slides or sets of slides",
-  "version": "6.5.13",
+  "version": "6.5.14",
   "author": "Jane Web Team",
   "license": "MIT",
   "main": "lib/react-whirligig.js",
