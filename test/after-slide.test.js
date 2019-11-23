@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import * as React from 'react'
 import { mount } from 'enzyme'
 import Track from '../src/whirligig'
@@ -12,9 +14,9 @@ test('Track afterSlide prop', () => {
 
   expect(typeof wrapped.prop('afterSlide')).toBe('function')
 
-  let next: () => void
-  let prev: () => void
-  let called: number = 0
+  let next
+  let prev
+  let called = 0
 
   const goNext = () => next()
   const goPrev = () => prev()

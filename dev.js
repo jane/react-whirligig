@@ -1,4 +1,4 @@
-/* eslint-disable react/jsx-no-bind, flowtype/require-return-type, no-console */
+/* eslint-disable react/jsx-no-bind, no-console */
 
 import * as React from 'react'
 import { render } from 'react-dom'
@@ -78,7 +78,8 @@ class Slider extends React.Component {
     visibleSlides: this.props.visibleSlides,
   }
 
-  componentWillReceiveProps(nextProps) {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       afterSlide: nextProps.afterSlide,
       animationDuration: nextProps.animationDuration,
@@ -283,7 +284,8 @@ const slides = [
 class Demo extends React.Component {
   state = { docs: '' }
 
-  componentWillMount() {
+  // eslint-disable-next-line camelcase
+  UNSAFE_componentWillMount() {
     window
       .fetch(
         'https://raw.githubusercontent.com/jane/react-whirligig/master/README.md'

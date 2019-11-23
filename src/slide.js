@@ -1,13 +1,6 @@
-// @flow
+/* eslint-disable react/prop-types */
 
 import * as React from 'react'
-
-export type SlideProps = {
-  basis: string,
-  children: React.Node,
-  className: string,
-  gutter: string,
-}
 
 const Slide = ({
   basis = '100%',
@@ -15,7 +8,7 @@ const Slide = ({
   className = '',
   children,
   ...props
-}: SlideProps) => (
+}) => (
   <div
     className={className}
     style={{
