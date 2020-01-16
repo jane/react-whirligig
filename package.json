@@ -16,7 +16,7 @@
     "cover": "npm run test:jest -- --coverage",
     "cover:coveralls": "if [ -n \"$COVERALLS_REPO_TOKEN\" ] ; then coveralls < coverage/lcov.info ; fi || true",
     "dev": "webpack-dev-server --quiet --no-info --hot --inline --history-api-fallback --config webpack.config.babel.js",
-    "doc": "webpack-cli -p --config webpack.config.babel.js",
+    "doc": "webpack-cli -p --config webpack.config.babel.js && git add docs && git commit -m 'docs'",
     "format": "prettier --write dev.js rollup.config.js \"{src,test}/**/*.js\"",
     "postbuild": "run-s -s doc",
     "prebuild": "run-s -s test:lint cover",
