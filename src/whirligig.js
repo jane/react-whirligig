@@ -29,6 +29,7 @@ export default class Whirligig extends React.Component {
     preventAutoCorrect: false,
     preventScroll: false,
     preventSwipe: false,
+    snapPositionOffset: 0,
     snapToSlide: false,
     startAt: 0,
     style: {},
@@ -254,11 +255,13 @@ export default class Whirligig extends React.Component {
       animationDuration: duration,
       infinite,
       preventScroll,
+      snapPositionOffset,
     } = this.props
     const { children, scrollLeft } = this.whirligig
     const slideIndex = normalizeIndex(index, this.childCount, infinite)
     const startingIndex = this.state.activeIndex
-    const delta = children[slideIndex].offsetLeft - scrollLeft
+    const delta =
+      children[slideIndex].offsetLeft - scrollLeft - snapPositionOffset
     if (startingIndex !== slideIndex) {
       beforeSlide(index)
     }

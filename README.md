@@ -154,6 +154,11 @@ component to directly control when and where the whirligig transitions to.
 A boolean flag that turns on/off the snap-to-slide feature. If set, the
 Whirligig will animate the final bit of scrolling to stop at a slide.
 
+### `snapPositionOffset: number = 0`
+
+A number that assigns offset to slides on next() and prev() or snap. As an example, this allows a full-width
+Slider to select a starting/ending slide position inside of the container, rather than to the edge.
+
 ### `startAt: number = 0`
 
 The Slide index that will be the "active" slide when the Whirligig mounts. The value
