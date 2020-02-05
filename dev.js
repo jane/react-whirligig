@@ -34,6 +34,7 @@ class Slider extends React.Component {
     slideBy: number,
     slideClass: string,
     slideTo: number,
+    snapPositionOffset: number,
     snapToSlide: bool,
     startAt: number,
     visibleSlides: number,
@@ -55,6 +56,7 @@ class Slider extends React.Component {
     slideClass: 'slideClassName',
     slideBy: 0,
     slideTo: 0,
+    snapPositionOffset: 0,
     snapToSlide: false,
     startAt: 0,
     visibleSlides: 0,
@@ -66,14 +68,15 @@ class Slider extends React.Component {
     beforeSlide: this.props.beforeSlide,
     className: this.props.className,
     easing: this.props.easing,
-    infinite: this.props.infinite,
     gutter: this.props.gutter,
+    infinite: this.props.infinite,
     onSlideClick: this.props.onSlideClick,
     preventScroll: this.props.preventScroll,
-    snapToSlide: this.props.snapToSlide,
     slideBy: this.props.slideBy,
     slideClass: this.props.slideClass,
     slideTo: this.props.slideTo,
+    snapPositionOffset: this.props.snapPositionOffset,
+    snapToSlide: this.props.snapToSlide,
     startAt: this.props.startAt,
     visibleSlides: this.props.visibleSlides,
   }
@@ -90,10 +93,11 @@ class Slider extends React.Component {
       gutter: nextProps.gutter,
       onSlideClick: nextProps.onSlideClick,
       preventScroll: nextProps.preventScroll,
-      snapToSlide: nextProps.snapToSlide,
       slideBy: nextProps.slideBy,
       slideClass: nextProps.slideClass,
       slideTo: nextProps.slideTo,
+      snapPositionOffset: nextProps.snapPositionOffset,
+      snapToSlide: nextProps.snapToSlide,
       startAt: nextProps.startAt,
       visibleSlides: nextProps.visibleSlides,
     })
@@ -153,10 +157,11 @@ class Slider extends React.Component {
       gutter,
       onSlideClick,
       preventScroll,
-      snapToSlide,
       slideBy,
       slideClass,
       slideTo,
+      snapPositionOffset,
+      snapToSlide,
       startAt,
       visibleSlides,
     } = this.state
@@ -172,15 +177,16 @@ class Slider extends React.Component {
             beforeSlide={beforeSlide}
             className={className}
             easing={easing}
-            infinite={infinite}
             gutter={gutter}
+            infinite={infinite}
             onSlideClick={onSlideClick}
             preventScroll={preventScroll}
-            snapToSlide={snapToSlide}
             ref={this.setRef('whirligig')}
             slideBy={slideBy}
             slideClass={slideClass}
             slideTo={slideTo}
+            snapPositionOffset={snapPositionOffset}
+            snapToSlide={snapToSlide}
             startAt={startAt}
             visibleSlides={visibleSlides}
           >
@@ -221,6 +227,11 @@ class Slider extends React.Component {
           <this.Control label="slideClass" type="text" name="slideClass" />
           <this.Control label="slideTo" type="number" name="slideTo" />
           <this.Control label="startAt" type="number" name="startAt" />
+          <this.Control
+            label="snapPositionOffset"
+            type="number"
+            name="snapPositionOffset"
+          />
           <this.Control
             label="visibleSlides"
             type="number"
