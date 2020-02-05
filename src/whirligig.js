@@ -323,6 +323,7 @@ export default class Whirligig extends React.Component {
       preventAutoCorrect,
       preventSwipe,
       snapToSlide,
+      snapPositionOffset,
       onSlideClick,
       slideClass,
       slideTo,
