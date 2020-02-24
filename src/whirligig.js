@@ -354,6 +354,7 @@ export default class Whirligig extends React.Component {
         ref={this.setWhirligigRef}
         tabIndex="0"
         onKeyUp={this.handleKeyUp}
+        role="list"
         {...props}
       >
         {
@@ -377,6 +378,7 @@ export default class Whirligig extends React.Component {
               }
               gutter={i > 0 ? gutter : ''}
               onClick={onSlideClick}
+              role="listitem"
             >
               {child}
             </Slide>
