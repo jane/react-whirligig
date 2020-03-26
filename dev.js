@@ -10,7 +10,8 @@ import marked from 'marked'
 const isCheckable = (type) => includes(type, ['checkbox', 'radio'])
 const coerceTable = {
   number: Number,
-  func: (fn) => Function(fn)(), // eslint-disable-line
+  // eslint-disable-next-line no-new-func
+  func: (fn) => new Function(fn)(),
   checkbox: Boolean,
   radio: Boolean,
 }
@@ -244,14 +245,12 @@ class Slider extends React.Component {
 }
 
 const slides = [
-  ...Array(7)
-    .fill()
-    .map(() => ({
-      src: 'https://placebeard.it',
-      height: 300,
-      width: 300,
-      joiner: 'x',
-    })),
+  ...new Array(7).fill().map(() => ({
+    src: 'https://placebeard.it',
+    height: 300,
+    width: 300,
+    joiner: 'x',
+  })),
   {
     text: (
       <h3>

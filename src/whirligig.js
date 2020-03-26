@@ -372,8 +372,9 @@ export default class Whirligig extends React.Component {
               key={`slide-${i}`}
               basis={
                 visibleSlides
-                  ? `calc((100% - (${gutter} * ${visibleSlides -
-                      1})) / ${visibleSlides})`
+                  ? `calc((100% - (${gutter} * ${
+                      visibleSlides - 1
+                    })) / ${visibleSlides})`
                   : 'auto'
               }
               gutter={i > 0 ? gutter : ''}

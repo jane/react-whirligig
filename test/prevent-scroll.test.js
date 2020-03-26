@@ -14,10 +14,5 @@ test('preventScroll prop', () => {
   //   'default value of overflowX style for containing element is `auto`'
   // )
 
-  expect(
-    ps(true)
-      .find('div')
-      .first()
-      .prop('style').overflowX
-  ).toBe('hidden')
+  expect(ps(true).find('div').first().prop('style').overflowX).toBe('hidden')
 })
