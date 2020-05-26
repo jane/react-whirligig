@@ -25,7 +25,7 @@ test('visibleSlides prop', () => {
   }
 
   const vs1 = vs()([0, 1, 2])
-  expect(vs1.wrapped.prop('visibleSlides')).toBe(undefined)
+  expect(vs1.wrapped.prop('visibleSlides')).toBe()
   expect(vs1.wrapped.children().find('Slide').first().props().basis).toBe(
     'auto'
   )

@@ -111,7 +111,7 @@ class Slider extends React.Component {
         const state = JSON.parse(persistedState)
         this.setState(state)
       }
-    } catch (_) {}
+    } catch {}
   }
 
   componentDidUpdate() {

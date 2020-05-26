@@ -15,7 +15,7 @@ export const minMap = (...vals) => (val) => Math.min(...vals, val)
 
 export const maxMap = (...vals) => (val) => Math.max(...vals, val)
 
-export const noop = () => undefined
+export const noop = () => {}
 
 export const easeOutQuint = (t) => {
   let n = t
@@ -138,7 +138,7 @@ const supportsPassive = () => {
     window.addEventListener('__rw_test__', null, { passive: true })
     window.removeEventListener('__rw_test__', null)
     return true
-  } catch (_) {
+  } catch {
     return false
   }
 }

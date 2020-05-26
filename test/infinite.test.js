@@ -25,7 +25,7 @@ test('infinite prop', () => {
   }
 
   const infinite1 = infinite()([0, 1, 2])
-  expect(infinite1.wrapped.prop('infinite')).toBe(undefined)
+  expect(infinite1.wrapped.prop('infinite')).toBe()
 
   const infinite2 = infinite(true)([0, 1, 2])
   infinite2.prev()
